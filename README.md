@@ -8,3 +8,9 @@ BMS란?
 ## Web
 
 React
+
+
+
+Django / FastAPI
+
+MongoDB
