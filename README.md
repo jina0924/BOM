@@ -6,3 +6,11 @@ BMS란?
 ## Embedded
 
 ## Web
+
+React
+
+
+
+Django / FastAPI
+
+MongoDB
