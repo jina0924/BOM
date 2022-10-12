@@ -9,6 +9,8 @@ BMS란?
 
 React
 
+Tailwind CSS
+
 
 
 Django / FastAPI
