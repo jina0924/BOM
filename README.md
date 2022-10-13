@@ -16,3 +16,8 @@ Tailwind CSS
 Django / FastAPI
 
 MongoDB
+
+
+## Convention
+[🔗 깃 컨벤션](./GitConvention.md)
+[🔗 지라 컨벤션](./JiraConvention.md)
