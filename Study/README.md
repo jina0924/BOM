@@ -1,2 +1,4 @@
 ##### [심전도센서](https://stealth-waste-ece.notion.site/e95b959dcf67423da65ab043f763c51d)
 ##### [mcp3008](https://stealth-waste-ece.notion.site/MCP3008-4fd0de318ec54b23968458ff761f21f1)
+##### [자이로센서](https://stealth-waste-ece.notion.site/10b26a1fa9124847a448e6cb86fa92ab)
+##### [통신 관련 정리](https://stealth-waste-ece.notion.site/SPI-I2C-1c3f868086054118abe67db784262e8c)
