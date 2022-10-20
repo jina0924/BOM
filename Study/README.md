@@ -4,3 +4,4 @@
 ##### [통신 관련 정리](https://stealth-waste-ece.notion.site/SPI-I2C-1c3f868086054118abe67db784262e8c)
 ##### [BMS 회로 기능](https://www.youtube.com/watch?v=QO31CFpId4s)
 ##### [Cell Ballancing 논문](http://www.koreascience.kr/article/CFKO202026958570434.pdf)
+##### [배터리 잔량 논문](https://koreascience.kr/article/JAKO201618155388409.pdf)
