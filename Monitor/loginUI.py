@@ -23,6 +23,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(1366, 768)
+        Form.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(558, 170, 250, 141))
@@ -30,11 +31,25 @@ class Ui_Form(object):
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setGeometry(QRect(623, 470, 120, 71))
         self.pushButton.setStyleSheet(u"background-color: rgb(85, 170, 0);\n"
-"color: rgb(255, 255, 255);\n"
-"font: 700 12pt \"\ub9d1\uc740 \uace0\ub515\";")
+"border-color : rgb(85, 170, 0);\n"
+"border-radius : 3px;\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_2 = QPushButton(Form)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.pushButton_2.setGeometry(QRect(1070, 110, 131, 61))
+        self.pushButton_2.setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.pushButton_2.setLayoutDirection(Qt.LeftToRight)
+        self.pushButton_2.setAutoFillBackground(False)
+        self.pushButton_2.setStyleSheet(u"background-color: rgb(255, 203, 206);\n"
+"border-color : rgb(255, 203, 206);\n"
+"border-radius : 3px;\n"
+"color : rgb(64, 67, 131);")
+        self.pushButton_2.setAutoDefault(False)
+        self.pushButton_2.setFlat(False)
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.goMain)
+        self.pushButton_2.clicked.connect(Form.checkDevice)
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
@@ -43,5 +58,6 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label.setText("")
         self.pushButton.setText(QCoreApplication.translate("Form", u"Go main btn", None))
+        self.pushButton_2.setText(QCoreApplication.translate("Form", u"Dialog btn", None))
     # retranslateUi
 
