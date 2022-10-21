@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
-    QSizePolicy, QWidget)
+    QSizePolicy, QWidget, QGraphicsDropShadowEffect)
 import myres_rc
 
 class Ui_Form(object):
@@ -25,6 +25,7 @@ class Ui_Form(object):
             Form.setObjectName(u"Form")
         Form.resize(1366, 768)
         Form.setStyleSheet(u"background-color: rgb(246, 247, 248);")
+
         self.logo_link = QLabel(Form)
         self.logo_link.setObjectName(u"logo_link")
         self.logo_link.setGeometry(QRect(609, 100, 148, 50))
@@ -96,10 +97,10 @@ class Ui_Form(object):
         self.battery_amount_bar.setObjectName(u"battery_amount_bar")
         self.battery_amount_bar.setGeometry(QRect(490, 245, 200, 75))
         self.battery_amount_bar.setStyleSheet(u"background-color: rgb(26, 50, 98);")
-        self.label_5 = QLabel(Form)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(1056, 137, 218, 170))
-        self.label_5.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+        self.box2 = QLabel(Form)
+        self.box2.setObjectName(u"box2")
+        self.box2.setGeometry(QRect(1056, 137, 218, 170))
+        self.box2.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.label_6 = QLabel(Form)
         self.label_6.setObjectName(u"label_6")
@@ -123,15 +124,15 @@ class Ui_Form(object):
         self.temp_label.setStyleSheet(u"color: rgb(26, 50, 98);\n"
 "background-color: rgb(255, 255, 255);")
         self.temp_label.setAlignment(Qt.AlignCenter)
-        self.label_9 = QLabel(Form)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setGeometry(QRect(1056, 339, 218, 170))
-        self.label_9.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+        self.box3 = QLabel(Form)
+        self.box3.setObjectName(u"box3")
+        self.box3.setGeometry(QRect(1056, 339, 218, 170))
+        self.box3.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
-        self.label_10 = QLabel(Form)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setGeometry(QRect(1056, 529, 218, 170))
-        self.label_10.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+        self.box3_2 = QLabel(Form)
+        self.box3_2.setObjectName(u"box3_2")
+        self.box3_2.setGeometry(QRect(1056, 529, 218, 170))
+        self.box3_2.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.label_11 = QLabel(Form)
         self.label_11.setObjectName(u"label_11")
@@ -171,10 +172,10 @@ class Ui_Form(object):
         self.o2_label.setStyleSheet(u"color: rgb(26, 50, 98);\n"
 "background-color: rgb(255, 255, 255);")
         self.o2_label.setAlignment(Qt.AlignCenter)
-        self.label_8 = QLabel(Form)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setGeometry(QRect(64, 97, 280, 586))
-        self.label_8.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+        self.box1 = QLabel(Form)
+        self.box1.setObjectName(u"box1")
+        self.box1.setGeometry(QRect(64, 97, 280, 586))
+        self.box1.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.label_15 = QLabel(Form)
         self.label_15.setObjectName(u"label_15")
@@ -296,6 +297,42 @@ class Ui_Form(object):
         self.balance_btn_on.setChecked(False)
         self.balance_btn_on.setAutoRepeat(False)
         self.balance_btn_on.setFlat(True)
+
+        self.shadow1 = QGraphicsDropShadowEffect()
+        self.shadow1.setColor(QColor(212, 212, 212))
+        self.shadow1.setBlurRadius(15)
+        self.shadow1.setOffset(4)
+
+        self.shadow2 = QGraphicsDropShadowEffect()
+        self.shadow2.setColor(QColor(212, 212, 212))
+        self.shadow2.setBlurRadius(15)
+        self.shadow2.setOffset(4)
+
+        self.shadow3 = QGraphicsDropShadowEffect()
+        self.shadow3.setColor(QColor(212, 212, 212))
+        self.shadow3.setBlurRadius(15)
+        self.shadow3.setOffset(4)
+
+        self.shadow4 = QGraphicsDropShadowEffect()
+        self.shadow4.setColor(QColor(212, 212, 212))
+        self.shadow4.setBlurRadius(15)
+        self.shadow4.setOffset(4)
+
+        self.shadow5 = QGraphicsDropShadowEffect()
+        self.shadow5.setColor(QColor(212, 212, 212))
+        self.shadow5.setBlurRadius(15)
+        self.shadow5.setOffset(4)
+
+
+        self.label_goBms.setGraphicsEffect(self.shadow1)
+        self.box1.setGraphicsEffect(self.shadow2)
+        self.box2.setGraphicsEffect(self.shadow3)
+        self.box3.setGraphicsEffect(self.shadow4)
+        self.box3_2.setGraphicsEffect(self.shadow5)
+
+
+
+
         self.logo_link.raise_()
         self.label_goBms.raise_()
         self.label.raise_()
@@ -307,19 +344,19 @@ class Ui_Form(object):
         self.pushButton_bms.raise_()
         self.battery_amount.raise_()
         self.battery_amount_bar.raise_()
-        self.label_5.raise_()
+        self.box2.raise_()
         self.label_6.raise_()
         self.label_7.raise_()
         self.temp_label.raise_()
-        self.label_9.raise_()
-        self.label_10.raise_()
+        self.box3.raise_()
+        self.box3_2.raise_()
         self.label_11.raise_()
         self.label_12.raise_()
         self.label_13.raise_()
         self.label_14.raise_()
         self.heart_label.raise_()
         self.o2_label.raise_()
-        self.label_8.raise_()
+        self.box1.raise_()
         self.label_15.raise_()
         self.label_16.raise_()
         self.label_17.raise_()
@@ -363,19 +400,19 @@ class Ui_Form(object):
         self.label_4.setText(QCoreApplication.translate("Form", u"%", None))
         self.battery_amount.setText(QCoreApplication.translate("Form", u"100", None))
         self.battery_amount_bar.setText("")
-        self.label_5.setText("")
+        self.box2.setText("")
         self.label_6.setText("")
         self.label_7.setText(QCoreApplication.translate("Form", u"\uccb4\uc628", None))
         self.temp_label.setText(QCoreApplication.translate("Form", u"36.5", None))
-        self.label_9.setText("")
-        self.label_10.setText("")
+        self.box3.setText("")
+        self.box3_2.setText("")
         self.label_11.setText("")
         self.label_12.setText("")
         self.label_13.setText(QCoreApplication.translate("Form", u"\uc2ec\ubc15\uc218", None))
         self.label_14.setText(QCoreApplication.translate("Form", u"\uc0b0\uc18c\ud3ec\ud654\ub3c4", None))
         self.heart_label.setText(QCoreApplication.translate("Form", u"120", None))
         self.o2_label.setText(QCoreApplication.translate("Form", u"80", None))
-        self.label_8.setText("")
+        self.box1.setText("")
         self.label_15.setText(QCoreApplication.translate("Form", u"\ud658\uc790 \uc0c1\uc138 \uc815\ubcf4", None))
         self.label_16.setText(QCoreApplication.translate("Form", u"\ud658\uc790\ubc88\ud638", None))
         self.label_17.setText(QCoreApplication.translate("Form", u"\uc774\ub984", None))
