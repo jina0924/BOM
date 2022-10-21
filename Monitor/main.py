@@ -11,6 +11,12 @@ from firstUI import Ui_Form as  firstUi
 from bmsUI import Ui_Form as bmsUi
 
 
+
+#var
+battery_amount_val = 100
+is_balance = 0
+can_balance = 0
+
 class DevicePage(QDialog,infoUi):
     def __init__(self):
         super().__init__()
@@ -42,10 +48,14 @@ class MainPage(QDialog,QWidget,mainUi):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.battery_amount.setText(str(battery_amount_val))
+        self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
+        self.balance_btn_on.hide()
+
         self.clock_timer = QTimer(self)
-        self.clock_timer.setInterval(1000)  # 1초 => 나중에 5초에 한번으로 바꿀거임
+        self.clock_timer.setInterval(300)  # 1000ms = 1sec , 화면 렌더링 주기
         self.clock_timer.timeout.connect(self.test_timer)
-        self.cnt = 0
+
         self.first_page = FirstPage()
         self.main()
 
@@ -61,7 +71,25 @@ class MainPage(QDialog,QWidget,mainUi):
         widgets.setCurrentIndex(1)
 
     def test_timer(self):
-        pass
+        global battery_amount_val
+        battery_amount_val -= 1
+        if(battery_amount_val <0):
+            battery_amount_val = 100
+        self.battery_amount.setText(str(battery_amount_val))
+        self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
+
+    def cell_balance_on(self):
+        print("on -> off")
+        self.balance_btn_on.hide()
+        if (can_balance == 0):
+            #Dialog
+            pass
+        else:
+            pass
+
+    def cell_balance_off(self):
+        print("off -> on")
+        self.balance_btn_on.show()
 
 class BmsPage(QDialog,QWidget,bmsUi):
     def __init__(self):
