@@ -12,6 +12,7 @@ module.exports = {
     },
     fontFamily: {
       suit: ["SUIT", "sans-serif"],
+      righteous: ["Righteous", "sans-serif"],
       // maru: ["MaruBuri"],
       // sans: ["NanumBarunGothic", "sans-serif"],
       // sansbold: ["NanumBarunGothicBold", "sans-serif"],

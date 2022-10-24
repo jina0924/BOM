@@ -23,3 +23,11 @@ code {
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Righteous";
+  src: url("//db.onlinewebfonts.com/t/490cb0e45f39580c7ba1b856f2f1f4a7.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
