@@ -1,0 +1,9 @@
+FROM python:3.9.15-alpine
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /var/jenkins_home/workspace/thundervolt/BE
+
+COPY . .
+RUN pip install -r requirements.txt
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
