@@ -28,8 +28,9 @@ spi.max_speed_hz=500000
 
 before = [-1,-1]
 charge = False
-minV = 4.25
-maxV = 2.5
+minV = [4.25, 4.25]
+maxV = [2.5, 2.5]
+SOC = [0, 0]
 
 def read_spi_adc(adcChannel):
     global minV
@@ -49,35 +50,36 @@ def read_spi_adc(adcChannel):
     before[adcChannel] = V
     
     if(charge == False):
-        maxV = 2.5
+        maxV[adcChannel] = 2.5
         
-        if(minV > V):
-            minV = V
+        if(minV[adcChannel] > V):
+            minV[adcChannel] = V
         
-        if (minV > 4.25):
-            SOC = 100
-        elif (minV >= 2.5):
-            SOC = round((minV-2.5)/1.75 * 100)
+        if (minV[adcChannel] > 4.25):
+            SOC[adcChannel] = 100
+        elif (minV[adcChannel] >= 2.5):
+            SOC[adcChannel] = round((minV[adcChannel]-2.5)/1.75 * 100)
         else:
-            SOC = 0
+            SOC[adcChannel] = 0
     else:
-        minV = 4.25
+        minV[adcChannel] = 4.25
         
-        if(maxV < V):
-            maxV = V
+        if(maxV[adcChannel] < V):
+            maxV[adcChannel] = V
             
-        if (maxV > 4.25):
-            SOC = 100
-        elif (maxV >= 2.5):
-            SOC = round((maxV-2.5)/1.75 * 100)
+        if (maxV[adcChannel] > 4.25):
+            SOC[adcChannel] = 100
+        elif (maxV[adcChannel] >= 2.5):
+            SOC[adcChannel] = round((maxV[adcChannel]-2.5)/1.75 * 100)
         else:
-            SOC = 0
+            SOC[adcChannel] = 0
     
     return adcValue
 
 def getV():
     while True:
         read_spi_adc(0)
+        read_spi_adc(1)
         time.sleep(1)
 
 t = threading.Thread(target=getV)
@@ -115,7 +117,6 @@ class MainPage(QDialog,QWidget,mainUi):
         self.battery_amount.setText(str(battery_amount_val))
         self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
         self.balance_btn_on.hide()
-
         self.clock_timer = QTimer(self)
         self.clock_timer.setInterval(300)  # 1000ms = 1sec , 화면 렌더링 주기
         self.clock_timer.timeout.connect(self.test_timer)
@@ -136,7 +137,7 @@ class MainPage(QDialog,QWidget,mainUi):
 
     def test_timer(self):
         global battery_amount_val
-        battery_amount_val = SOC
+        battery_amount_val = round((SOC[0] + SOC[1])/2)
         self.battery_amount.setText(str(battery_amount_val))
         self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
 
