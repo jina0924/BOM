@@ -17,9 +17,7 @@ spi.max_speed_hz=500000
 before = [-1,-1]
 charge = False
 minV = 4.25
-minSOC = 100
 maxV = 2.5
-maxSOC = 0
 
 def read_spi_adc(adcChannel):
     global minV
@@ -36,39 +34,38 @@ def read_spi_adc(adcChannel):
     print("curV : ", V)
     
     V = round(before[adcChannel] * 0.8 + V * 0.2, 2)
-    SOC = round((V-2.5)/1.75 * 100)
-    if (V > 4.25):
-        SOC = 100
-    elif (V >= 2.5):
-        SOC = round((V-2.5)/1.75 * 100)
-    else:
-        SOC = 0
     
     before[adcChannel] = V
     
     if(charge == False):
         maxV = 2.5
-        maxSOC = 0
         
         if(minV > V):
             minV = V
-        if(minSOC > SOC):
-            minSOC = SOC
         
+        if (minV > 4.25):
+            SOC = 100
+        elif (minV >= 2.5):
+            SOC = round((minV-2.5)/1.75 * 100)
+        else:
+            SOC = 0
         print(adcChannel, "V : ", minV)
-        print("SOC : ", minSOC, "%")
     else:
         minV = 4.25
-        minSOC = 100
         
         if(maxV < V):
             maxV = V
-        if(maxSOC < SOC):
-            maxSOC = SOC
             
+        if (maxV > 4.25):
+            SOC = 100
+        elif (maxV >= 2.5):
+            SOC = round((maxV-2.5)/1.75 * 100)
+        else:
+            SOC = 0
+        
         print(adcChannel, "V : ", maxV)
-        print("SOC : ", maxSOC, "%")
     
+    print("SOC : ", SOC)
     
     return adcValue
 
