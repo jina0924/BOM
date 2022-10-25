@@ -4,11 +4,11 @@ from PySide6.QtGui import *
 
 from time import sleep
 
-from loginUI import Ui_Form as loginUi
+
 from mainUI import Ui_Form as mainUi
-from deviceInfoUI import Ui_Dialog as infoUi
 from firstUI import Ui_Form as  firstUi
 from bmsUI import Ui_Form as bmsUi
+from warningUI import Ui_Dialog as warningUi
 
 
 
@@ -17,32 +17,24 @@ battery_amount_val = 100
 is_balance = 0
 can_balance = 0
 
-class DevicePage(QDialog,infoUi):
+
+class WarningPage(QDialog,warningUi):
     def __init__(self):
         super().__init__()
-        #self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.FramelessWindowHint)
         self.setupUi(self)
 
-class LoginPage(QDialog,QWidget,loginUi):
-    def __init__(self):
-        super().__init__()
-        self.movie = QMovie("./img/ex1.gif",QByteArray(),self)
-        self.movie.setCacheMode(QMovie.CacheAll)
-        self.movie.setSpeed(100)
+    def click_yes(self):
+        global is_balance
+        #print("Yes!")
+        is_balance = 1;
+        self.close()
 
-        self.setupUi(self)
-        #self.setWindowFlag(Qt.FramelessWindowHint)
-        self.label.setMovie(self.movie)
-        self.movie.start()
+    def click_no(self):
+        #print("No!")
+        self.close()
 
-    def goMain(self):
-        widgets.setCurrentIndex(1)
-        main_page.main()
-        print("go Main!")
 
-    def checkDevice(self):
-        global device_page
-        device_page.exec_()
 
 class MainPage(QDialog,QWidget,mainUi):
     def __init__(self):
@@ -79,17 +71,25 @@ class MainPage(QDialog,QWidget,mainUi):
         self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
 
     def cell_balance_on(self):
-        print("on -> off")
-        self.balance_btn_on.hide()
+        global warningpage, is_balance
+
         if (can_balance == 0):
             #Dialog
-            pass
+            warningpage.exec_()
+            if(is_balance == 1):
+                print("off -> on")
+                self.balance_btn_on.show()
+            else:
+                #print("nonoono")
+                pass
         else:
-            pass
+            is_balance=1;
 
     def cell_balance_off(self):
-        print("off -> on")
-        self.balance_btn_on.show()
+        global is_balance
+        print("on -> off")
+        self.balance_btn_on.hide()
+        is_balance = 0;
 
 class BmsPage(QDialog,QWidget,bmsUi):
     def __init__(self):
@@ -108,13 +108,12 @@ class FirstPage(QDialog,QWidget,firstUi):
 
 
 app = QApplication()
-#login_page = LoginPage()
 first_page = FirstPage()
 main_page = MainPage()
-device_page = DevicePage()
 bms_page = BmsPage()
+warningpage=WarningPage()
 
-
+warningpage.setGeometry(458,200,540,300)
 
 widgets = QStackedWidget()
 #widgets.addWidget(login_page)
@@ -130,3 +129,42 @@ app.exec_()
 # label = QLabel("Hello World")
 # label.show()
 # app.exec_()
+#
+# self.shadow1 = QGraphicsDropShadowEffect()
+# self.shadow1.setColor(QColor(212, 212, 212))
+# self.shadow1.setBlurRadius(15)
+# self.shadow1.setOffset(4)
+#
+# self.shadow2 = QGraphicsDropShadowEffect()
+# self.shadow2.setColor(QColor(212, 212, 212))
+# self.shadow2.setBlurRadius(15)
+# self.shadow2.setOffset(4)
+
+#self.shadow3 = QGraphicsDropShadowEffect()
+#self.shadow3.setColor(QColor(212, 212, 212))
+#self.shadow3.setBlurRadius(15)
+#self.shadow3.setOffset(4)
+
+#self.shadow4 = QGraphicsDropShadowEffect()
+#self.shadow4.setColor(QColor(212, 212, 212))
+#self.shadow4.setBlurRadius(15)
+#self.shadow4.setOffset(4)
+
+#self.shadow5 = QGraphicsDropShadowEffect()
+#self.shadow5.setColor(QColor(212, 212, 212))
+#self.shadow5.setBlurRadius(15)
+#self.shadow5.setOffset(4)
+
+
+#self.label_goBms.setGraphicsEffect(self.shadow1)
+#self.box1.setGraphicsEffect(self.shadow2)
+#self.box2.setGraphicsEffect(self.shadow3)
+#self.box3.setGraphicsEffect(self.shadow4)
+#self.box3_2.setGraphicsEffect(self.shadow5)
+
+
+# self.shadow1 = QGraphicsDropShadowEffect()
+# self.shadow1.setColor(QColor(212, 212, 212))
+# self.shadow1.setBlurRadius(15)
+# self.shadow1.setOffset(4)
+

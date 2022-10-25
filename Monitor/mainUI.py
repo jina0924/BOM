@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
-    QSizePolicy, QWidget, QGraphicsDropShadowEffect)
+    QSizePolicy, QWidget,QGraphicsDropShadowEffect)
 import myres_rc
 
 class Ui_Form(object):
@@ -25,7 +25,6 @@ class Ui_Form(object):
             Form.setObjectName(u"Form")
         Form.resize(1366, 768)
         Form.setStyleSheet(u"background-color: rgb(246, 247, 248);")
-
         self.logo_link = QLabel(Form)
         self.logo_link.setObjectName(u"logo_link")
         self.logo_link.setGeometry(QRect(609, 100, 148, 50))
@@ -276,12 +275,12 @@ class Ui_Form(object):
         self.p_gard_2.setAlignment(Qt.AlignCenter)
         self.label_22 = QLabel(Form)
         self.label_22.setObjectName(u"label_22")
-        self.label_22.setGeometry(QRect(130, 640, 61, 20))
+        self.label_22.setGeometry(QRect(130, 630, 61, 20))
         self.label_22.setFont(font4)
         self.label_22.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.label_23 = QLabel(Form)
         self.label_23.setObjectName(u"label_23")
-        self.label_23.setGeometry(QRect(200, 634, 81, 31))
+        self.label_23.setGeometry(QRect(200, 624, 81, 31))
         font7 = QFont()
         font7.setPointSize(18)
         font7.setBold(True)
@@ -323,15 +322,11 @@ class Ui_Form(object):
         self.shadow5.setBlurRadius(15)
         self.shadow5.setOffset(4)
 
-
         self.label_goBms.setGraphicsEffect(self.shadow1)
         self.box1.setGraphicsEffect(self.shadow2)
         self.box2.setGraphicsEffect(self.shadow3)
         self.box3.setGraphicsEffect(self.shadow4)
         self.box3_2.setGraphicsEffect(self.shadow5)
-
-
-
 
         self.logo_link.raise_()
         self.label_goBms.raise_()
@@ -381,8 +376,8 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         self.pushButton_bms.clicked.connect(Form.goBms)
-        self.balance_btn_off.clicked.connect(Form.cell_balance_off)
-        self.balance_btn_on.clicked.connect(Form.cell_balance_on)
+        self.balance_btn_off.clicked.connect(Form.cell_balance_on)
+        self.balance_btn_on.clicked.connect(Form.cell_balance_off)
 
         QMetaObject.connectSlotsByName(Form)
     # setupUi
