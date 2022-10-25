@@ -13,8 +13,10 @@ from time import sleep
 import threading
 from datetime import datetime
 import mysql.connector
+import smbus
 
-
+bus = smbus.SMBus(1)
+isFall = False
 before = [-1,-1]
 minV = [4.25, 4.25]
 maxV = [2.5, 2.5]
@@ -25,7 +27,7 @@ voltage = [0,0]
 battery_amount_val = 100
 is_balance = 0
 can_balance = 0
-is_charge = True
+is_charge = False
 temp_battery = 10
 temp_human =36.5
 heart_rate = 120
@@ -49,8 +51,7 @@ import spidev
 import time
 
 
-rswitch1 = 16
-rswitch2 = 26
+charge = 16
 cell1 = 0 
 cell2 = 1
 
@@ -58,10 +59,7 @@ cell2 = 1
 def sensor_init():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    GPIO.setup(rswitch1, GPIO.OUT)
-    GPIO.setup(rswitch2, GPIO.OUT)
-    GPIO.output(rswitch1,True)
-    GPIO.output(rswitch2,True)
+    GPIO.setup(charge, GPIO.IN)
 
 
 
@@ -137,6 +135,10 @@ def getSensor():
         #battery
         #read_voltage(cell1)
         #read_voltage(cell2)
+        if(GPIO.input(16)) :
+            isCharge = True
+        else:
+            isCharge = False
         battery_amount_val = round((SOC[0] + SOC[1])/2)
         
         
@@ -149,7 +151,7 @@ def getSensor():
         #heart
         heart_rate += 1
         spo += 1
-
+        
 
         sleep(1)
         
