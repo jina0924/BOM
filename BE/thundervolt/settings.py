@@ -32,7 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-
+    'wards',
+    'batteries',
 
     'rest_framework',
     'corsheaders',
