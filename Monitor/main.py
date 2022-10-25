@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import *
-from PySide6.QtCore import *
-from PySide6.QtGui import *
+from PySide2.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
 
 from time import sleep
 
@@ -10,12 +10,84 @@ from firstUI import Ui_Form as  firstUi
 from bmsUI import Ui_Form as bmsUi
 from warningUI import Ui_Dialog as warningUi
 
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(16, GPIO.OUT)
+GPIO.setup(26, GPIO.OUT)
+GPIO.output(16,True)
+GPIO.output(26,True)
 
+import spidev
+import time
+import threading
+
+spi = spidev.SpiDev()
+spi.open(0,0)
+spi.max_speed_hz=500000
+
+before = [-1,-1]
+charge = False
+minV = 4.25
+maxV = 2.5
+
+def read_spi_adc(adcChannel):
+    global minV
+    global maxV
+    global SOC
+    adcValue=0
+    buff=spi.xfer2([1,(8+adcChannel)<<4,0])
+    adcValue = ((buff[1]&3)<<8)+buff[2]
+    V = round(adcValue * 3.3 / 1024 / 0.2, 2)
+    if(before[adcChannel] == -1):
+        before[adcChannel] = V
+    print("before : ", before[adcChannel])
+    print("curV : ", V)
+    
+    V = round(before[adcChannel] * 0.8 + V * 0.2, 2)
+    
+    before[adcChannel] = V
+    
+    if(charge == False):
+        maxV = 2.5
+        
+        if(minV > V):
+            minV = V
+        
+        if (minV > 4.25):
+            SOC = 100
+        elif (minV >= 2.5):
+            SOC = round((minV-2.5)/1.75 * 100)
+        else:
+            SOC = 0
+    else:
+        minV = 4.25
+        
+        if(maxV < V):
+            maxV = V
+            
+        if (maxV > 4.25):
+            SOC = 100
+        elif (maxV >= 2.5):
+            SOC = round((maxV-2.5)/1.75 * 100)
+        else:
+            SOC = 0
+    
+    return adcValue
+
+def getV():
+    while True:
+        read_spi_adc(0)
+        time.sleep(1)
+
+t = threading.Thread(target=getV)
+t.start()
 
 #var
 battery_amount_val = 100
 is_balance = 0
 can_balance = 0
+is_charge = False
 
 
 class WarningPage(QDialog,warningUi):
@@ -64,9 +136,7 @@ class MainPage(QDialog,QWidget,mainUi):
 
     def test_timer(self):
         global battery_amount_val
-        battery_amount_val -= 1
-        if(battery_amount_val <0):
-            battery_amount_val = 100
+        battery_amount_val = SOC
         self.battery_amount.setText(str(battery_amount_val))
         self.battery_amount_bar.setGeometry(490, 245, 2 * battery_amount_val, 75)
 
