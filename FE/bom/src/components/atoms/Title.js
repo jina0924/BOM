@@ -79,3 +79,5 @@ function Title({ iconTag, iconTagClassName, content, contentClassName }) {
     </>
   );
 }
+
+export default Title;
