@@ -1,10 +1,12 @@
 import React from "react";
 
-function MenuItem({ children }) {
+function MenuItem({ menu, children }) {
   return (
-    <div>
-      <span>아이콘 자리</span>
-      <span className="text-font2 text-lg">{children}</span>
+    <div className="mx-5 my-10">
+      {/* <span>아이콘 자리</span> */}
+      <span className="text-font2 text-lg font-suit font-medium">
+        {children}
+      </span>
     </div>
   );
 }
