@@ -7,6 +7,8 @@ module.exports = {
       sub1: "#EA5455",
       sub2: "#FFB400",
       back: "#F6F7FB",
+      white: "#FFFFFF",
+      black: "#000000",
       font1: "#333333",
       font2: "#878787",
     },
@@ -19,7 +21,15 @@ module.exports = {
       // sanslight: ["NanumBareunGothicLight", "sans-serif"],
       // sansultralight: ["NanumBareunGothicUltraLight", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        bg: "0px 0px 20px rgba(184, 184, 184, 0.2)",
+        side: "2px 0px 10px rgba(184, 184, 184, 0.2)",
+        head: "0px 4px 10px rgba(184, 184, 184, 0.2)",
+        box: "0px 0px 20px rgba(184, 184, 184, 0.2)",
+        dark: "2px 4px 10px rgba(51, 51, 51, 0.2)",
+      },
+    },
   },
   plugins: [],
 };
