@@ -26,6 +26,8 @@
 
 ##### Graph.js
 
+- 선 두개 쓰이는 그래프만
+
 ##### DownloadBtn.js
 
 ##### BMSIcon.js
