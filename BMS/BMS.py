@@ -1,8 +1,8 @@
-import RPi.GPIO as g
-g.setmode(g.BCM)
-g.setwarnings(False)
-g.setup(16, g.OUT)
-g.output(16,True)
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16,True)
 
 import spidev
 import time
