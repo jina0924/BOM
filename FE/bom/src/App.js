@@ -1,34 +1,13 @@
-import { useEffect } from "react";
 import RouterConfiguration from "./configs/router";
-import { useLocation } from "react-router-dom";
 
 function App() {
-  const [width, setWidth] = useState(0);
-
-  const location = useLocation();
-
-  useEffect(() => {
-    setWidth(window.innerWidth);
-  }, []);
-
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
   return (
-    <>
-      {width > 1180 && location.pathname !== "/login" && (
-        <div className="App">
-          <RouterConfiguration />
-        </div>
-      )}
-      {width <= 1180 ||
-        (location.pathname === "/login" && (
-          <div className="App">
-            <RouterConfiguration />
-          </div>
-        ))}
-    </>
+    <div className="App">
+      <div className="m-5 text-font2 font-righteous text-3xl">
+        배워서 나주는 React에 Tailwind Css 적용하기
+      </div>
+      <RouterConfiguration />
+    </div>
   );
 }
 
