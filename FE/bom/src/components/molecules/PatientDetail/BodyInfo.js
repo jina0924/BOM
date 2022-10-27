@@ -24,7 +24,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
               {onOff && (
-                <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
@@ -47,7 +47,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
               {onOff && (
-                <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
@@ -70,7 +70,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
               {onOff && (
-                <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
