@@ -8,24 +8,21 @@ import {
 
 function MenuItem({ menu, children }) {
   return (
-    <div className="m-10 hover:bg-back">
-      {/* <span>아이콘 자리</span> */}
+    <li className="list-none p-5 m-3 rounded-[10px] text-font2 hover:bg-back hover:text-main active:bg-back active:text-main">
       {menu === "home" && (
-        <UilLayerGroup className="text-font2 inline mr-8" size={35} />
+        <UilLayerGroup className="inline mr-8 ml-1" size={35} />
       )}
       {menu === "patient" && (
-        <UilUsersAlt className="text-font2 inline mr-8" size={35} />
+        <UilUsersAlt className="inline mr-8 ml-1" size={35} />
       )}
       {menu === "doctor" && (
-        <UilStethoscopeAlt className="text-font2 inline mr-8" size={35} />
+        <UilStethoscopeAlt className="inline mr-8 ml-1" size={35} />
       )}
       {menu === "nurse" && (
-        <UilSyringe className="text-font2 inline mr-8" size={35} />
+        <UilSyringe className="inline mr-8 ml-1" size={35} />
       )}
-      <span className="text-font2 text-lg font-suit font-medium">
-        {children}
-      </span>
-    </div>
+      <span className=" text-lg font-suit font-medium">{children}</span>
+    </li>
   );
 }
 
