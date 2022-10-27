@@ -7,6 +7,8 @@ import PatientDetailInfo from "components/molecules/PatientDetail/PatientDetailI
 import DownloadBtn from "components/atoms/DownloadBtn";
 import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
+import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
+import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
 
 function PatientDetail() {
   const [component, setComponent] = useState(0);
@@ -66,6 +68,20 @@ function PatientDetail() {
           </div>
         )}
         {/* 디바이스 디테일 페이지 */}
+        {component === 1 && (
+          <div className="device-detail-full px-10 pb-5 h-[75vh]">
+            <div className="live-device-status pb-5 h-[25vh]">
+              <LiveDeviceStatus />
+            </div>
+            <div className="device-detail-info pb-5 h-[50vh]">
+              <DeviceDetailInfo
+                onZoom={() => {
+                  setComponent(0);
+                }}
+              />
+            </div>
+          </div>
+        )}
         {/* 체온 디테일 페이지 */}
         {component === 2 && (
           <div className="body-temperature-full px-10 pb-5 h-[75vh]">
