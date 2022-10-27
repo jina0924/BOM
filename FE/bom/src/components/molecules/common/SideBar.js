@@ -6,11 +6,12 @@ function SideBar() {
   return (
     <div className="col-span-1 rounded-l-[20px] bg-white shadow-side">
       <Logo />
-      <div className="h-[10px]"></div>
-      <MenuItem menu="home">홈</MenuItem>
-      <MenuItem menu="patient">환자 목록</MenuItem>
-      <MenuItem menu="doctor">의사 목록</MenuItem>
-      <MenuItem menu="nurse">간호사 목록</MenuItem>
+      <ul className="menu-list">
+        <MenuItem menu="home">홈</MenuItem>
+        <MenuItem menu="patient">환자 목록</MenuItem>
+        <MenuItem menu="doctor">의사 목록</MenuItem>
+        <MenuItem menu="nurse">간호사 목록</MenuItem>
+      </ul>
     </div>
   );
 }
