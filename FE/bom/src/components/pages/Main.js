@@ -4,7 +4,7 @@ import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import WardInfo from "components/molecules/Main/WardInfo";
 
-export default function Main() {
+function Main() {
   // 데이터 받아오면 초기값 수정할 것
   const [wardName, setWardName] = useState("5");
   const [countPatients, setCountPatients] = useState(10);
@@ -16,7 +16,7 @@ export default function Main() {
       <SideBar />
       <div className="col-span-5">
         <HeadBar />
-        <div className="ward-info-list grid grid-cols-4 m-5 gap-8">
+        <div className="ward-info-list grid grid-cols-4 m-7 gap-8">
           <WardInfo wardInfoTitle="wardName" wardInfoDetail={wardName} />
           <WardInfo
             wardInfoTitle="countPatients"
@@ -32,3 +32,5 @@ export default function Main() {
     </div>
   );
 }
+
+export default Main;
