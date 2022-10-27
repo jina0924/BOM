@@ -7,6 +7,9 @@ import PatientDetailInfo from "components/molecules/PatientDetail/PatientDetailI
 import DownloadBtn from "components/atoms/DownloadBtn";
 import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
+import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
+import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
+import Btn from "components/atoms/Btn";
 
 function PatientDetail() {
   const [component, setComponent] = useState(0);
@@ -17,7 +20,17 @@ function PatientDetail() {
       <div className="right-box col-span-5 h-full">
         <HeadBar />
         <div className="filter-download-btn-box flex justify-end py-5 px-10 h-[9vh]">
-          <select name="기간" id="기간">
+          {component === 1 && (
+            <Btn
+              className="flex justify-center items-center px-8 py-2 rounded-xl bg-white shadow-bg ml-5"
+              content="최적화"
+            />
+          )}
+          <select
+            name="기간"
+            id="기간"
+            className="flex justify-center items-center px-8 py-2 rounded-xl bg-white shadow-bg ml-5"
+          >
             기간
           </select>
           <DownloadBtn />
@@ -66,6 +79,20 @@ function PatientDetail() {
           </div>
         )}
         {/* 디바이스 디테일 페이지 */}
+        {component === 1 && (
+          <div className="device-detail-full px-10 pb-5 h-[75vh]">
+            <div className="live-device-status pb-5 h-[25vh]">
+              <LiveDeviceStatus />
+            </div>
+            <div className="device-detail-info pb-5 h-[50vh]">
+              <DeviceDetailInfo
+                onZoom={() => {
+                  setComponent(0);
+                }}
+              />
+            </div>
+          </div>
+        )}
         {/* 체온 디테일 페이지 */}
         {component === 2 && (
           <div className="body-temperature-full px-10 pb-5 h-[75vh]">
