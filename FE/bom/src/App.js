@@ -1,11 +1,10 @@
 import RouterConfiguration from "./configs/router";
+// import Main from "components/pages/Main";
 
 function App() {
   return (
     <div className="App">
-      <div className="m-5 text-font2 font-righteous text-3xl">
-        배워서 나주는 React에 Tailwind Css 적용하기
-      </div>
+      <div className="test">{/* <Main /> */}</div>
       <RouterConfiguration />
     </div>
   );
