@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "components/atoms/Title.js";
 
-function PatientDetail({}) {
+function PatientDetailInfo({}) {
   return (
     <div className="patient-detail">
       <div className="title-box">
@@ -17,4 +17,4 @@ function PatientDetail({}) {
   );
 }
 
-export default PatientDetail;
+export default PatientDetailInfo;
