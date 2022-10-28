@@ -46,7 +46,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    number = models.CharField(max_length=191)
+    number = models.CharField(max_length=9)
     hospitalized_date = models.DateTimeField()
     discharged_date = models.DateTimeField(null=True)
     birth = models.DateTimeField()
@@ -65,7 +65,7 @@ class PatientStatus(models.Model):
     temperature = models.IntegerField()
     bpm = models.IntegerField()
     oxygen_saturation = models.IntegerField()
-    slope = models.IntegerField()
+    slope = models.IntegerField(null=True)
     now = models.DateTimeField()
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
 

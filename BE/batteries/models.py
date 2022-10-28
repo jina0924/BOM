@@ -4,7 +4,6 @@ from wards.models import Patient
 
 class Bms(models.Model):
     temperature = models.IntegerField()
-    control = models.IntegerField()
     is_charge = models.BooleanField()
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
 
