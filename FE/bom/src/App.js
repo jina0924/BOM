@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <div className="test">
         {/* <Main /> */}
-        <PatientDetail />
+        {/* <PatientDetail /> */}
       </div>
       <RouterConfiguration />
     </div>
