@@ -12,10 +12,10 @@ function Main() {
   const [countNurses, setNurses] = useState(10);
 
   return (
-    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6">
+    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6 font-suit">
       <SideBar />
       <div className="col-span-5">
-        <HeadBar />
+        <HeadBar wardNum={wardName} />
         <div className="ward-info-list grid grid-cols-4 m-7 gap-8">
           <WardInfo wardInfoTitle="wardName" wardInfoDetail={wardName} />
           <WardInfo
