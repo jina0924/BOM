@@ -119,14 +119,14 @@ function PatientList({ patientListClassName }) {
     <div
       className={`patient-list shadow-box bg-white rounded-[20px] h-[62vh] ${patientListClassName}`}
     >
-      <div className="patient-list-content py-4 px-6">
+      <div className="patient-list-content py-4 px-6 overflow-x-auto">
         <Title
           iconTag="UilMedicalDrip"
           iconTagClassName="text-sub1 inline mr-3"
           content="환자 목록"
           contentClassName="text-main font-bold text-lg"
         />
-        <table className="table-auto">
+        <table className="table-auto w-full">
           <thead>
             <tr>
               <th className="text-sm font-normal">환자 번호</th>
@@ -137,22 +137,20 @@ function PatientList({ patientListClassName }) {
               <th className="text-sm font-normal">주치의</th>
             </tr>
           </thead>
-          <tbody>
-            {!!patientList && (
-              <>
-                {patientList.map((item, key) => (
-                  <tr key={key}>
-                    <td>{item.pk}</td>
-                    <td>{item.name}</td>
-                    <td>{item.status_temperature}</td>
-                    <td>{item.status_bpm}</td>
-                    <td>{item.oxygen_saturation}</td>
-                    <td>{item.doctor_name}</td>
-                  </tr>
-                ))}
-              </>
-            )}
-          </tbody>
+          {!!patientList && (
+            <tbody>
+              {patientList.map((item, key) => (
+                <tr key={key} className="">
+                  <td className="text-center">{item.pk}</td>
+                  <td className="text-center">{item.name}</td>
+                  <td className="text-center">{item.status_temperature}</td>
+                  <td className="text-center">{item.status_bpm}</td>
+                  <td className="text-center">{item.oxygen_saturation}</td>
+                  <td className="text-center">{item.doctor_name}</td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>
