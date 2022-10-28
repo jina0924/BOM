@@ -8,26 +8,27 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide2.QtWidgets import (QApplication, QDialog, QLabel, QPushButton,
+from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QPushButton,
     QSizePolicy, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(540, 300)
+        Dialog.resize(600, 380)
         Dialog.setStyleSheet(u"background-color: rgb(246, 247, 248);")
         self.pushButton_2 = QPushButton(Dialog)
         self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(300, 230, 101, 31))
+        self.pushButton_2.setGeometry(QRect(340, 270, 131, 41))
         font = QFont()
+        font.setFamilies([u"Noto Sans KR"])
         font.setPointSize(12)
         font.setBold(True)
         self.pushButton_2.setFont(font)
@@ -41,8 +42,9 @@ class Ui_Dialog(object):
         self.pushButton_2.setFlat(False)
         self.pushButton_3 = QPushButton(Dialog)
         self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setGeometry(QRect(130, 230, 100, 31))
+        self.pushButton_3.setGeometry(QRect(129, 270, 131, 41))
         font1 = QFont()
+        font1.setFamilies([u"Noto Sans KR"])
         font1.setPointSize(11)
         font1.setBold(True)
         self.pushButton_3.setFont(font1)
@@ -56,16 +58,17 @@ class Ui_Dialog(object):
         self.pushButton_3.setFlat(False)
         self.label = QLabel(Dialog)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(60, 40, 441, 161))
+        self.label.setGeometry(QRect(110, 60, 441, 161))
         font2 = QFont()
-        font2.setPointSize(14)
+        font2.setFamilies([u"Noto Sans KR"])
+        font2.setPointSize(16)
         font2.setBold(True)
         self.label.setFont(font2)
         self.label.setStyleSheet(u"background-color:rgba(255,255,255,0);\n"
 "color : rgb(255,255,255);")
         self.label_2 = QLabel(Dialog)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(0, 0, 540, 300))
+        self.label_2.setGeometry(QRect(0, 0, 601, 381))
         self.label_2.setStyleSheet(u"border-radius:20px;\n"
 "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(26,50,99,255), stop:1 rgba(92,120,177,255));")
         self.label_2.raise_()
