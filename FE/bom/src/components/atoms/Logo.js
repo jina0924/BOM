@@ -1,14 +1,26 @@
 import React from "react";
 import symbol from "assets/bom_symbol_50.png";
 
-function Logo() {
+function Logo({ size = "l", logoClassName }) {
   return (
-    <div className="m-8 flex items-center">
-      <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[42px]" />
-      <span className="font-righteous text-main text-3xl tracking-wider">
-        BOM
-      </span>
-    </div>
+    <>
+      {size === "s" && (
+        <div className={`flex items-center ${logoClassName}`}>
+          <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[30px]" />
+          <span className="font-righteous text-main text-xl tracking-wider">
+            BOM
+          </span>
+        </div>
+      )}
+      {size === "l" && (
+        <div className="flex items-center">
+          <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[35px]" />
+          <span className="font-righteous text-main text-2xl tracking-wider">
+            BOM
+          </span>
+        </div>
+      )}
+    </>
   );
 }
 
