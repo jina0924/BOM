@@ -13,7 +13,7 @@ function Logo({ size = "l", logoClassName }) {
         </div>
       )}
       {size === "l" && (
-        <div className="flex items-center">
+        <div className={`flex items-center ${logoClassName}`}>
           <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[35px]" />
           <span className="font-righteous text-main text-2xl tracking-wider">
             BOM
