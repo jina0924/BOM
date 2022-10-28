@@ -15,7 +15,7 @@ function PatientDetail() {
   const [component, setComponent] = useState(0);
 
   return (
-    <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6">
+    <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6 font-suit">
       <SideBar />
       <div className="right-box col-span-5 h-full">
         <HeadBar />
