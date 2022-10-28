@@ -129,24 +129,36 @@ function PatientList({ patientListClassName }) {
         <table className="table-auto w-full">
           <thead>
             <tr>
-              <th className="text-sm font-normal">환자 번호</th>
-              <th className="text-sm font-normal">이름</th>
-              <th className="text-sm font-normal">체온</th>
-              <th className="text-sm font-normal">심박수</th>
-              <th className="text-sm font-normal">산소포화도</th>
-              <th className="text-sm font-normal">주치의</th>
+              <th className="text-base font-normal">환자 번호</th>
+              <th className="text-base font-normal">이름</th>
+              <th className="text-base font-normal">체온</th>
+              <th className="text-base font-normal">심박수</th>
+              <th className="text-base font-normal">산소포화도</th>
+              <th className="text-base font-normal">주치의</th>
             </tr>
           </thead>
           {!!patientList && (
             <tbody>
               {patientList.map((item, key) => (
                 <tr key={key} className="">
-                  <td className="text-center">{item.pk}</td>
-                  <td className="text-center">{item.name}</td>
-                  <td className="text-center">{item.status_temperature}</td>
-                  <td className="text-center">{item.status_bpm}</td>
-                  <td className="text-center">{item.oxygen_saturation}</td>
-                  <td className="text-center">{item.doctor_name}</td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.pk}
+                  </td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.name}
+                  </td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.status_temperature}
+                  </td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.status_bpm}
+                  </td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.oxygen_saturation}
+                  </td>
+                  <td className="text-center text-sm font-semibold">
+                    {item.doctor_name}
+                  </td>
                 </tr>
               ))}
             </tbody>
