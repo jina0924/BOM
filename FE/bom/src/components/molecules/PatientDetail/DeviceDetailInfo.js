@@ -11,7 +11,7 @@ function DeviceDetailInfo({ onZoom }) {
             iconTag="UilMonitorHeartRate"
             iconTagClassName="text-sub1 inline mr-3"
             content="BMS 상세 정보"
-            contentClassName="text-main font-bold text-base"
+            contentClassName="text-main font-bold text-lg"
           />
         </div>
         <div className="arrow-box p-3" onClick={onZoom}>

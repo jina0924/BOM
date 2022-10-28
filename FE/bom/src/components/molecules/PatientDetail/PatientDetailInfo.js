@@ -10,7 +10,7 @@ function PatientDetailInfo({}) {
           iconTag="UilMedicalDrip"
           iconTagClassName="text-sub1 inline mr-3"
           content="환자 상세 정보"
-          contentClassName="text-main font-bold text-lg"
+          contentClassName="text-main text-lg"
         />
       </div>
       <div className="content-box h-5/6 flex items-center justify-center">

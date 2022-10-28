@@ -20,11 +20,11 @@ function LiveDeviceStatus() {
           <div className="icon-box h-1/2">
             <BMSIcon iconTag="UilTemperatureHalf" />
           </div>
-          <div className="live-info-box h-full pl-4">
-            <div className="live-info h-1/2 text-2xl flex items-end font-bold text-main">
+          <div className="live-info-box pl-4">
+            <div className="live-info text-xl font-bold text-main">
               <span>50 ℃</span>
             </div>
-            <div className="live-info-name h-1/2 text-base font-bold">
+            <div className="live-info-name text-sm">
               <span>BMS 온도</span>
             </div>
           </div>
@@ -33,11 +33,11 @@ function LiveDeviceStatus() {
           <div className="icon-box h-1/2">
             <BMSIcon iconTag="UilBatteryBolt" />
           </div>
-          <div className="live-info-box h-full pl-4">
-            <div className="live-info h-1/2 text-2xl flex items-end font-bold text-main">
+          <div className="live-info-box pl-4">
+            <div className="live-info text-xl font-bold text-main">
               <span>5V | 7V</span>
             </div>
-            <div className="live-info-name h-1/2 text-base font-bold">
+            <div className="live-info-name text-sm">
               <span>배터리 전압</span>
             </div>
           </div>
@@ -46,11 +46,11 @@ function LiveDeviceStatus() {
           <div className="icon-box h-1/2">
             <BMSIcon iconTag="UilBatteryEmpty" />
           </div>
-          <div className="live-info-box h-full pl-4">
-            <div className="live-info h-1/2 text-2xl flex items-end font-bold text-main">
+          <div className="live-info-box pl-4">
+            <div className="live-info text-xl font-bold text-main">
               <span>50% | 70%</span>
             </div>
-            <div className="live-info-name h-1/2 text-base font-bold">
+            <div className="live-info-name text-sm">
               <span>배터리 잔량</span>
             </div>
           </div>
@@ -59,11 +59,11 @@ function LiveDeviceStatus() {
           <div className="icon-box h-1/2">
             <BMSIcon iconTag="UilCircuit" />
           </div>
-          <div className="live-info-box h-full pl-4">
-            <div className="live-info h-1/2 text-2xl flex items-end font-bold text-main">
+          <div className="live-info-box pl-4">
+            <div className="live-info text-xl font-bold text-main">
               <span>좋음</span>
             </div>
-            <div className="live-info-name h-1/2 text-base font-bold">
+            <div className="live-info-name text-sm">
               <span>셀 밸런스</span>
             </div>
           </div>
