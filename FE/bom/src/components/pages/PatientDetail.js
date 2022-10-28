@@ -19,25 +19,15 @@ function PatientDetail() {
       <SideBar />
       <div className="right-box col-span-5 h-full">
         <HeadBar />
-        <div className="filter-download-btn-box flex justify-between py-5 px-10 h-[9vh]">
-          <div className="right-btns flex">
-            {component === 1 && (
-              <Btn
-                className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg"
-                content="최적화"
-              />
-            )}
-          </div>
-          <div className="left-btns flex">
-            <select
-              name="기간"
-              id="기간"
-              className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5"
-            >
-              기간
-            </select>
-            <DownloadBtn />
-          </div>
+        <div className="filter-download-btn-box flex justify-end py-5 px-10 h-[9vh]">
+          <select
+            name="기간"
+            id="기간"
+            className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5"
+          >
+            기간
+          </select>
+          <DownloadBtn />
         </div>
         {/* 전체 서머리 페이지 */}
         {component === 0 && (
