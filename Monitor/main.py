@@ -48,25 +48,22 @@ import spidev
 import time
 
 
-rswitch1 = 16
-rswitch2 = 26
+charge = 16
 cell1 = 0 
 cell2 = 1
 
 
 def sensor_init():
+    global spi
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    GPIO.setup(rswitch1, GPIO.OUT)
-    GPIO.setup(rswitch2, GPIO.OUT)
-    GPIO.output(rswitch1,True)
-    GPIO.output(rswitch2,True)
-
+    GPIO.setup(charge, GPIO.IN)
 
     spi = spidev.SpiDev()
     spi.open(0,0)
     spi.max_speed_hz=500000
 
+sensor_init()
 
 def read_spi_adc(adcChannel):
     buff = spi.xfer2([1, (8 + adcChannel) << 4, 0])
@@ -82,14 +79,12 @@ def read_voltage(adcChannel):
     V = round(read_spi_adc(adcChannel) * 3.3 / 1024 / 0.2, 2)
     if(before[adcChannel] == -1):
         before[adcChannel] = V
-    print("before : ", before[adcChannel])
-    print("curV : ", V)
     
     V = round(before[adcChannel] * 0.8 + V * 0.2, 2)
     
     before[adcChannel] = V
     
-    if(charge == False):
+    if(is_charge == False):
         maxV[adcChannel] = 2.5
         
         if(minV[adcChannel] > V):
@@ -130,8 +125,13 @@ def getSensor():
         if(exit_flag == 1):
             break
         #battery
-        #read_voltage(cell1)
-        #read_voltage(cell2)
+        if(GPIO.input(charge)==1):
+            is_charge = True
+        else:
+            is_charge = False
+        
+        read_voltage(cell1)
+        read_voltage(cell2)
         battery_amount_val = round((SOC[0] + SOC[1])/2)
         
         
@@ -340,7 +340,6 @@ widgets.setGeometry(0,0,1280,720)
 #         connect_db = True
 #     except Exception as e:
 #         print(e)
-
 
 widgets.show()
 app.exec_()
