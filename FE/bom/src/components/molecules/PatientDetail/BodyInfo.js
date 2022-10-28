@@ -19,7 +19,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 iconTag="UilTemperatureHalf"
                 iconTagClassName="text-sub1 inline mr-3"
                 content="체온"
-                contentClassName="text-main font-bold text-lg"
+                contentClassName="text-main text-lg"
               />
             </div>
             <div className="arrow-box" onClick={onZoom}>
@@ -32,8 +32,12 @@ function BodyInfo({ part, onZoom, onOff = false }) {
             </div>
           </div>
           <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full flex items-center pl-[36px]">
-              <LiveInfo liveClassName="" />
+            <div className="live-info-box col-span-2 h-full pl-[36px]">
+              <LiveInfo
+                liveClassName="text-font1 text-lg"
+                valueClassName="text-main text-2xl font-extrabold"
+                value="36.5 ℃"
+              />
             </div>
           </div>
         </>
@@ -46,7 +50,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 iconTag="UilHeartbeat"
                 iconTagClassName="text-sub1 inline mr-3"
                 content="심박수"
-                contentClassName="text-main font-bold text-lg"
+                contentClassName="text-main text-lg"
               />
             </div>
             <div className="arrow-box" onClick={onZoom}>
@@ -59,8 +63,12 @@ function BodyInfo({ part, onZoom, onOff = false }) {
             </div>
           </div>
           <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full">
-              <LiveInfo />
+            <div className="live-info-box col-span-2 h-full pl-[36px]">
+              <LiveInfo
+                liveClassName="text-font1 text-lg"
+                valueClassName="text-main text-2xl font-extrabold"
+                value="150 bpm"
+              />
             </div>
           </div>
         </>
@@ -73,7 +81,7 @@ function BodyInfo({ part, onZoom, onOff = false }) {
                 iconTag="UilPercentage"
                 iconTagClassName="text-sub1 inline mr-3"
                 content="산소포화도"
-                contentClassName="text-main font-bold text-lg"
+                contentClassName="text-main text-lg"
               />
             </div>
             <div className="arrow-box" onClick={onZoom}>
@@ -86,8 +94,12 @@ function BodyInfo({ part, onZoom, onOff = false }) {
             </div>
           </div>
           <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full">
-              <LiveInfo />
+            <div className="live-info-box col-span-2 h-full pl-[36px]">
+              <LiveInfo
+                liveClassName="text-font1 text-lg "
+                valueClassName="text-main text-2xl font-extrabold"
+                value="95 %"
+              />
             </div>
           </div>
         </>
