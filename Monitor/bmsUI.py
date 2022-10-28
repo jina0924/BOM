@@ -8,15 +8,15 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide2.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
-    QSizePolicy, QWidget,QGraphicsDropShadowEffect)
+from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
+    QSizePolicy, QWidget, QGraphicsDropShadowEffect)
 import myres_rc
 
 class Ui_Form(object):
@@ -27,14 +27,14 @@ class Ui_Form(object):
         Form.setStyleSheet(u"background-color: rgb(246, 247, 248);")
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(130, 80, 151, 51))
+        self.label.setGeometry(QRect(1075, 65, 192, 65))
         self.label.setStyleSheet(u"border-image: url(:/logo/img/logo_little.png);")
         self.label.setFrameShape(QFrame.StyledPanel)
         self.label.setFrameShadow(QFrame.Raised)
         self.label.setLineWidth(1)
         self.pushButton = QPushButton(Form)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(1200, 80, 75, 61))
+        self.pushButton.setGeometry(QRect(133, 60, 88, 76))
         self.pushButton.setStyleSheet(u"border-image: url(:/icons/img/back_icon.png);")
         self.box1 = QLabel(Form)
         self.box1.setObjectName(u"box1")
@@ -55,6 +55,7 @@ class Ui_Form(object):
         self.label_5.setObjectName(u"label_5")
         self.label_5.setGeometry(QRect(249, 320, 131, 61))
         font = QFont()
+        font.setFamilies([u"Noto Sans KR"])
         font.setPointSize(28)
         font.setBold(True)
         self.label_5.setFont(font)
@@ -106,6 +107,7 @@ class Ui_Form(object):
         self.cell1_v.setObjectName(u"cell1_v")
         self.cell1_v.setGeometry(QRect(560, 302, 121, 99))
         font2 = QFont()
+        font2.setFamilies([u"Noto Sans KR"])
         font2.setPointSize(42)
         font2.setBold(True)
         self.cell1_v.setFont(font2)
@@ -139,12 +141,25 @@ class Ui_Form(object):
         self.temp.setObjectName(u"temp")
         self.temp.setGeometry(QRect(936, 472, 101, 60))
         font3 = QFont()
+        font3.setFamilies([u"Noto Sans KR"])
         font3.setPointSize(48)
         font3.setBold(True)
         self.temp.setFont(font3)
         self.temp.setStyleSheet(u"background-color:rgb(255,255,255);\n"
 "color: rgb(234, 84, 85);")
         self.temp.setAlignment(Qt.AlignCenter)
+        self.box4 = QLabel(Form)
+        self.box4.setObjectName(u"box4")
+        self.box4.setGeometry(QRect(526, 143, 314, 85))
+        font4 = QFont()
+        font4.setFamilies([u"Noto Sans KR"])
+        font4.setPointSize(22)
+        font4.setBold(True)
+        self.box4.setFont(font4)
+        self.box4.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border-radius : 20px;\n"
+"color: rgb(26, 50, 99);")
+        self.box4.setAlignment(Qt.AlignCenter)
 
         self.shadow1 = QGraphicsDropShadowEffect()
         self.shadow1.setColor(QColor(212, 212, 212))
@@ -161,9 +176,19 @@ class Ui_Form(object):
         self.shadow3.setBlurRadius(15)
         self.shadow3.setOffset(4)
 
+        self.shadow4 = QGraphicsDropShadowEffect()
+        self.shadow4.setColor(QColor(212, 212, 212))
+        self.shadow4.setBlurRadius(15)
+        self.shadow4.setOffset(4)
+
         self.box1.setGraphicsEffect(self.shadow1)
         self.box2.setGraphicsEffect(self.shadow2)
         self.box3.setGraphicsEffect(self.shadow3)
+        self.box4.setGraphicsEffect(self.shadow4)
+
+
+
+
 
         self.label.raise_()
         self.pushButton.raise_()
@@ -183,6 +208,7 @@ class Ui_Form(object):
         self.label_12.raise_()
         self.label_13.raise_()
         self.temp.raise_()
+        self.box4.raise_()
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.goMain)
@@ -210,5 +236,6 @@ class Ui_Form(object):
         self.label_12.setText("")
         self.label_13.setText("")
         self.temp.setText(QCoreApplication.translate("Form", u"15", None))
+        self.box4.setText(QCoreApplication.translate("Form", u"BMS \uc815\ubcf4", None))
     # retranslateUi
 
