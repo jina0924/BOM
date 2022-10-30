@@ -131,22 +131,18 @@ function PatientList({ patientListClassName }) {
         <table className="table-fixed w-[85%] h-5/6 border-collapse px-4 mx-auto">
           <thead>
             <tr>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+              <th className="text-sm font-normal border-b-[1px] py-2">
                 환자 번호
               </th>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
-                이름
-              </th>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
-                체온
-              </th>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+              <th className="text-sm font-normal border-b-[1px] py-2">이름</th>
+              <th className="text-sm font-normal border-b-[1px] py-2">체온</th>
+              <th className="text-sm font-normal border-b-[1px] py-2">
                 심박수
               </th>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+              <th className="text-sm font-normal border-b-[1px] py-2">
                 산소포화도
               </th>
-              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+              <th className="text-sm font-normal border-b-[1px] py-2">
                 주치의
               </th>
             </tr>
@@ -155,22 +151,22 @@ function PatientList({ patientListClassName }) {
             <tbody>
               {patientList.map((item, key) => (
                 <tr key={key} className="">
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.pk}
                   </td>
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.name}
                   </td>
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.status_temperature}
                   </td>
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.status_bpm}
                   </td>
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.oxygen_saturation}
                   </td>
-                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
+                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                     {item.doctor_name}
                   </td>
                 </tr>
