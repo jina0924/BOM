@@ -20,16 +20,10 @@ function PatientDetail() {
       <div className="right-box col-span-5 h-full">
         <HeadBar />
         <div className="filter-download-btn-box flex justify-end py-5 px-10 h-[9vh]">
-          {component === 1 && (
-            <Btn
-              className="flex justify-center items-center px-8 py-2 rounded-xl bg-white shadow-bg ml-5"
-              content="최적화"
-            />
-          )}
           <select
             name="기간"
             id="기간"
-            className="flex justify-center items-center px-8 py-2 rounded-xl bg-white shadow-bg ml-5"
+            className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5"
           >
             기간
           </select>
