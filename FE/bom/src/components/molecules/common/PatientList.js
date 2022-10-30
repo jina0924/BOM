@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Title from "components/atoms/Title";
+import PaginationNumber from "components/atoms/PaginationNumber";
 
 const tempPatientLiST = {
   count: 7,
@@ -174,6 +175,10 @@ function PatientList({ patientListClassName }) {
             </tbody>
           )}
         </table>
+        {/* pagination */}
+        <div className="pagination-number">
+          <PaginationNumber />
+        </div>
       </div>
     </div>
   );
