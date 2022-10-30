@@ -8,7 +8,7 @@ const tempPatientLiST = {
   previous: 1,
   results: [
     {
-      pk: 1,
+      pk: "0001",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -20,7 +20,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 2,
+      pk: "0002",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -32,7 +32,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 3,
+      pk: "0003",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -44,7 +44,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 4,
+      pk: "0004",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -56,7 +56,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 5,
+      pk: "0005",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -68,7 +68,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 6,
+      pk: "0006",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -80,7 +80,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 7,
+      pk: "0007",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -92,7 +92,7 @@ const tempPatientLiST = {
       doctor_name: "임진경",
     },
     {
-      pk: 8,
+      pk: "0008",
       name: "임진경",
       age: 5,
       gender: "M",
@@ -117,10 +117,10 @@ function PatientList({ patientListClassName }) {
 
   return (
     <div
-      className={`patient-list shadow-box bg-white rounded-[20px] h-[62vh] ${patientListClassName}`}
+      className={`patient-list h-full shadow-box bg-white rounded-[20px] ${patientListClassName}`}
     >
-      <div className="patient-list-content h-full overflow-x-auto">
-        <div className="h-1/6">
+      <div className="patient-list-content overflow-x-auto">
+        <div className="h-1/6 pt-6 pb-3 px-8">
           <Title
             iconTag="UilMedicalDrip"
             iconTagClassName="text-sub1 inline mr-3"
@@ -128,37 +128,49 @@ function PatientList({ patientListClassName }) {
             contentClassName="text-main font-bold text-lg"
           />
         </div>
-        <table className="table-auto w-full">
+        <table className="table-fixed w-[85%] h-5/6 border-collapse px-4 mx-auto">
           <thead>
             <tr>
-              <th className="text-base font-normal">환자 번호</th>
-              <th className="text-base font-normal">이름</th>
-              <th className="text-base font-normal">체온</th>
-              <th className="text-base font-normal">심박수</th>
-              <th className="text-base font-normal">산소포화도</th>
-              <th className="text-base font-normal">주치의</th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                환자 번호
+              </th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                이름
+              </th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                체온
+              </th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                심박수
+              </th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                산소포화도
+              </th>
+              <th className="text-[.95rem] font-normal border-b-[1px] py-2">
+                주치의
+              </th>
             </tr>
           </thead>
           {!!patientList && (
             <tbody>
               {patientList.map((item, key) => (
                 <tr key={key} className="">
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.pk}
                   </td>
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.name}
                   </td>
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.status_temperature}
                   </td>
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.status_bpm}
                   </td>
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.oxygen_saturation}
                   </td>
-                  <td className="text-center text-sm font-semibold">
+                  <td className="text-center text-sm font-semibold border-b-[.5px] border-gray py-2">
                     {item.doctor_name}
                   </td>
                 </tr>
