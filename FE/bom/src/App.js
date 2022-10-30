@@ -4,9 +4,7 @@ import PatientDetail from "components/pages/PatientDetail";
 function App() {
   return (
     <div className="App">
-      <div className="test">
-        <PatientDetail />
-      </div>
+      <div className="test">{/* <PatientDetail /> */}</div>
       <RouterConfiguration />
     </div>
   );
