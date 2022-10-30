@@ -43,3 +43,11 @@ https://bashooka.com/coding/animated-chart-graph-examples/
 ## React - Pagination
 
 https://cotak.tistory.com/112
+
+
+
+## png to ico
+
+https://simigeum.tistory.com/18
+
+https://realfavicongenerator.net/
