@@ -13,15 +13,14 @@ function BodyInfo({ part, onZoom, onOff = false }) {
     <div className="patient-body-info w-full h-full bg-white rounded-lg shadow-box">
       {part === "체온" && (
         <>
-          <div className="top-box flex justify-between h-1/6 p-3">
-            <div className="title-box font-extrabold flex items-start">
-              <Title
-                iconTag="UilTemperatureHalf"
-                iconTagClassName="text-sub1 inline mr-3"
-                content="체온"
-                contentClassName="text-main text-lg"
-              />
-            </div>
+          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+            <Title
+              iconTag="UilTemperatureHalf"
+              iconTagClassName="text-sub1 inline mr-3"
+              content="체온"
+              contentClassName="text-main text-lg"
+            />
+
             <div className="arrow-box" onClick={onZoom}>
               {!onOff && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
@@ -44,15 +43,14 @@ function BodyInfo({ part, onZoom, onOff = false }) {
       )}
       {part === "심박수" && (
         <>
-          <div className="top-box flex justify-between h-1/6 p-3">
-            <div className="title-box font-extrabold flex items-start">
-              <Title
-                iconTag="UilHeartbeat"
-                iconTagClassName="text-sub1 inline mr-3"
-                content="심박수"
-                contentClassName="text-main text-lg"
-              />
-            </div>
+          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+            <Title
+              iconTag="UilHeartbeat"
+              iconTagClassName="text-sub1 inline mr-3"
+              content="심박수"
+              contentClassName="text-main text-lg"
+            />
+
             <div className="arrow-box" onClick={onZoom}>
               {!onOff && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
@@ -75,15 +73,14 @@ function BodyInfo({ part, onZoom, onOff = false }) {
       )}
       {part === "산소포화도" && (
         <>
-          <div className="top-box flex justify-between h-1/6 p-3">
-            <div className="title-box font-extrabold flex items-start">
-              <Title
-                iconTag="UilPercentage"
-                iconTagClassName="text-sub1 inline mr-3"
-                content="산소포화도"
-                contentClassName="text-main text-lg"
-              />
-            </div>
+          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+            <Title
+              iconTag="UilPercentage"
+              iconTagClassName="text-sub1 inline mr-3"
+              content="산소포화도"
+              contentClassName="text-main text-lg"
+            />
+
             <div className="arrow-box" onClick={onZoom}>
               {!onOff && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />

@@ -16,66 +16,70 @@ import {
 function Title({ iconTag, iconTagClassName, content, contentClassName }) {
   return (
     <>
-      {iconTag === "UilHospital" && (
-        <>
-          <UilHospital className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilMedicalDrip" && (
-        <>
-          <UilMedicalDrip className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilUserMd" && (
-        <>
-          <UilUserMd className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilUserNurse" && (
-        <>
-          <UilUserNurse className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilChartLine" && (
-        <>
-          <UilChartLine className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilBed" && (
-        <>
-          <UilBed className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilTemperatureHalf" && (
-        <>
-          <UilTemperatureHalf className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilHeartbeat" && (
-        <>
-          <UilHeartbeat className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilPercentage" && (
-        <>
-          <UilPercentage className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
-      {iconTag === "UilMonitorHeartRate" && (
-        <>
-          <UilMonitorHeartRate className={iconTagClassName} />
-          <span className={contentClassName}>{content}</span>
-        </>
-      )}
+      <div className="title-box font-extrabold flex items-start">
+        <div className="flex items-center">
+          {iconTag === "UilHospital" && (
+            <>
+              <UilHospital className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilMedicalDrip" && (
+            <>
+              <UilMedicalDrip className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilUserMd" && (
+            <>
+              <UilUserMd className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilUserNurse" && (
+            <>
+              <UilUserNurse className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilChartLine" && (
+            <>
+              <UilChartLine className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilBed" && (
+            <>
+              <UilBed className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilTemperatureHalf" && (
+            <>
+              <UilTemperatureHalf className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilHeartbeat" && (
+            <>
+              <UilHeartbeat className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilPercentage" && (
+            <>
+              <UilPercentage className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+          {iconTag === "UilMonitorHeartRate" && (
+            <>
+              <UilMonitorHeartRate className={iconTagClassName} />
+              <span className={contentClassName}>{content}</span>
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 }

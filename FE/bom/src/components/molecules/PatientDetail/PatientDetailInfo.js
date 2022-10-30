@@ -5,7 +5,7 @@ import PatientInfoKeyValue from "components/atoms/PatientDetail/PatientInfoKeyVa
 function PatientDetailInfo({}) {
   return (
     <div className="patient-detail-info w-full h-full bg-white rounded-lg shadow-box">
-      <div className="title-box font-extrabold h-1/6 flex items-start p-3">
+      <div className="title-box font-extrabold h-1/6 flex items-start py-4 px-6">
         <Title
           iconTag="UilMedicalDrip"
           iconTagClassName="text-sub1 inline mr-3"
