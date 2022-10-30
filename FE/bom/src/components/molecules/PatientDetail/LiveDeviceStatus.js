@@ -5,15 +5,13 @@ import BMSIcon from "components/atoms/BMSIcon";
 function LiveDeviceStatus() {
   return (
     <div className="patient-device-detail-info w-full h-full bg-white p-3 rounded-lg shadow-box">
-      <div className="top-box  h-1/4">
-        <div className="title-box text-3xl font-extrabold p-3 flex items-center">
-          <Title
-            iconTag="UilMonitorHeartRate"
-            iconTagClassName="text-sub1 inline mr-3"
-            content="실시간 BMS 상태"
-            contentClassName="text-main font-bold text-lg"
-          />
-        </div>
+      <div className="top-box  h-1/4 py-4 px-6">
+        <Title
+          iconTag="UilMonitorHeartRate"
+          iconTagClassName="text-sub1 inline mr-3"
+          content="실시간 BMS 상태"
+          contentClassName="text-main text-lg"
+        />
       </div>
       <div className="content-box py-2 grid grid-cols-4 h-3/4">
         <div className="BMS-temperature col-span-1 flex justify-center items-center">
