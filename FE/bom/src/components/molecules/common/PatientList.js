@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import Title from "components/atoms/Title";
 // import PaginationNumber from "components/atoms/PaginationNumber";
 
-import Pagination from "react-js-pagination";
+// import Pagination from "react-js-pagination";
 
-import "components/molecules/common/Paging.css";
+// import "components/molecules/common/Paging.css";
+import CustomPagination from "components/atoms/CustomPagination";
 
 const tempPatientLiST = {
-  count: 58,
+  count: 158,
   next: "",
   previous: "",
   results: [
@@ -195,8 +196,14 @@ function PatientList({ patientListClassName }) {
           </table>
           {/* pagination */}
           <div className="pagination-number">
-            {/* <PaginationNumber /> */}
-            <Pagination
+            <CustomPagination
+              page={page}
+              itemsCount={8}
+              totalCount={count}
+              pageRange={5}
+              onChange={handlePageChange}
+            />
+            {/* <Pagination
               activePage={page}
               itemsCountPerPage={8}
               totalItemsCount={count}
@@ -204,7 +211,7 @@ function PatientList({ patientListClassName }) {
               prevPageText={"<"}
               nextPageText={">"}
               onChange={handlePageChange}
-            />
+            /> */}
           </div>
         </div>
       </div>
