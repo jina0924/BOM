@@ -1,6 +1,6 @@
 import React from "react";
 import Title from "components/atoms/Title.js";
-import PatientInfoKeyValue from "components/atoms/PatientDetail/PatientInfoKeyValue";
+import PatientInfoKeyValue from "components/atoms/PatientInfoKeyValue";
 
 function PatientDetailInfo({}) {
   return (
