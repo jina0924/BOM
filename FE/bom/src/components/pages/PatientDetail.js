@@ -18,7 +18,7 @@ function PatientDetail() {
       <SideBar />
       <div className="right-box col-span-5 h-full">
         <HeadBar />
-        <div className="filter-download-btn-box flex justify-end px-10 h-[9vh] text-xs items-center">
+        <div className="filter-download-btn-box flex justify-end px-7 h-[9vh] text-xs items-center">
           <select
             name="기간"
             id="기간"
