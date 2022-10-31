@@ -2,22 +2,21 @@ import React, { useState, useEffect } from "react";
 import Logo from "components/atoms/Logo";
 import MenuItem from "components/atoms/MenuItem";
 
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function SideBar() {
   const location = useLocation();
-  const [menuIndex, setMenuIndex] = useState(0);
-  const { id } = useParams();
+  const [menuIndex, setMenuIndex] = useState("");
 
   console.log(menuIndex);
 
   useEffect(() => {
     if (location.pathname === "/main") {
       setMenuIndex(0);
-    } else if (location.pathname === `/patient/` + `${id}`) {
+    } else if (location.pathname === `/patients`) {
       setMenuIndex(1);
     } else if (location.pathname === "/doctors") {
-      setMenuIndex(3);
+      setMenuIndex(2);
     } else if (location.pathname === "/nurses") {
       setMenuIndex(3);
     }
@@ -32,9 +31,11 @@ function SideBar() {
             홈
           </MenuItem>
         </Link>
-        <MenuItem menu="patient" isActive={menuIndex === 1 ? true : false}>
-          환자 정보
-        </MenuItem>
+        <Link to="/patients">
+          <MenuItem menu="patient" isActive={menuIndex === 1 ? true : false}>
+            환자 정보
+          </MenuItem>
+        </Link>
         <Link to="/doctors">
           <MenuItem menu="doctor" isActive={menuIndex === 2 ? true : false}>
             의사 목록
