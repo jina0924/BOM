@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   UilLayerGroup,
   UilUsersAlt,
@@ -6,9 +6,15 @@ import {
   UilSyringe,
 } from "@iconscout/react-unicons";
 
-function MenuItem({ menu, children }) {
+function MenuItem({ menu, children, isActive }) {
   return (
-    <li className="list-none p-5 m-3 rounded-[10px] text-font2 hover:bg-back hover:text-main active:bg-back active:text-main">
+    <li
+      className={
+        isActive
+          ? `list-none p-5 m-3 rounded-[10px] bg-back text-main`
+          : `list-none p-5 m-3 rounded-[10px] text-font2 hover:bg-back hover:text-main`
+      }
+    >
       {menu === "home" && (
         <UilLayerGroup className="inline mr-6 ml-1" size={30} />
       )}
