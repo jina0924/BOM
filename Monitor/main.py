@@ -4,10 +4,8 @@ from PySide2.QtGui import *
 
 
 from mainUI import Ui_Form as mainUi
-from firstUI import Ui_Form as  firstUi
 from bmsUI import Ui_Form as bmsUi
-from warningUI import Ui_Dialog as warningUi
-
+from logoUI import Ui_Dialog as logoUi
 
 from time import sleep
 import threading
@@ -17,6 +15,10 @@ import mysql.connector
 import max30102
 import hrcalc
 
+import RPi.GPIO as GPIO
+import spidev
+import time
+
 before = [-1,-1]
 minV = [4.25, 4.25]
 maxV = [2.5, 2.5]
@@ -25,8 +27,6 @@ voltage = [0,0]
 
 #var
 battery_amount_val = 100
-is_balance = 0
-can_balance = 0
 is_charge = True
 temp_battery = 10
 temp_human =36.5
@@ -41,11 +41,6 @@ exit_flag = 0
 bms_id = 333
 patient_id = 777
 connect_db = False
-
-
-import RPi.GPIO as GPIO
-import spidev
-import time
 
 
 charge = 16
@@ -193,25 +188,22 @@ t2 = threading.Thread(target=getHeart)
 #t2.start()
 
 
-
-
-
-
-class WarningPage(QDialog,warningUi):
+class LogoPage(QDialog,logoUi):
     def __init__(self):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setupUi(self)
 
-    def click_yes(self):
-        global is_balance
-        #print("Yes!")
-        is_balance = 1
+    def main(self):
+        global t1,t2
+
+        self.show()
+        t1.start()
+        t2.start()
+        sleep(1)
+        print("========= Thread Start =========")
         self.close()
 
-    def click_no(self):
-        #print("No!")
-        self.close()
 
 
 
@@ -220,12 +212,10 @@ class MainPage(QDialog,QWidget,mainUi):
         super().__init__()
         self.setupUi(self)
         self.battery_amount.setText(str(battery_amount_val))
-        self.battery_amount_bar.setGeometry(442, 235, 2 * battery_amount_val, 93)
-        self.balance_btn_on.hide()
-        self.balance_btn_off.hide()
+        self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
         if(is_charge == True):
-            self.balance_btn_off.show()
-        self.label_5.hide()
+            self.label_8.show()
+            self.battery_amount.setText("충전중")
         self.clock_timer = QTimer(self)
         self.clock_timer.setInterval(1000)  # 1000ms = 1sec , 화면 렌더링 주기
         self.clock_timer.timeout.connect(self.rendering)
@@ -235,10 +225,8 @@ class MainPage(QDialog,QWidget,mainUi):
 
 
     def main(self):
-        global first_page
-
-        first_page.main()
-
+        global logo_page
+        logo_page.main()
         self.clock_timer.start()
 
     def goBms(self):
@@ -247,39 +235,23 @@ class MainPage(QDialog,QWidget,mainUi):
     def rendering(self):
         global battery_amount_val
 
-        self.battery_amount.setText(str(battery_amount_val))
-        self.battery_amount_bar.setGeometry(472, 233, 2 * battery_amount_val, 95)
+        if (is_charge == True):
+            self.label_8.show()
+            self.battery_amount.setText("충전중")
+        else:
+            self.label_8.hide()
+            self.battery_amount.setText(str(battery_amount_val))
+
+        self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
 
         self.temp_label.setText(str(temp_human))
         self.heart_label.setText(str(heart_rate))
         self.o2_label.setText(str(spo2))
 
-    def cell_balance_on(self):
-        global warningpage, is_balance
-
-        if (can_balance == 0):
-            #Dialog
-            warningpage.exec_()
-            if(is_balance == 1):
-                print("off -> on")
-                self.balance_btn_on.show()
-            else:
-                #print("nonoono")
-                pass
-        else:
-            is_balance=1;
-
-    def cell_balance_off(self):
-        global is_balance
-        print("on -> off")
-        self.balance_btn_on.hide()
-        if(is_charge == True):
-            self.balance_btn_off.show()
-        is_balance = 0
-
     def exit(self):
         global exit_flag
         exit_flag = 1
+        #t.join()
         t1.join()
         t2.join()
         quit()
@@ -303,34 +275,22 @@ class BmsPage(QDialog,QWidget,bmsUi):
 
 
 
-class FirstPage(QDialog,QWidget,firstUi):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
 
-    def main(self):
-        global t1,t2
 
-        print("first page")
-        t1.start()
-        t2.start()
-        self.show()
-        sleep(1)
-        self.close()
 
 app = QApplication()
-first_page = FirstPage()
+
+logo_page=LogoPage()
 main_page = MainPage()
 bms_page = BmsPage()
-warningpage=WarningPage()
 
-warningpage.setGeometry(372,135,600,380)
+
+logo_page.setGeometry(0,0,1280,720)
 
 widgets = QStackedWidget()
-#widgets.addWidget(login_page)
 widgets.addWidget(main_page)
 widgets.addWidget(bms_page)
-widgets.addWidget(first_page)
+
 widgets.setGeometry(0,0,1280,720)
 
 #
