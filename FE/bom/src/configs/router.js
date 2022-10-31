@@ -1,6 +1,7 @@
 import React from "react";
 import Main from "components/pages/Main";
 import Login from "components/pages/Login";
+import PatientDetail from "components/pages/PatientDetail";
 
 import {
   Routes,
@@ -16,6 +17,7 @@ export default function RouterConfiguration() {
         <Route path="/test" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/patient/:id" element={<PatientDetail />} />
       </Routes>
     </Router>
   );
