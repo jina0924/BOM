@@ -23,9 +23,12 @@ function PatientDetail() {
           <select
             name="기간"
             id="기간"
-            className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5"
+            className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5 focus:outline-none"
           >
-            기간
+            <option value="null">기간</option>
+            <option value="0">1 달</option>
+            <option value="1">1 주</option>
+            <option value="2">1 일</option>
           </select>
           <DownloadBtn />
         </div>
