@@ -4,8 +4,8 @@ import Title from "components/atoms/Title";
 
 function ActiveBed() {
   return (
-    <div className="active-bed shadow-box bg-white rounded-[20px] h-[37vh] pr-5">
-      <div className="active-bed-content py-4 px-6">
+    <div className="active-bed shadow-box bg-white rounded-[20px] h-full pr-5">
+      <div className="active-bed-title h-1/6 py-4 px-6">
         <Title
           iconTag="UilBed"
           iconTagClassName="text-sub1 inline mr-3"
@@ -13,6 +13,7 @@ function ActiveBed() {
           contentClassName="text-main font-bold text-lg"
         />
       </div>
+      <div className="active-bed-graph h-5/6"></div>
     </div>
   );
 }

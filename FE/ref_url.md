@@ -37,3 +37,17 @@ https://codepen.io/gabriellewee/pen/Qdpgwx
 그래프 CSS 예시
 
 https://bashooka.com/coding/animated-chart-graph-examples/
+
+
+
+## React - Pagination
+
+https://cotak.tistory.com/112
+
+
+
+## png to ico
+
+https://simigeum.tistory.com/18
+
+https://realfavicongenerator.net/
