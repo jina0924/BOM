@@ -16,44 +16,44 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QLabel, QPushButton,
-    QSizePolicy, QWidget, QGraphicsDropShadowEffect)
+    QSizePolicy, QWidget,QGraphicsDropShadowEffect)
 import myres_rc
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1366, 768)
+        Form.resize(1280, 720)
         Form.setStyleSheet(u"background-color: rgb(246, 247, 248);")
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(1075, 65, 192, 65))
+        self.label.setGeometry(QRect(1029, 62, 192, 65))
         self.label.setStyleSheet(u"border-image: url(:/logo/img/logo_little.png);")
         self.label.setFrameShape(QFrame.StyledPanel)
         self.label.setFrameShadow(QFrame.Raised)
         self.label.setLineWidth(1)
         self.pushButton = QPushButton(Form)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(133, 60, 88, 76))
+        self.pushButton.setGeometry(QRect(87, 57, 88, 76))
         self.pushButton.setStyleSheet(u"border-image: url(:/icons/img/back_icon.png);")
         self.box1 = QLabel(Form)
         self.box1.setObjectName(u"box1")
-        self.box1.setGeometry(QRect(180, 268, 623, 169))
+        self.box1.setGeometry(QRect(134, 265, 623, 169))
         self.box1.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.box2 = QLabel(Form)
         self.box2.setObjectName(u"box2")
-        self.box2.setGeometry(QRect(180, 455, 623, 169))
+        self.box2.setGeometry(QRect(134, 452, 623, 169))
         self.box2.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.label_4 = QLabel(Form)
         self.label_4.setObjectName(u"label_4")
-        self.label_4.setGeometry(QRect(225, 303, 190, 99))
+        self.label_4.setGeometry(QRect(179, 300, 190, 99))
         self.label_4.setStyleSheet(u"background-color : rgba(255,255,255,0);\n"
 "border-image: url(:/icons/img/battery.png);")
         self.label_5 = QLabel(Form)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setGeometry(QRect(249, 320, 131, 61))
+        self.label_5.setGeometry(QRect(203, 317, 131, 61))
         font = QFont()
         font.setFamilies([u"Noto Sans KR"])
         font.setPointSize(28)
@@ -64,31 +64,31 @@ class Ui_Form(object):
         self.label_5.setAlignment(Qt.AlignCenter)
         self.label_6 = QLabel(Form)
         self.label_6.setObjectName(u"label_6")
-        self.label_6.setGeometry(QRect(249, 507, 131, 61))
+        self.label_6.setGeometry(QRect(203, 504, 131, 61))
         self.label_6.setFont(font)
         self.label_6.setStyleSheet(u"background-color: rgba(255,255,255,0);\n"
 "color: rgb(26, 50, 99);")
         self.label_6.setAlignment(Qt.AlignCenter)
         self.label_7 = QLabel(Form)
         self.label_7.setObjectName(u"label_7")
-        self.label_7.setGeometry(QRect(225, 490, 190, 99))
+        self.label_7.setGeometry(QRect(179, 487, 190, 99))
         self.label_7.setStyleSheet(u"background-color : rgba(255,255,255,0);\n"
 "border-image: url(:/icons/img/battery.png);")
         self.label_8 = QLabel(Form)
         self.label_8.setObjectName(u"label_8")
-        self.label_8.setGeometry(QRect(484, 319, 52, 65))
+        self.label_8.setGeometry(QRect(438, 316, 52, 65))
         self.label_8.setStyleSheet(u"background-color:rgba(255,255,255,0);\n"
 "border-image: url(:/icons/img/volt_icon.png);\n"
 "")
         self.label_9 = QLabel(Form)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setGeometry(QRect(484, 503, 52, 65))
+        self.label_9.setGeometry(QRect(438, 500, 52, 65))
         self.label_9.setStyleSheet(u"background-color:rgba(255,255,255,0);\n"
 "border-image: url(:/icons/img/volt_icon.png);\n"
 "")
         self.label_10 = QLabel(Form)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setGeometry(QRect(690, 293, 51, 99))
+        self.label_10.setGeometry(QRect(644, 290, 51, 99))
         font1 = QFont()
         font1.setPointSize(60)
         font1.setBold(True)
@@ -98,14 +98,14 @@ class Ui_Form(object):
         self.label_10.setAlignment(Qt.AlignCenter)
         self.label_11 = QLabel(Form)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setGeometry(QRect(690, 477, 51, 99))
+        self.label_11.setGeometry(QRect(644, 474, 51, 99))
         self.label_11.setFont(font1)
         self.label_11.setStyleSheet(u"background-color:rgb(255,255,255);\n"
 "color: rgb(26, 50, 99);")
         self.label_11.setAlignment(Qt.AlignCenter)
         self.cell1_v = QLabel(Form)
         self.cell1_v.setObjectName(u"cell1_v")
-        self.cell1_v.setGeometry(QRect(560, 302, 121, 99))
+        self.cell1_v.setGeometry(QRect(514, 299, 121, 99))
         font2 = QFont()
         font2.setFamilies([u"Noto Sans KR"])
         font2.setPointSize(42)
@@ -116,30 +116,30 @@ class Ui_Form(object):
         self.cell1_v.setAlignment(Qt.AlignCenter)
         self.cell2_v = QLabel(Form)
         self.cell2_v.setObjectName(u"cell2_v")
-        self.cell2_v.setGeometry(QRect(560, 486, 121, 99))
+        self.cell2_v.setGeometry(QRect(514, 483, 121, 99))
         self.cell2_v.setFont(font2)
         self.cell2_v.setStyleSheet(u"background-color:rgb(255,255,255);\n"
 "color: rgb(26, 50, 99);")
         self.cell2_v.setAlignment(Qt.AlignCenter)
         self.box3 = QLabel(Form)
         self.box3.setObjectName(u"box3")
-        self.box3.setGeometry(QRect(847, 268, 356, 356))
+        self.box3.setGeometry(QRect(801, 265, 356, 356))
         self.box3.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border-radius : 20px;")
         self.label_12 = QLabel(Form)
         self.label_12.setObjectName(u"label_12")
-        self.label_12.setGeometry(QRect(967, 338, 115, 105))
+        self.label_12.setGeometry(QRect(921, 335, 115, 105))
         self.label_12.setStyleSheet(u"background-color : rgba(255,255,255,0);\n"
 "border-image:url(:/icons/img/temp_icon_big.png);")
         self.label_13 = QLabel(Form)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setGeometry(QRect(1046, 476, 57, 55))
+        self.label_13.setGeometry(QRect(1000, 473, 57, 55))
         self.label_13.setStyleSheet(u"background-color:rgb(255,255,255);\n"
 "border-image: url(:/icons/img/degree.png);\n"
 "")
         self.temp = QLabel(Form)
         self.temp.setObjectName(u"temp")
-        self.temp.setGeometry(QRect(936, 472, 101, 60))
+        self.temp.setGeometry(QRect(890, 469, 101, 60))
         font3 = QFont()
         font3.setFamilies([u"Noto Sans KR"])
         font3.setPointSize(48)
@@ -150,7 +150,7 @@ class Ui_Form(object):
         self.temp.setAlignment(Qt.AlignCenter)
         self.box4 = QLabel(Form)
         self.box4.setObjectName(u"box4")
-        self.box4.setGeometry(QRect(526, 143, 314, 85))
+        self.box4.setGeometry(QRect(500, 140, 314, 85))
         font4 = QFont()
         font4.setFamilies([u"Noto Sans KR"])
         font4.setPointSize(22)
@@ -181,13 +181,11 @@ class Ui_Form(object):
         self.shadow4.setBlurRadius(15)
         self.shadow4.setOffset(4)
 
+
         self.box1.setGraphicsEffect(self.shadow1)
         self.box2.setGraphicsEffect(self.shadow2)
         self.box3.setGraphicsEffect(self.shadow3)
         self.box4.setGraphicsEffect(self.shadow4)
-
-
-
 
 
         self.label.raise_()
