@@ -9,7 +9,6 @@ import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
 import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
 import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
-import Btn from "components/atoms/Btn";
 
 function PatientDetail() {
   const [component, setComponent] = useState(0);
@@ -19,11 +18,11 @@ function PatientDetail() {
       <SideBar />
       <div className="right-box col-span-5 h-full">
         <HeadBar />
-        <div className="filter-download-btn-box flex justify-end py-5 px-10 h-[9vh]">
+        <div className="filter-download-btn-box flex justify-end py-5 px-10 h-[9vh] text-xs">
           <select
             name="기간"
             id="기간"
-            className="flex justify-center items-center px-4 py-2 rounded-xl bg-white shadow-bg ml-5 focus:outline-none"
+            className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none"
           >
             <option value="null">기간</option>
             <option value="0">1 달</option>
