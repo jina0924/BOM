@@ -12,7 +12,7 @@ class WardSerializer(serializers.ModelSerializer):
 
         class Meta:
             model = User
-            fields = ('id', 'is_superuser', 'username', 'email', 'is_staff',)
+            fields = ('id', 'is_superuser', 'username', 'is_staff',)
     
     user = UserSerializer(read_only=True)
 
@@ -27,7 +27,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
         class Meta:
             model = User
-            fields = ('id', 'is_superuser', 'username', 'email', 'is_staff',)
+            fields = ('id', 'is_superuser', 'username', 'is_staff',)
 
     class WardSerializer(serializers.ModelSerializer):
 
@@ -44,3 +44,7 @@ class PatientSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     ward = WardSerializer(read_only=True)
     doctor = DoctorSerializer(read_only=True)
+
+    class Meta:
+        model = Patient
+        fields = '__all__'
