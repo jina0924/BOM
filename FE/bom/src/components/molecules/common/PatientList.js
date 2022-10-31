@@ -134,7 +134,7 @@ function PatientList({ patientListClassName }) {
     <div
       className={`patient-list h-full shadow-box bg-white rounded-[20px] ${patientListClassName}`}
     >
-      <div className="h-[10%] pt-4 px-6">
+      <div className="h-[10%] pt-6 px-8">
         <Title
           iconTag="UilMedicalDrip"
           iconTagClassName="text-sub1 inline mr-3"
