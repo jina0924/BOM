@@ -21,7 +21,7 @@ before = [-1,-1]
 minV = [4.25, 4.25]
 maxV = [2.5, 2.5]
 SOC = [0, 0]
-voltage = [0,0]
+voltage = [2.5,2.5]
 
 #var
 battery_amount_val = 100
