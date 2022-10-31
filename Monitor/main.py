@@ -25,7 +25,7 @@ voltage = [0,0]
 battery_amount_val = 100
 is_balance = 0
 can_balance = 0
-is_charge = False
+is_charge = True
 temp_battery = 10
 temp_human =36.5
 heart_rate = 120
@@ -294,13 +294,13 @@ main_page = MainPage()
 bms_page = BmsPage()
 warningpage=WarningPage()
 
-warningpage.setGeometry(387,140,600,380)
+warningpage.setGeometry(372,135,600,380)
 
 widgets = QStackedWidget()
 #widgets.addWidget(login_page)
 widgets.addWidget(main_page)
 widgets.addWidget(bms_page)
-widgets.setGeometry(0,0,1366,768)
+widgets.setGeometry(0,0,1280,720)
 
 #
 # while (connect_db == False):
@@ -357,4 +357,9 @@ app.exec_()
 # self.box4.setGraphicsEffect(self.shadow4)
 # self.box5.setGraphicsEffect(self.shadow5)
 # self.box6.setGraphicsEffect(self.shadow6)
+
+#
+# opacity_effect = QGraphicsOpacityEffect(self.pushButton_bms)
+# opacity_effect.setOpacity(0)
+# self.pushButton_bms.setGraphicsEffect(opacity_effect)
 
