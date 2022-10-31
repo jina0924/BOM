@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 
 import Title from "components/atoms/Title";
-import PaginationNumber from "components/atoms/PaginationNumber";
+// import PaginationNumber from "components/atoms/PaginationNumber";
+
+import Pagination from "react-js-pagination";
+
+import "components/molecules/common/Paging.css";
 
 const tempPatientLiST = {
-  count: 7,
-  next: 3,
-  previous: 1,
+  count: 58,
+  next: "",
+  previous: "",
   results: [
     {
       pk: "0001",
@@ -108,76 +112,100 @@ const tempPatientLiST = {
 };
 
 function PatientList({ patientListClassName }) {
-  // const [patientListData, setPatientListData] = useState({});
   const [patientList, setPatientList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const [next, setNext] = useState(0);
+  const [previous, setPrevious] = useState(0);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
   useEffect(() => {
-    // setPatientListData(tempPatientLiST);
     setPatientList(tempPatientLiST.results);
+    setCount(tempPatientLiST.count);
+    setNext(tempPatientLiST.next);
+    setPrevious(tempPatientLiST.previous);
   }, []);
 
   return (
     <div
       className={`patient-list h-full shadow-box bg-white rounded-[20px] ${patientListClassName}`}
     >
-      <div className="patient-list-content overflow-x-auto">
-        <div className="h-1/6 pt-6 pb-3 px-8">
-          <Title
-            iconTag="UilMedicalDrip"
-            iconTagClassName="text-sub1 inline mr-3"
-            content="환자 목록"
-            contentClassName="text-main font-bold text-lg"
-          />
-        </div>
-        <table className="table-fixed w-[85%] h-5/6 border-collapse px-4 mx-auto">
-          <thead>
-            <tr>
-              <th className="text-sm font-normal border-b-[1px] py-2">
-                환자 번호
-              </th>
-              <th className="text-sm font-normal border-b-[1px] py-2">이름</th>
-              <th className="text-sm font-normal border-b-[1px] py-2">체온</th>
-              <th className="text-sm font-normal border-b-[1px] py-2">
-                심박수
-              </th>
-              <th className="text-sm font-normal border-b-[1px] py-2">
-                산소포화도
-              </th>
-              <th className="text-sm font-normal border-b-[1px] py-2">
-                주치의
-              </th>
-            </tr>
-          </thead>
-          {!!patientList && (
-            <tbody>
-              {patientList.map((item, key) => (
-                <tr key={key} className="">
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.pk}
-                  </td>
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.name}
-                  </td>
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.status_temperature}
-                  </td>
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.status_bpm}
-                  </td>
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.oxygen_saturation}
-                  </td>
-                  <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
-                    {item.doctor_name}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
-        {/* pagination */}
-        <div className="pagination-number">
-          <PaginationNumber />
+      <div className="h-[10%] pt-4 px-6">
+        <Title
+          iconTag="UilMedicalDrip"
+          iconTagClassName="text-sub1 inline mr-3"
+          content="환자 목록"
+          contentClassName="text-main font-bold text-lg"
+        />
+      </div>
+      <div className="h-[90%] overflow-x-auto">
+        <div className="h-full flex flex-col justify-evenly items-center">
+          <table className="table-fixed w-[85%] border-collapse px-4 mx-auto">
+            <thead>
+              <tr>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  환자 번호
+                </th>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  이름
+                </th>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  체온
+                </th>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  심박수
+                </th>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  산소포화도
+                </th>
+                <th className="text-sm font-normal border-b-[1px] py-2">
+                  주치의
+                </th>
+              </tr>
+            </thead>
+            {!!patientList && (
+              <tbody>
+                {patientList.map((item, key) => (
+                  <tr key={key} className="">
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.pk}
+                    </td>
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.name}
+                    </td>
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.status_temperature}
+                    </td>
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.status_bpm}
+                    </td>
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.oxygen_saturation}
+                    </td>
+                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      {item.doctor_name}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </table>
+          {/* pagination */}
+          <div className="pagination-number">
+            {/* <PaginationNumber /> */}
+            <Pagination
+              activePage={page}
+              itemsCountPerPage={8}
+              totalItemsCount={count}
+              pageRangeDisplayed={5}
+              prevPageText={"<"}
+              nextPageText={">"}
+              onChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
     </div>
