@@ -36,10 +36,16 @@ function Main() {
             />
           </div>
           <div className="mx-7 grid grid-cols-5 gap-8">
-            <PatientList patientListClassName="col-span-3" />
+            <div className="patient-list h-[62vh] col-span-3">
+              <PatientList />
+            </div>
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
-              <PatientProgress />
-              <ActiveBed />
+              <div className="patient-progres h-[22vh]">
+                <PatientProgress />
+              </div>
+              <div className="active-bed h-[37vh]">
+                <ActiveBed />
+              </div>
             </div>
           </div>
         </div>
