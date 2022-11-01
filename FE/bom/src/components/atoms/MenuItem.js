@@ -12,7 +12,7 @@ function MenuItem({ menu, children, isActive }) {
       className={
         isActive
           ? `list-none p-5 m-3 rounded-[10px] bg-back text-main`
-          : `list-none p-5 m-3 rounded-[10px] text-font2 hover:bg-back hover:text-main`
+          : `list-none p-5 m-3 rounded-[10px] text-font2 hover:bg-back hover:text-main duration-200`
       }
     >
       {menu === "home" && (
