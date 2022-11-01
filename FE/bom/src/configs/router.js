@@ -5,6 +5,7 @@ import Patients from "components/pages/Patients";
 import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
+import Test from 'components/pages/Test'
 
 import {
   Routes,
@@ -17,7 +18,7 @@ export default function RouterConfiguration() {
   return (
     <Router>
       <Routes>
-        <Route path="/test" element={<Main />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
         <Route path="/patients" element={<Patients />} />
