@@ -1,4 +1,4 @@
-FROM python:3.9.15-alpine
+FROM python:3.9.15
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install libmysqlclient-dev
