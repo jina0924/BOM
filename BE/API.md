@@ -173,7 +173,7 @@ $ python manage.py runserver
 
 - 보호자(환자)와 병동 모두 같은 api
 
-- DELETE
+- POST
 
 - URL
 
@@ -311,7 +311,13 @@ $ python manage.py runserver
 - URL
 
   ```
-  http://127.0.0.1:8000/api/wards
+  http://127.0.0.1:8000/api/wards/<str:wardNumber>
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/wards/507
   ```
 
 - Response

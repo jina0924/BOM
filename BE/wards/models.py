@@ -13,7 +13,7 @@ class Ward(models.Model):
 
 class Nurse(models.Model):
     name = models.CharField(max_length=17)
-    image = models.ImageField(upload_to='nurse', default='default.jpg')
+    image = models.ImageField(upload_to='nurse/', default='nurse/default.jpg')
     phonenumber = models.CharField(max_length=11)
     email = models.EmailField(max_length=191)
     position = models.CharField(max_length=20)
@@ -26,7 +26,7 @@ class Nurse(models.Model):
 
 class Doctor(models.Model):
     name = models.CharField(max_length=17)
-    image = models.ImageField(upload_to='doctor', default='default.jpg')
+    image = models.ImageField(upload_to='doctor/', default='doctor/default.jpg')
     phonenumber = models.CharField(max_length=11)
     email = models.EmailField(max_length=191)
     department = models.CharField(max_length=20)
