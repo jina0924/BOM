@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-
+import pyqtgraph as pg
 
 from mainUI import Ui_Form as mainUi
 from bmsUI import Ui_Form as bmsUi
@@ -11,6 +11,7 @@ from time import sleep
 import threading
 from datetime import datetime
 import mysql.connector
+from collections import deque
 
 import max30102
 import hrcalc
@@ -35,6 +36,14 @@ spo2 = 80
 
 exit_flag = 0
 
+
+
+idx=deque(['no-time' for _ in range(60)],maxlen=60)
+idx_h=deque(['no-time' for _ in range(60)],maxlen=60)
+temps = deque([0 for _ in range(60)],maxlen=60)
+hearts=deque([0 for _ in range(60)],maxlen=60)
+sps=deque([0 for _ in range(60)],maxlen=60)
+xitem = list(range(60))
 
 
 #for DB
@@ -113,7 +122,7 @@ def read_voltage(adcChannel):
 
 def getSensor():
     global battery_amount_val,temp_battery, temp_human
-    global db
+    global db,temps,idx
     t=0
     while True:
 
@@ -141,6 +150,11 @@ def getSensor():
         #spo += 1
 
 
+
+        temps.append(temp_human)
+
+        now = datetime.strftime(datetime.now(),"%M:%S")
+        idx.append(str(now))
         sleep(1)
         
         t+=1
@@ -165,7 +179,7 @@ def getSensor():
 
 def getHeart():
     global heart_rate,spo2
-    
+    global hearts, sps,idx_h
     m = max30102.MAX30102()
 
     while (exit_flag == 0):
@@ -179,8 +193,21 @@ def getHeart():
 
         if(hrb == True and hr != -999):
             heart_rate = int(hr)
+            hearts.append(heart_rate)
+        else:
+            hearts.append(hearts[9])
+
+            
         if(spb == True and sp != -999):
             spo2 = int(sp)
+            sps.append(spo2)
+        else:
+            sps.append(sps[9])
+
+
+
+        now = datetime.strftime(datetime.now(),"%M:%S")
+        idx_h.append(str(now))
 
 t1 = threading.Thread(target=getSensor)
 t2 = threading.Thread(target=getHeart)
@@ -215,12 +242,33 @@ class MainPage(QDialog,QWidget,mainUi):
         self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
         if(is_charge == True):
             self.label_8.show()
-            self.battery_amount.setText("충전중")
+            #self.battery_amount.setText("충전중")
         self.clock_timer = QTimer(self)
         self.clock_timer.setInterval(1000)  # 1000ms = 1sec , 화면 렌더링 주기
         self.clock_timer.timeout.connect(self.rendering)
+        
+        pg.setConfigOptions(antialias=True)
+        self.tick=[]
+
+        self.temps_graph.setMouseEnabled(False,False)
+        self.temps_graph.setBackground('w')
+        self.temps_graph.showGrid(x=True,y=True)
+        self.temps_plot = self.temps_graph.plot(symbol='o',symbolSize = 3,symbolPen = 'r',pen=pg.mkPen('r', width=2))
+
+        self.hearts_graph.setMouseEnabled(False, False)
+        self.hearts_graph.setBackground('w')
+        self.hearts_graph.showGrid(x=True, y=True)
+        self.hearts_plot = self.hearts_graph.plot(symbol='o', symbolSize= 3, symbolPen='r',pen=pg.mkPen('r', width=2))
+
+
+        self.sps_graph.setMouseEnabled(False, False)
+        self.sps_graph.setBackground('w')
+        self.sps_graph.showGrid(x=True, y=True)
+        self.sps_plot = self.sps_graph.plot(symbol='o', symbolSize=3, symbolPen='r',pen=pg.mkPen('r', width=2))
+
 
         
+        self.plot()
         self.main()
 
 
@@ -231,22 +279,41 @@ class MainPage(QDialog,QWidget,mainUi):
 
     def goBms(self):
         widgets.setCurrentIndex(1)
+    
+    def plot(self):
+        self.tick = [list(zip(range(0,60,10),list(idx)[::10]))]
+        self.temps_plot.setData(xitem,temps)
+        tax = self.temps_graph.getAxis('bottom')
+        tax.setTicks(self.tick)
+
+        
+        self.tick2 = [list(zip(range(0,60,10),list(idx_h)[::10]))]
+        self.hearts_plot.setData(xitem, hearts)
+        hax = self.hearts_graph.getAxis('bottom')
+        hax.setTicks(self.tick2)
+
+        self.sps_plot.setData(xitem, sps)
+        spax = self.sps_graph.getAxis('bottom')
+        spax.setTicks(self.tick2)
+
 
     def rendering(self):
         global battery_amount_val
 
         if (is_charge == True):
             self.label_8.show()
-            self.battery_amount.setText("충전중")
         else:
             self.label_8.hide()
-            self.battery_amount.setText(str(battery_amount_val))
+        
+        self.battery_amount.setText(str(battery_amount_val)+"%")
 
         self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
 
         self.temp_label.setText(str(temp_human))
         self.heart_label.setText(str(heart_rate))
         self.o2_label.setText(str(spo2))
+        self.plot()
+
 
     def exit(self):
         global exit_flag
