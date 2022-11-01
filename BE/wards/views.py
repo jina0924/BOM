@@ -73,10 +73,11 @@ def patient_detail(request, patient_number):
 
 # 병동 정보 조회
 @api_view(['GET'])
-def wards(request):
-    user = get_object_or_404(User, username=request.user)
-    ward = get_object_or_404(Ward, user=user)
+def wards(request, ward_number):
+    # user = get_object_or_404(User, username=request.user)
+    # ward = get_object_or_404(Ward, user=user)
     
-    serializer = WardDetailSerializer(ward)
+    # serializer = WardDetailSerializer(ward)
     
-    return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+    # return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+    return Response({'result': '일단 답변이 가네요! access token이 유효합니다!'}, status=status.HTTP_200_OK)
