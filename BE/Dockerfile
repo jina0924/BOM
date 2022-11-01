@@ -1,7 +1,7 @@
 FROM python:3.9.15
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install libmysqlclient-dev
+RUN apt-get update && apt-get install default-libmysqlclient-dev
 
 WORKDIR /var/jenkins_home/workspace/thundervolt/BE
 
