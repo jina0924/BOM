@@ -8,7 +8,7 @@ function PatientSearchBar() {
     <div className="searchbar-box grid grid-cols-10">
       <div className="input-box col-span-9">
         <Input
-          type=""
+          type="text"
           className="bg-white rounded-[20px] w-full shadow-box h-full"
           placeholder=""
           value=""

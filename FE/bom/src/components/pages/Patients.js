@@ -12,7 +12,7 @@ function Patients() {
       <div className="info-zone col-span-5">
         <HeadBar />
         <div className="flex flex-col justify-center items-center h-[84vh]">
-          <div className="h-[8vh]">
+          <div className="h-[8vh] flex items-center">
             <PatientSearchBar />
           </div>
           <div className="py-10 px-8 h-[74vh]">
