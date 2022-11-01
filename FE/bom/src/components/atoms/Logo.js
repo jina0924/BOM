@@ -6,7 +6,7 @@ function Logo({ size = "l", logoClassName }) {
     <>
       {size === "s" && (
         <div className={`flex items-center ${logoClassName}`}>
-          <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[30px]" />
+          <img src={symbol} alt="BOM 심볼" className="inline mr-2 w-[30px]" />
           <span className="font-righteous text-main text-xl tracking-wider">
             BOM
           </span>
@@ -14,7 +14,7 @@ function Logo({ size = "l", logoClassName }) {
       )}
       {size === "l" && (
         <div className={`flex items-center ${logoClassName}`}>
-          <img src={symbol} alt="BOM 심볼" className="inline mx-2 w-[35px]" />
+          <img src={symbol} alt="BOM 심볼" className="inline mr-2 w-[35px]" />
           <span className="font-righteous text-main text-2xl tracking-wider">
             BOM
           </span>
