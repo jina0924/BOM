@@ -10,6 +10,7 @@ function Nurses() {
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
+        <ProfileCard />
       </div>
     </div>
   );
