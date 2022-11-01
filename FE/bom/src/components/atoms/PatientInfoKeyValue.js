@@ -1,12 +1,24 @@
 import React from "react";
 
-function PatientInfoKeyValue({ key1, value }) {
+function PatientInfoKeyValue({ isPC, key1, value }) {
   return (
     <div className="patient-info-key-value">
-      <div className="key text-font2 border-b-[1px] px-5 flex justify-center">
+      <div
+        className={
+          isPC
+            ? "key text-font2 border-b-[1px] px-5 flex justify-center"
+            : "key text-font2 border-b-[1px] px-3 flex justify-center text-sm"
+        }
+      >
         <span>{key1}</span>
       </div>
-      <div className="value text-font1 font-bold px-5 flex justify-center">
+      <div
+        className={
+          isPC
+            ? "value text-font1 font-bold px-5 flex justify-center"
+            : "value text-font1 font-bold px-3 flex justify-center text-sm"
+        }
+      >
         <span>{value}</span>
       </div>
     </div>

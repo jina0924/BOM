@@ -1,13 +1,37 @@
 import React from "react";
 
-function LiveInfo({ liveClassName, valueClassName, value }) {
+function LiveInfo({ isPC, value }) {
   return (
-    <div className="grid grid-cols-3 h-full">
-      <div className="col-span-1 flex items-center h-full">
-        <span className={` ${liveClassName}`}>실시간</span>
+    <div className={`${isPC ? "grid grid-cols-3 h-full" : "h-full"}`}>
+      <div
+        className={`${
+          isPC
+            ? "col-span-1 flex items-center h-full"
+            : "flex items-center justify-center"
+        }`}
+      >
+        <span
+          className={` ${isPC ? "text-font1 text-lg" : "text-font1 text-sm"}`}
+        >
+          실시간
+        </span>
       </div>
-      <div className="col-span-2 flex items-center h-full">
-        <span className={` ${valueClassName}`}>{value}</span>
+      <div
+        className={`${
+          isPC
+            ? "col-span-2 flex items-center h-full"
+            : "flex items-center justify-center"
+        }`}
+      >
+        <span
+          className={` ${
+            isPC
+              ? "text-main text-2xl font-extrabold"
+              : "text-main font-extrabold text-base"
+          }`}
+        >
+          {value}
+        </span>
       </div>
     </div>
   );

@@ -8,35 +8,47 @@ import {
 import Title from "components/atoms/Title.js";
 import LiveInfo from "components/atoms/LiveInfo";
 
-function BodyInfo({ part, onZoom, onOff = false }) {
+function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
   return (
-    <div className="patient-body-info w-full h-full bg-white rounded-lg shadow-box">
+    <div
+      className={`patient-body-info w-full h-full bg-white rounded-lg shadow-box ${
+        !isPC && "pb-5"
+      }`}
+    >
       {part === "체온" && (
         <>
-          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+          <div
+            className={`title-box font-extrabold flex items-start ${
+              isPC ? "px-6 py-4 h-1/6" : "px-3 pt-2 pb-3"
+            }`}
+          >
             <Title
               iconTag="UilTemperatureHalf"
               iconTagClassName="text-sub1 inline mr-3"
               content="체온"
-              contentClassName="text-main text-lg"
+              contentClassName={`text-main ${isPC ? "text-lg" : "text-sm"}`}
             />
 
             <div className="arrow-box" onClick={onZoom}>
-              {!onOff && (
+              {!onOff && isPC && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
-              {onOff && (
+              {onOff && isPC && (
                 <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
-          <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full pl-[36px]">
-              <LiveInfo
-                liveClassName="text-font1 text-lg"
-                valueClassName="text-main text-2xl font-extrabold"
-                value="36.5 ℃"
-              />
+          <div
+            className={`content-box grid grid-cols-5 ${
+              isPC ? "px-3 h-5/6" : ""
+            }`}
+          >
+            <div
+              className={`live-info-box col-span-2 h-full ${
+                isPC ? "pl-[36px]" : "pl-6"
+              }`}
+            >
+              <LiveInfo isPC={isPC} value="36.5 ℃" />
             </div>
           </div>
         </>
@@ -48,25 +60,28 @@ function BodyInfo({ part, onZoom, onOff = false }) {
               iconTag="UilHeartbeat"
               iconTagClassName="text-sub1 inline mr-3"
               content="심박수"
-              contentClassName="text-main text-lg"
+              contentClassName={`text-main ${isPC ? "text-lg" : "text-sm"}`}
             />
-
             <div className="arrow-box" onClick={onZoom}>
-              {!onOff && (
+              {!onOff && isPC && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
-              {onOff && (
+              {onOff && isPC && (
                 <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
-          <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full pl-[36px]">
-              <LiveInfo
-                liveClassName="text-font1 text-lg"
-                valueClassName="text-main text-2xl font-extrabold"
-                value="150 bpm"
-              />
+          <div
+            className={`content-box grid grid-cols-5 ${
+              isPC ? "px-3 h-5/6" : ""
+            }`}
+          >
+            <div
+              className={`live-info-box col-span-2 h-full ${
+                isPC ? "pl-[36px]" : "pl-6"
+              }`}
+            >
+              <LiveInfo isPC={isPC} value="150 bpm" />
             </div>
           </div>
         </>
@@ -78,25 +93,28 @@ function BodyInfo({ part, onZoom, onOff = false }) {
               iconTag="UilPercentage"
               iconTagClassName="text-sub1 inline mr-3"
               content="산소포화도"
-              contentClassName="text-main text-lg"
+              contentClassName={`text-main ${isPC ? "text-lg" : "text-sm"}`}
             />
-
             <div className="arrow-box" onClick={onZoom}>
-              {!onOff && (
+              {!onOff && isPC && (
                 <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
               )}
-              {onOff && (
+              {onOff && isPC && (
                 <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
               )}
             </div>
           </div>
-          <div className="content-box h-5/6 grid grid-cols-5 px-3">
-            <div className="live-info-box col-span-2 h-full pl-[36px]">
-              <LiveInfo
-                liveClassName="text-font1 text-lg "
-                valueClassName="text-main text-2xl font-extrabold"
-                value="95 %"
-              />
+          <div
+            className={`content-box grid grid-cols-5 ${
+              isPC ? "px-3 h-5/6" : ""
+            }`}
+          >
+            <div
+              className={`live-info-box col-span-2 h-full ${
+                isPC ? "pl-[36px]" : "pl-6"
+              }`}
+            >
+              <LiveInfo isPC={isPC} value="95%" />
             </div>
           </div>
         </>
