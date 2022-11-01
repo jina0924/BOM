@@ -20,7 +20,7 @@ function Main() {
       <div className="info-zone col-span-5">
         <HeadBar wardNum={wardName} />
         <div className="information-zone flex flex-col">
-          <div className="ward-info-summary-list grid grid-cols-4 m-7 gap-8">
+          <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
             <WardInfo wardInfoTitle="wardName" wardInfoDetail={wardName} />
             <WardInfo
               wardInfoTitle="countPatients"
@@ -35,7 +35,7 @@ function Main() {
               wardInfoDetail={countNurses}
             />
           </div>
-          <div className="mx-7 grid grid-cols-5 gap-8">
+          <div className="px-7 grid grid-cols-5 gap-8">
             <div className="patient-list h-[62vh] col-span-3">
               <PatientList />
             </div>
