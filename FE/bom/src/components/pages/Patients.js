@@ -2,6 +2,8 @@ import React from "react";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
+import PatientSearchBar from "components/molecules/PatientList/PatientSearchBar";
+import PatientList from "components/molecules/common/PatientList";
 
 function Patients() {
   return (
@@ -9,6 +11,14 @@ function Patients() {
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
+        <div className="flex flex-col justify-center items-center h-[84vh]">
+          <div className="h-[8vh]">
+            <PatientSearchBar />
+          </div>
+          <div className="py-10 px-8 h-[74vh]">
+            <PatientList />
+          </div>
+        </div>
       </div>
     </div>
   );

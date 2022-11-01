@@ -27,7 +27,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
             <Title
               iconTag="UilUserMd"
               iconTagClassName="text-sub1 inline mr-3"
-              content="주치의 수"
+              content="의사 수"
               contentClassName="text-main font-bold text-lg"
             />
           )}

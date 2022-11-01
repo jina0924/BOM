@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import Title from "components/atoms/Title";
-// import PaginationNumber from "components/atoms/PaginationNumber";
-
-// import Pagination from "react-js-pagination";
-
-// import "components/molecules/common/Paging.css";
 import CustomPagination from "components/atoms/CustomPagination";
 
 const tempPatientLiST = {
