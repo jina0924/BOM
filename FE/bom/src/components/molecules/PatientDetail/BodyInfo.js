@@ -16,14 +16,13 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
         <div className="patient-body-info w-full h-full bg-white rounded-lg shadow-box ">
           {part === "체온" && (
             <>
-              <div className="title-box font-extrabold flex items-start px-6 py-4 h-1/6">
+              <div className="title-box font-extrabold flex items-start justify-between px-6 py-4 h-1/6">
                 <Title
                   iconTag="UilTemperatureHalf"
                   iconTagClassName="text-sub1 inline mr-3"
                   content="체온"
                   contentClassName="text-main text-lg"
                 />
-
                 <div className="arrow-box" onClick={onZoom}>
                   {!onOff && (
                     <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
@@ -45,7 +44,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
           )}
           {part === "심박수" && (
             <>
-              <div className="title-box font-extrabold flex items-start px-6 py-4 h-1/6">
+              <div className="title-box font-extrabold flex items-start justify-between px-6 py-4 h-1/6">
                 <Title
                   iconTag="UilHeartbeat"
                   iconTagClassName="text-sub1 inline mr-3"
@@ -70,7 +69,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
           )}
           {part === "산소포화도" && (
             <>
-              <div className="title-box font-extrabold flex items-start px-6 py-4 h-1/6">
+              <div className="title-box font-extrabold flex items-start justify-between px-6 py-4 h-1/6">
                 <Title
                   iconTag="UilPercentage"
                   iconTagClassName="text-sub1 inline mr-3"

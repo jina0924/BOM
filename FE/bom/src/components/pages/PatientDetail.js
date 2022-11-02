@@ -31,7 +31,7 @@ function PatientDetail() {
           <SideBar />
           <div className="right-box col-span-5 h-full">
             <HeadBar />
-            <div className="filter-download-btn-box flex justify-end px-7 h-[9vh] text-xs items-center">
+            <div className="filter-download-btn-box flex justify-end pr-10 h-[9vh] text-xs items-center">
               <select
                 name="기간"
                 id="기간"
@@ -62,6 +62,7 @@ function PatientDetail() {
                 <div className="components-right col-span-3 h-full">
                   <div className="right-first-component pb-5 h-1/3">
                     <BodyInfo
+                      isPC={isPC}
                       part="체온"
                       onZoom={() => {
                         setComponent(2);
@@ -70,6 +71,7 @@ function PatientDetail() {
                   </div>
                   <div className="right-second-component pb-5 h-1/3">
                     <BodyInfo
+                      isPC={isPC}
                       part="심박수"
                       onZoom={() => {
                         setComponent(3);
@@ -78,6 +80,7 @@ function PatientDetail() {
                   </div>
                   <div className="right-third-component pb-5 h-1/3">
                     <BodyInfo
+                      isPC={isPC}
                       part="산소포화도"
                       onZoom={() => {
                         setComponent(4);
