@@ -1,4 +1,4 @@
-import NurseApi from "./NurseApi";
+import NurseApi from "../NurseApi";
 
 function requestLogin(username, password, success, fail) {
   NurseApi.post("accounts/user/login/", {
