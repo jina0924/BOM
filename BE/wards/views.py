@@ -81,3 +81,12 @@ def wards(request, ward_number):
     
     # return Response({'result': serializer.data}, status=status.HTTP_200_OK)
     return Response({'result': '일단 답변이 가네요! access token이 유효합니다!'}, status=status.HTTP_200_OK)
+
+
+# 환자 건강 정보 조회
+@api_view(['GET'])
+def health(request):
+
+    
+
+    return Response({'result': 1}, status=status.HTTP_200_OK)
