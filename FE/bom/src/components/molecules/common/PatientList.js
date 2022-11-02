@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
+import { requestPatientList } from "api/patients";
+
 const tempPatientLiST = {
   count: 158,
   next: "",
@@ -113,6 +115,20 @@ function PatientList({ patientListClassName }) {
   const [count, setCount] = useState(0);
   const [next, setNext] = useState(0);
   const [previous, setPrevious] = useState(0);
+  const [patient, setPatient] = useState({});
+
+  function patientListSuccess(res) {
+    console.log(res);
+  }
+
+  function patientListFail(err) {
+    console.log(err);
+  }
+
+  function onClickPatientDetailInfo(event) {
+    event.preventDefault();
+    requestPatientList("225070001", patientListSuccess, patientListFail);
+  }
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -165,7 +181,7 @@ function PatientList({ patientListClassName }) {
             {!!patientList && (
               <tbody>
                 {patientList.map((item, key) => (
-                  <tr key={key} className="">
+                  <tr key={key} className="" onClick={onClickPatientDetailInfo}>
                     <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                       {item.pk}
                     </td>

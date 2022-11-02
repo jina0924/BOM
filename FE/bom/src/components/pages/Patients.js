@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -12,10 +12,10 @@ function Patients() {
       <div className="info-zone col-span-5">
         <HeadBar />
         <div className="flex flex-col justify-center items-center h-[84vh]">
-          <div className="h-[10vh] w-full px-8">
+          <div className="h-[12vh] w-full px-8">
             <PatientSearchBar />
           </div>
-          <div className="px-8 h-[74vh] pb-4">
+          <div className="px-8 h-[72vh] pb-4">
             <PatientList />
           </div>
         </div>
