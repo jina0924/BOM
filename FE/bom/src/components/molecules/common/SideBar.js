@@ -8,7 +8,7 @@ function SideBar() {
   const location = useLocation();
   const [menuIndex, setMenuIndex] = useState("");
 
-  console.log(menuIndex);
+  // console.log(menuIndex);
 
   useEffect(() => {
     if (location.pathname === "/main") {

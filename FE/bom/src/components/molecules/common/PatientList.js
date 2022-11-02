@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useLocation } from "react-router-dom";
+
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
@@ -116,6 +118,8 @@ function PatientList({ patientListClassName }) {
   const [next, setNext] = useState(0);
   const [previous, setPrevious] = useState(0);
   const [patient, setPatient] = useState({});
+
+  const location = useLocation();
 
   function patientListSuccess(res) {
     console.log(res);
