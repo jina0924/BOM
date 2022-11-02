@@ -25,7 +25,7 @@ def ward(request):
 
     serializer = WardSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=user)
+        serializer.save(user=user, )
 
     # if request.data['isStaff'] == True:
     #     user.update(is_staff=True)

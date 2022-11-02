@@ -18,6 +18,16 @@ $ python manage.py runserver
 
 
 
+### jwt
+
+- Headers
+
+  | Key           | Type   | Description    |
+  | ------------- | ------ | -------------- |
+  | Authorization | String | Bearer {token} |
+
+
+
 # 1. 원무과
 
 ### 병동 등록
@@ -36,24 +46,23 @@ $ python manage.py runserver
 
   | Key       | Type   | Description                 | Mandatory | Example       |
   | --------- | ------ | --------------------------- | --------- | ------------- |
-  | username  | String | 병동 로그인 아이디          | O         | ward101       |
+  | username  | String | 병동 로그인 아이디          | O         | sw509         |
   | password1 | String | 병동 로그인 비밀번호        | O         | xptmxmdlqslek |
   | password2 | String | 병동 로그인 비밀번호 재확인 | O         | xptmxmdlqslek |
-  | number    | String | 병동 번호                   | O         | 101           |
+  | number    | String | 병동 번호                   | O         | 509           |
 
 - Response
 
   ```
   {
       "result": {
-          "id": 1,
+          "id": 29,
           "user": {
-              "id": 1,
-              "is_superuser": false,
-              "username": "ward101",
-              "is_staff": false
+              "id": 66,
+              "username": "sw509"
           },
-          "number": "101"
+          "number": "509",
+          "userType": "ward"
       }
   }
   ```
@@ -80,7 +89,7 @@ $ python manage.py runserver
   | password1         | String | 환자 로그인 비밀번호                     | O         | xptmxmdlqslek |
   | password2         | String | 환자 로그인 비밀번호 재확인              | O         | xptmxmdlqslek |
   | name              | String | 환자 이름                                | O         | 이지수        |
-  | number            | String | 병동 번호 입력하면 환자 번호로 자동 변경 | O         | 101           |
+  | number            | String | 병동 번호 입력하면 환자 번호로 자동 변경 | O         | 507           |
   | doctor            | Int    | 의사 번호                                | O         | 1             |
   | hospitalized_date | String | 입원날짜                                 | O         | 2022-10-31    |
   | birth             | String | 생년월일                                 | O         | 1995-05-07    |
@@ -93,30 +102,28 @@ $ python manage.py runserver
   ```
   {
       "result": {
-          "id": 1,
-          "user": {
-              "id": 2,
-              "is_superuser": false,
-              "username": "221010001",
-              "is_staff": false
-          },
+          "id": 38,
           "ward": {
-              "id": 1,
-              "number": "101",
-              "user": 1
+              "id": 27,
+              "number": "507"
           },
-          "doctor": {
-              "id": 1,
-              "name": "권경민"
+          "user": {
+              "id": 67,
+              "username": "225070038"
           },
           "name": "이지수",
-          "number": "221010001",
-          "hospitalized_date": "2022-10-31",
-          "discharged_date": null,
+          "number": "225070038",
+          "hospitalizedDate": "2022-10-31",
+          "dischargedDate": null,
           "birth": "1995-05-07",
           "sex": "F",
-          "nok_name": "정진아",
-          "nok_phonenumber": "01012345678"
+          "nokName": "정진아",
+          "nokPhonenumber": "01012345678",
+          "userType": "patient",
+          "doctor": {
+              "id": 1,
+              "name": "이대현"
+          }
       }
   }
   ```
@@ -146,18 +153,18 @@ $ python manage.py runserver
 
   | Key      | Type   | Description     | Mandatory | Example       |
   | -------- | ------ | --------------- | --------- | ------------- |
-  | username | String | 로그인 아이디   | O         | ward101       |
+  | username | String | 로그인 아이디   | O         | sw507         |
   | password | String | 로그인 비밀번호 | O         | xptmxmdlqslek |
 
 - Response (200 성공)
 
   ```
   {
-      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY3MjI4NzkwLCJpYXQiOjE2NjcyMjY5OTAsImp0aSI6IjA3YzNjMWZlNzE5ZTQ4NGU4ZDk1ZGZmN2M0OWY2NjRjIiwidXNlcl9pZCI6MX0.2cm0FcE3S82fuNv2JfoPf_2JWRWSFyR06qWsYpXYYqU",
-      "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NzMxMzM5MCwiaWF0IjoxNjY3MjI2OTkwLCJqdGkiOiJiOGM1OGU5M2UwMjY0MTEyOGIxNTMzMWIwMjBjMTE1ZCIsInVzZXJfaWQiOjF9.DVNOxhZOZvQ0xCzsPbyN5laMQY5pfKGwQjTaG8KbQH0",
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY3NTM4NjAzLCJpYXQiOjE2NjczNjU4MDMsImp0aSI6IjgxNjM4OWFlMTIyODQ5ZDM4MGM2N2IzMTMyMDc1YjM2IiwidXNlcl9pZCI6Mjd9.RPW3606gr4Zqd09iGjpNi3Go53K53Xlq1Egxctj8-Es",
+      "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2ODU3NTQwMywiaWF0IjoxNjY3MzY1ODAzLCJqdGkiOiJjMTRiNWUzNTEzYTQ0NzU4OWVhM2Y1MjY0ODBiM2VlMCIsInVzZXJfaWQiOjI3fQ.BdG2dkkmvsX6ySMEg69ayB6H-oKYntGpA_a3EYtKQ6o",
       "user": {
-          "pk": 1,
-          "username": "ward101",
+          "pk": 27,
+          "username": "sw507",
           "email": "",
           "first_name": "",
           "last_name": ""
@@ -194,6 +201,7 @@ $ python manage.py runserver
 ### access token 재발급
 
 - **trailing slash 주의!**
+- 발급된 access token의 키 값이 `access`임에 주의
 - access token이 만료되었을 때 (401) 재발급
 
 - 유효한 refresh token 필요, refresh token이 유효하지 않다면 재로그인
@@ -238,7 +246,7 @@ $ python manage.py runserver
 - URL example
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/221010001
+  http://127.0.0.1:8000/api/wards/patients/225070001
   ```
 
 - Response
@@ -246,27 +254,27 @@ $ python manage.py runserver
   ```
   {
       "id": 1,
-      "user": {
-          "id": 2,
-          "username": "221010001"
-      },
       "ward": {
-          "id": 1,
-          "number": "101",
-          "user": 1
+          "id": 27,
+          "number": "507"
       },
-      "doctor": {
-          "id": 1,
-          "name": "권경민"
+      "user": {
+          "id": 28,
+          "username": "225070001"
       },
       "name": "이지수",
-      "number": "221010001",
-      "hospitalized_date": "2022-10-31",
-      "discharged_date": null,
+      "number": "225070001",
+      "hospitalizedDate": "2022-10-31",
+      "dischargedDate": null,
       "birth": "1995-05-07",
       "sex": "F",
-      "nok_name": "정진아",
-      "nok_phonenumber": "01012345678"
+      "nokName": "정진아",
+      "nokPhonenumber": "01012345678",
+      "userType": "patient",
+      "doctor": {
+          "id": 1,
+          "name": "이대현"
+      }
   }
   ```
 
