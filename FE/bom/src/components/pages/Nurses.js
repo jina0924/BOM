@@ -10,6 +10,12 @@ function Nurses() {
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
+        <div className="nurses-box h-[75vh] px-10">
+          <div className="first-head-box h-[10vh] flex items-center text-main text-xl font-extrabold">
+            <span>1병동 간호사 목록</span>
+          </div>
+          <div className="profiles-box h-[65vh]">2</div>
+        </div>
         <ProfileCard />
       </div>
     </div>
