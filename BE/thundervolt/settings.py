@@ -145,7 +145,15 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://thundervolt.co.kr",
+    "http://thundervolt.co.kr",
+    "https://k7a507.p.ssafy.io",
+    "http://k7a507.p.ssafy.io",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:3000",
+]
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
