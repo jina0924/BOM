@@ -11,7 +11,7 @@ function PatientDetailInfo({ isPC = true }) {
     >
       <div
         className={`title-box font-extrabold h-1/6 flex items-start ${
-          isPC ? "px-6 py-4" : "px-3 py-5"
+          isPC ? "px-6 py-4" : "px-5 py-5"
         }`}
       >
         <Title
