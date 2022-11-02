@@ -12,6 +12,7 @@ import threading
 from datetime import datetime
 import mysql.connector
 from collections import deque
+import numpy as np
 
 import max30102
 import hrcalc
@@ -175,34 +176,58 @@ def getSensor():
 
 
 
-
+is_Finger = False
+o2Warn = False
+warnchange = False
 
 def getHeart():
     global heart_rate,spo2
     global hearts, sps,idx_h
-    m = max30102.MAX30102()
+    global is_Finger,o2Warn,warnchange
 
+    m = max30102.MAX30102()
+    
     while (exit_flag == 0):
-        red, ir = m.read_sequential()
+        red, ir = m.read_sequential(50)
 
         if(exit_flag == 1):
             break
-        hr,hrb,sp,spb = hrcalc.calc_hr_and_spo2(ir,red)
-        
-        print(f'hr detect : {hrb}, sp detect : {spb}')
 
-        if(hrb == True and hr != -999):
-            heart_rate = int(hr)
-            hearts.append(heart_rate)
+        if(np.mean(ir)<50000 and np.mean(red)<50000):
+            is_Finger = False
+            heart_rate = 0
+            spo2 = 0
+            hearts.append(0)
+            sps.append(0)
         else:
-            hearts.append(hearts[9])
-
+            is_Finger = True
+         
+            hr,hrb,sp,spb = hrcalc.calc_hr_and_spo2(ir,red)            
             
-        if(spb == True and sp != -999):
-            spo2 = int(sp)
-            sps.append(spo2)
-        else:
-            sps.append(sps[9])
+            print(f'hr detect : {hrb}, sp detect : {spb}')
+            #print("hr detect : ",hrb)
+            #print("sp detect : ",spb)
+
+            if(hrb == True and hr != -999):
+                hearts.append(int(hr))
+                #heart_rate = int(sum(list(hearts)[50:])/10)
+                #hearts.pop()
+                #hearts.append(heart_rate)
+            else:
+                hearts.append(hearts[59])
+
+                
+            if(spb == True and sp != -999):
+                spo2 = int(sp)
+                sps.append(spo2)
+                if(0<spo2 and spo2 <= 95 and o2Warn == False):
+                    o2Warn = True
+                    warnchange = True
+                elif(spo2>95 and o2Warn == True):
+                    o2Warn = False
+                    warnchange = True
+            else:
+                sps.append(sps[59])
 
 
 
@@ -211,25 +236,9 @@ def getHeart():
 
 t1 = threading.Thread(target=getSensor)
 t2 = threading.Thread(target=getHeart)
-#t1.start()
-#t2.start()
+t1.start()
+t2.start()
 
-
-class LogoPage(QDialog,logoUi):
-    def __init__(self):
-        super().__init__()
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setupUi(self)
-
-    def main(self):
-        global t1,t2
-
-        self.show()
-        t1.start()
-        t2.start()
-        sleep(1)
-        print("========= Thread Start =========")
-        self.close()
 
 
 
@@ -239,13 +248,14 @@ class MainPage(QDialog,QWidget,mainUi):
         super().__init__()
         self.setupUi(self)
         self.battery_amount.setText(str(battery_amount_val))
-        self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
+        self.battery_amount_bar.setGeometry(93, 65, 0.8 * battery_amount_val, 44)
         if(is_charge == True):
             self.label_8.show()
-            #self.battery_amount.setText("충전중")
+        #self.battery_amount.setText("충전중")
         self.clock_timer = QTimer(self)
         self.clock_timer.setInterval(1000)  # 1000ms = 1sec , 화면 렌더링 주기
         self.clock_timer.timeout.connect(self.rendering)
+        self.clock_timer.start()
         
         pg.setConfigOptions(antialias=True)
         self.tick=[]
@@ -266,18 +276,17 @@ class MainPage(QDialog,QWidget,mainUi):
         self.sps_graph.showGrid(x=True, y=True)
         self.sps_plot = self.sps_graph.plot(symbol='o', symbolSize=3, symbolPen='r',pen=pg.mkPen('r', width=2))
 
-
-        
+        if(is_Finger == True):
+            self.finger_img.hide()
+            self.finger_img_2.hide()
         self.plot()
-        self.main()
-
-
-    def main(self):
-        global logo_page
-        logo_page.main()
-        self.clock_timer.start()
-
+        self.is_bms_page = False
+        
+     
     def goBms(self):
+        if(self.is_bms_page == False):
+            self.is_bms_page = True
+            widgets.addWidget(bms_page)
         widgets.setCurrentIndex(1)
     
     def plot(self):
@@ -295,7 +304,10 @@ class MainPage(QDialog,QWidget,mainUi):
         self.sps_plot.setData(xitem, sps)
         spax = self.sps_graph.getAxis('bottom')
         spax.setTicks(self.tick2)
-
+   
+    def hideLogo(self):
+        self.first_back.hide()
+        self.first_logo.hide()
 
     def rendering(self):
         global battery_amount_val
@@ -307,11 +319,24 @@ class MainPage(QDialog,QWidget,mainUi):
         
         self.battery_amount.setText(str(battery_amount_val)+"%")
 
-        self.battery_amount_bar.setGeometry(93, 60, 0.8 * battery_amount_val, 44)
-
+        self.battery_amount_bar.setGeometry(93, 65, 0.8 * battery_amount_val, 44)
+        
+        if(is_Finger == True):
+            self.finger_img.hide()
+            self.finger_img_2.hide()
+        else:
+            self.finger_img.show()
+            self.finger_img_2.show()
         self.temp_label.setText(str(temp_human))
         self.heart_label.setText(str(heart_rate))
         self.o2_label.setText(str(spo2))
+        if(warnchange == True):
+            if(o2Warn == True):
+                self.o2_label.setStyleSheet(u"color: rgb(234,84,85); background-color: rgb(255, 255, 255);")
+            else:
+                self.o2_label.setStyleSheet(u"color: rgb(26, 50, 98);background-color: rgb(255, 255, 255);")
+
+
         self.plot()
 
 
@@ -342,22 +367,19 @@ class BmsPage(QDialog,QWidget,bmsUi):
 
 
 
-
-
+def hidelogo():
+    global main_page
+    main_page.hidelogo()
 
 app = QApplication()
 
-logo_page=LogoPage()
 main_page = MainPage()
 bms_page = BmsPage()
 
 
-logo_page.setGeometry(0,0,1280,720)
 
 widgets = QStackedWidget()
 widgets.addWidget(main_page)
-widgets.addWidget(bms_page)
-
 widgets.setGeometry(0,0,1280,720)
 
 #
@@ -368,7 +390,9 @@ widgets.setGeometry(0,0,1280,720)
 #     except Exception as e:
 #         print(e)
 
+print("show widget")
 widgets.show()
+threading.Timer(3,main_page.hideLogo).start()
 app.exec_()
 
 # app = QApplication()
