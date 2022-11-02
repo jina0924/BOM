@@ -33,12 +33,12 @@ class Ui_Form(object):
         self.logo_link.setStyleSheet(u"border-image: url(:/logo/img/logo_little.png);")
         self.label_3 = QLabel(Form)
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setGeometry(QRect(88, 55, 95, 54))
+        self.label_3.setGeometry(QRect(88, 60, 95, 54))
         self.label_3.setStyleSheet(u"border-image: url(:/icons/img/battery.png);\n"
 "background-color : rgb(246, 247, 248);")
         self.battery_amount = QLabel(Form)
         self.battery_amount.setObjectName(u"battery_amount")
-        self.battery_amount.setGeometry(QRect(210, 53, 101, 61))
+        self.battery_amount.setGeometry(QRect(210, 58, 101, 61))
         font = QFont()
         font.setFamilies([u"Noto Sans KR"])
         font.setPointSize(22)
@@ -48,7 +48,7 @@ class Ui_Form(object):
 "background-color: rgb(246, 247, 248);")
         self.battery_amount_bar = QLabel(Form)
         self.battery_amount_bar.setObjectName(u"battery_amount_bar")
-        self.battery_amount_bar.setGeometry(QRect(93, 60, 80, 44))
+        self.battery_amount_bar.setGeometry(QRect(93, 65, 80, 44))
         self.battery_amount_bar.setStyleSheet(u"background-color: rgb(26, 50, 98);")
         self.box2 = QLabel(Form)
         self.box2.setObjectName(u"box2")
@@ -255,12 +255,12 @@ class Ui_Form(object):
         self.exit_btn.setStyleSheet(u"border-image: url(:/icons/img/exit_icon.png);")
         self.label_8 = QLabel(Form)
         self.label_8.setObjectName(u"label_8")
-        self.label_8.setGeometry(QRect(123, 67, 21, 31))
+        self.label_8.setGeometry(QRect(123, 72, 21, 31))
         self.label_8.setStyleSheet(u"background-color: rgba(26, 50, 99,0);\n"
 "border-image: url(:/icons/img/volt_icon.png);")
         self.bms_btn = QPushButton(Form)
         self.bms_btn.setObjectName(u"bms_btn")
-        self.bms_btn.setGeometry(QRect(80, 50, 181, 71))
+        self.bms_btn.setGeometry(QRect(80, 55, 181, 71))
         self.bms_btn.setStyleSheet(u"background-color: rgba(255, 255, 255, 0);")
         self.temps_graph = PlotWidget(Form)
         self.temps_graph.setObjectName(u"temps_graph")
@@ -271,6 +271,35 @@ class Ui_Form(object):
         self.sps_graph = PlotWidget(Form)
         self.sps_graph.setObjectName(u"sps_graph")
         self.sps_graph.setGeometry(QRect(620, 534, 581, 151))
+        self.bmsg = QLabel(Form)
+        self.bmsg.setObjectName(u"bmsg")
+        self.bmsg.setGeometry(QRect(88, 10, 241, 51))
+        font6 = QFont()
+        font6.setFamilies([u"Noto Sans KR"])
+        font6.setPointSize(10)
+        font6.setBold(False)
+        self.bmsg.setFont(font6)
+        self.bmsg.setStyleSheet(u"color: rgb(26, 50, 99);")
+        self.finger_img = QLabel(Form)
+        self.finger_img.setObjectName(u"finger_img")
+        self.finger_img.setGeometry(QRect(560, 440, 41, 41))
+        self.finger_img.setStyleSheet(u"border-image: url(:/icons/img/finger_off.png);\n"
+"background-color:rgb(255,255,255);")
+        self.finger_img_2 = QLabel(Form)
+        self.finger_img_2.setObjectName(u"finger_img_2")
+        self.finger_img_2.setGeometry(QRect(560, 630, 41, 41))
+        self.finger_img_2.setStyleSheet(u"border-image: url(:/icons/img/finger_off.png);\n"
+"background-color:rgb(255,255,255);")
+
+        self.first_back = QLabel(Form)
+        self.first_back.setObjectName(u"first_back")
+        self.first_back.setGeometry(QRect(0,0,1280,720))
+        self.first_back.setStyleSheet(u"background-color:rgb(246,247,248)")
+
+        self.first_logo = QLabel(Form)
+        self.first_logo.setObjectName(u"first_logo")
+        self.first_logo.setGeometry(QRect(100,200,1020,345))
+        self.first_logo.setStyleSheet(u"background-color:rgb(246,247,248);border-image:url(:/logo/img/logo.png);")
 
         self.shadow1 = QGraphicsDropShadowEffect()
         self.shadow1.setColor(QColor(212, 212, 212))
@@ -304,6 +333,7 @@ class Ui_Form(object):
 
 
         self.logo_link.raise_()
+        self.bmsg.raise_()
         self.label_3.raise_()
         self.battery_amount_bar.raise_()
         self.box2.raise_()
@@ -347,6 +377,10 @@ class Ui_Form(object):
         self.temps_graph.raise_()
         self.hearts_graph.raise_()
         self.sps_graph.raise_()
+        self.finger_img.raise_()
+        self.finger_img_2.raise_()
+        self.first_back.raise_()
+        self.first_logo.raise_()
 
         self.retranslateUi(Form)
         self.exit_btn.clicked.connect(Form.exit)
@@ -398,5 +432,12 @@ class Ui_Form(object):
         self.exit_btn.setText("")
         self.label_8.setText("")
         self.bms_btn.setText("")
+        self.bmsg.setText(QCoreApplication.translate("Form", u"\uc790\uc138\ud55c \ubc30\ud130\ub9ac \uc815\ubcf4\ub97c \uc6d0\ud558\uc2e0\ub2e4\uba74 \n"
+"\ubc30\ud130\ub9ac\ub97c \ud074\ub9ad\ud558\uc138\uc694", None))
+        self.finger_img.setText("")
+        self.finger_img_2.setText("")
+        self.first_back.setText("")
+        self.first_logo.setText("")
+
     # retranslateUi
 
