@@ -19,7 +19,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
         <>
           <div
             className={`title-box font-extrabold flex items-start ${
-              isPC ? "px-6 py-4 h-1/6" : "px-3 pt-2 pb-3"
+              isPC ? "px-6 py-4 h-1/6" : "px-3 py-5"
             }`}
           >
             <Title
@@ -55,7 +55,11 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
       )}
       {part === "심박수" && (
         <>
-          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+          <div
+            className={`title-box font-extrabold flex items-start ${
+              isPC ? "px-6 py-4 h-1/6" : "px-3 py-5"
+            }`}
+          >
             <Title
               iconTag="UilHeartbeat"
               iconTagClassName="text-sub1 inline mr-3"
@@ -88,7 +92,11 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
       )}
       {part === "산소포화도" && (
         <>
-          <div className="top-box flex justify-between h-1/6 py-4 px-6">
+          <div
+            className={`title-box font-extrabold flex items-start ${
+              isPC ? "px-6 py-4 h-1/6" : "px-3 py-5"
+            }`}
+          >
             <Title
               iconTag="UilPercentage"
               iconTagClassName="text-sub1 inline mr-3"

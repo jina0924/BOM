@@ -11,7 +11,7 @@ function PatientDetailInfo({ isPC = true }) {
     >
       <div
         className={`title-box font-extrabold h-1/6 flex items-start ${
-          isPC ? "px-6 py-4" : "px-3 pt-2 pb-2"
+          isPC ? "px-6 py-4" : "px-3 py-5"
         }`}
       >
         <Title
@@ -23,13 +23,13 @@ function PatientDetailInfo({ isPC = true }) {
       </div>
       <div className="content-box h-5/6 flex items-center justify-center">
         <div>
-          <div className="first-box flex justify-center pb-1">
+          <div className="first-box flex justify-center pb-2">
             <PatientInfoKeyValue isPC={isPC} key1="환자정보" value="1" />
             <PatientInfoKeyValue isPC={isPC} key1="이름" value="2" />
             <PatientInfoKeyValue isPC={isPC} key1="나이" value="3" />
             <PatientInfoKeyValue isPC={isPC} key1="성별" value="4" />
           </div>
-          <div className="second-box flex justify-center pt-1">
+          <div className="second-box flex justify-center pt-2">
             <PatientInfoKeyValue isPC={isPC} key1="보호자" value="5" />
             <PatientInfoKeyValue isPC={isPC} key1="보호자 연락처" value="6" />
             <PatientInfoKeyValue isPC={isPC} key1="주치의" value="7" />
