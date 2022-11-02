@@ -5,7 +5,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const NurseApi = axios.create({
-  baseURL: "http://thundervolt.co.kr:8000/api/",
+  baseURL: "http://thundervolt.co.kr/api/",
   headers: {
     "Content-Type": "application/json",
   },

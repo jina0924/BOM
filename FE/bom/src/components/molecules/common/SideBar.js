@@ -23,7 +23,7 @@ function SideBar() {
   }, [location]);
 
   return (
-    <div className="col-span-1 rounded-l-[20px] bg-white shadow-side">
+    <div className="col-span-1 rounded-l-[20px] bg-white shadow-side h-[95vh]">
       <Logo logoClassName="pl-8 h-[11vh] flex items-center" />
       <ul className="menu-list">
         <Link to="/main">
