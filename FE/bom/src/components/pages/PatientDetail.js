@@ -1,4 +1,4 @@
-import { useState, React } from "react";
+import { useState, React, useEffect } from "react";
 
 // components
 import SideBar from "components/molecules/common/SideBar";
@@ -9,8 +9,8 @@ import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
 import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
 import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
-import { useEffect } from "react";
 import Logo from "components/atoms/Logo";
+import Btn from "components/atoms/Btn";
 
 function PatientDetail() {
   const [component, setComponent] = useState(0);
@@ -142,21 +142,28 @@ function PatientDetail() {
         </div>
       )}
       {!isPC && (
-        <div className="patient-detail bg-back">
-          <div className="log">
-            <Logo logoClassName="justify-center pt-8 pb-8" />
+        <div className="patient-detail bg-back my-5">
+          <div className="log0">
+            <Logo logoClassName="justify-center pb-5" />
           </div>
           <div className="patient-detail-info mx-4 mb-4">
             <PatientDetailInfo isPC={isPC} />
           </div>
-          <div className="temperature mx-4 mb-4">
+          <div className="temperature mx-4 mb-4 ">
             <BodyInfo part="체온" isPC={isPC} />
           </div>
-          <div className="heartbeat mx-4 mb-4">
+          <div className="heartbeat mx-4 mb-4 ">
             <BodyInfo part="심박수" isPC={isPC} />
           </div>
-          <div className="oxyzen-percentage mx-4 mb-4">
+          <div className="oxyzen-percentage mx-4 mb-4 ">
             <BodyInfo part="산소포화도" isPC={isPC} />
+          </div>
+          <div className="logout-btn mx-4">
+            <Btn
+              className="patient-body-info w-full h-full bg-white rounded-lg shadow-box p-3 text-main text-sm hover:bg-main hover:text-white focus:outline-none"
+              content="로그아웃"
+              onClickFunction={() => {}}
+            />
           </div>
         </div>
       )}
