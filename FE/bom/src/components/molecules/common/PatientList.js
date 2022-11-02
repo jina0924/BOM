@@ -173,42 +173,42 @@ function PatientList({ patientListClassName }) {
           <table className="table w-[85%] border-collapse px-4 mx-auto">
             <thead>
               <tr>
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   환자 번호
                 </th>
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   이름
                 </th>
                 {pathname === "patients" && (
-                  <th className="text-sm font-normal border-b-[1px] py-2">
+                  <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                     나이
                   </th>
                 )}
                 {pathname === "patients" && (
-                  <th className="text-sm font-normal border-b-[1px] py-2">
+                  <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                     성별
                   </th>
                 )}
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   체온
                 </th>
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   심박수
                 </th>
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   산소포화도
                 </th>
                 {pathname === "patients" && (
-                  <th className="text-sm font-normal border-b-[1px] py-2">
+                  <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                     보호자
                   </th>
                 )}
                 {pathname === "patients" && (
-                  <th className="text-sm font-normal border-b-[1px] py-2">
+                  <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                     보호자 연락처
                   </th>
                 )}
-                <th className="text-sm font-normal border-b-[1px] py-2">
+                <th className="text-sm font-normal border-b-[1px] py-2 bg-white">
                   주치의
                 </th>
               </tr>

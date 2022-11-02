@@ -15,7 +15,7 @@ function Patients() {
           <div className="h-[12vh] w-full px-8">
             <PatientSearchBar />
           </div>
-          <div className="px-8 h-[72vh] pb-4">
+          <div className="px-8 h-[72vh] pb-4 w-full">
             <PatientList />
           </div>
         </div>
