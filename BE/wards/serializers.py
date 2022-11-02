@@ -73,3 +73,10 @@ class WardDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ward
         fields = '__all__'
+
+
+class TemperatureSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PatientStatus
+        fields = ('id', 'temperature', 'now',)
