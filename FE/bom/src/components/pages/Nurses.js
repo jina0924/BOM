@@ -6,7 +6,7 @@ import ProfileCard from "components/molecules/common/ProfileCard";
 
 function Nurses() {
   return (
-    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6 font-suit">
+    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
