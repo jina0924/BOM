@@ -27,7 +27,7 @@ function PatientDetail() {
   return (
     <>
       {isPC && (
-        <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-6 font-suit">
+        <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
           <SideBar />
           <div className="right-box col-span-5 h-full">
             <HeadBar />
