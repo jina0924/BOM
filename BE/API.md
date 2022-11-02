@@ -280,9 +280,11 @@ $ python manage.py runserver
 
 
 
-### 환자 건강 정보 조회
+### 환자 체온 조회
 
-- 실시간 + 기간
+- 실시간(now) + 기간(period)
+
+- 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
 
 - access token 필요
 
@@ -291,19 +293,87 @@ $ python manage.py runserver
 - URL
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/<str:patientNumber>/health
+  http://127.0.0.1:8000/api/wards/patients/<str:patientNumber>/temperature
   ```
 
 - URL example
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/221010001/health
+  http://127.0.0.1:8000/api/wards/patients/225070001/temperature
   ```
 
 - Response
 
   ```
-  
+  {
+      "now": {
+          "id": 15,
+          "temperature": 36,
+          "now": "2022-11-02T22:30:10"
+      },
+      "period": [
+          {
+              "id": 4,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:15"
+          },
+          {
+              "id": 5,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:20"
+          },
+          {
+              "id": 6,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:25"
+          },
+          {
+              "id": 7,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:30"
+          },
+          {
+              "id": 8,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:35"
+          },
+          {
+              "id": 9,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:40"
+          },
+          {
+              "id": 10,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:45"
+          },
+          {
+              "id": 11,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:50"
+          },
+          {
+              "id": 12,
+              "temperature": 36,
+              "now": "2022-11-02T22:29:55"
+          },
+          {
+              "id": 13,
+              "temperature": 36,
+              "now": "2022-11-02T22:30:00"
+          },
+          {
+              "id": 14,
+              "temperature": 36,
+              "now": "2022-11-02T22:30:05"
+          },
+          {
+              "id": 15,
+              "temperature": 36,
+              "now": "2022-11-02T22:30:10"
+          }
+      ]
+  }
   ```
 
 
