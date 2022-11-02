@@ -7,7 +7,7 @@ import PatientList from "components/molecules/common/PatientList";
 
 function Patients() {
   return (
-    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
+    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
@@ -15,7 +15,7 @@ function Patients() {
           <div className="h-[12vh] w-full px-8">
             <PatientSearchBar />
           </div>
-          <div className="px-8 h-[72vh] pb-4">
+          <div className="px-8 h-[72vh] pb-4 w-full">
             <PatientList />
           </div>
         </div>
