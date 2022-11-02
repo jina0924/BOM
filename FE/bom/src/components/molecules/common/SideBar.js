@@ -24,7 +24,7 @@ function SideBar() {
 
   return (
     <div className="col-span-1 rounded-l-[20px] bg-white shadow-side h-[95vh]">
-      <Logo logoClassName="pl-8 h-[11vh] flex items-center" />
+      <Logo logoClassName="pl-8 h-[11vh]" />
       <ul className="menu-list">
         <Link to="/main">
           <MenuItem menu="home" isActive={menuIndex === 0 ? true : false}>
