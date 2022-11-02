@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { requestLogin } from "api/nurse";
+import { requestLogin } from "api/nurseLogin";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
+
+import ls from "helper/LocalStorage";
 
 import "./Login.css";
 
@@ -24,9 +26,12 @@ function Login() {
   }
 
   function loginSuccess(res) {
-    // const accessToken = res.data.access_token;
-    // const refreshToken = res.data.refresh_token;
-    // const user = res.data.user;
+    const accessToken = res.data.access_token;
+    const refreshToken = res.data.refresh_token;
+    const user = res.data.user;
+    ls.set("accessToken", accessToken);
+    ls.set("refreshToken", refreshToken);
+    console.log(res);
     navigate("/main");
   }
 
