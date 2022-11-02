@@ -15,7 +15,7 @@ const tempPatientLiST = {
     {
       pk: "0001",
       name: "임진경",
-      age: 5,
+      age: 80,
       gender: "M",
       status_temperature: 36.5,
       status_bpm: 129,
@@ -28,7 +28,7 @@ const tempPatientLiST = {
       pk: "0002",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -40,7 +40,7 @@ const tempPatientLiST = {
       pk: "0003",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -52,7 +52,7 @@ const tempPatientLiST = {
       pk: "0004",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -64,7 +64,7 @@ const tempPatientLiST = {
       pk: "0005",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -76,7 +76,7 @@ const tempPatientLiST = {
       pk: "0006",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -88,7 +88,7 @@ const tempPatientLiST = {
       pk: "0007",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -100,7 +100,7 @@ const tempPatientLiST = {
       pk: "0008",
       name: "임진경",
       age: 5,
-      gender: "M",
+      gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
       oxygen_saturation: 100,
@@ -118,8 +118,19 @@ function PatientList({ patientListClassName }) {
   const [next, setNext] = useState(0);
   const [previous, setPrevious] = useState(0);
   const [patient, setPatient] = useState({});
+  const [pathname, setPathname] = useState("");
 
   const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/main") {
+      setPathname("main");
+      // 환자리스트 limit=8로 요청보내기
+    } else if (location.pathname === "/patients") {
+      setPathname("patients");
+      // 환자리스트 limit=9로 요청보내기
+    }
+  }, [location]);
 
   function patientListSuccess(res) {
     console.log(res);
@@ -159,7 +170,7 @@ function PatientList({ patientListClassName }) {
       </div>
       <div className="h-[90%] overflow-x-auto">
         <div className="h-full flex flex-col justify-evenly items-center">
-          <table className="table-fixed w-[85%] border-collapse px-4 mx-auto">
+          <table className="table w-[85%] border-collapse px-4 mx-auto">
             <thead>
               <tr>
                 <th className="text-sm font-normal border-b-[1px] py-2">
@@ -168,6 +179,16 @@ function PatientList({ patientListClassName }) {
                 <th className="text-sm font-normal border-b-[1px] py-2">
                   이름
                 </th>
+                {pathname === "patients" && (
+                  <th className="text-sm font-normal border-b-[1px] py-2">
+                    나이
+                  </th>
+                )}
+                {pathname === "patients" && (
+                  <th className="text-sm font-normal border-b-[1px] py-2">
+                    성별
+                  </th>
+                )}
                 <th className="text-sm font-normal border-b-[1px] py-2">
                   체온
                 </th>
@@ -177,6 +198,16 @@ function PatientList({ patientListClassName }) {
                 <th className="text-sm font-normal border-b-[1px] py-2">
                   산소포화도
                 </th>
+                {pathname === "patients" && (
+                  <th className="text-sm font-normal border-b-[1px] py-2">
+                    보호자
+                  </th>
+                )}
+                {pathname === "patients" && (
+                  <th className="text-sm font-normal border-b-[1px] py-2">
+                    보호자 연락처
+                  </th>
+                )}
                 <th className="text-sm font-normal border-b-[1px] py-2">
                   주치의
                 </th>
@@ -192,6 +223,21 @@ function PatientList({ patientListClassName }) {
                     <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                       {item.name}
                     </td>
+                    {pathname === "patients" && (
+                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                        {item.age}
+                      </td>
+                    )}
+                    {pathname === "patients" && item.gender === "M" && (
+                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                        남
+                      </td>
+                    )}
+                    {pathname === "patients" && item.gender === "F" && (
+                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                        여
+                      </td>
+                    )}
                     <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                       {item.status_temperature}
                     </td>
@@ -201,6 +247,19 @@ function PatientList({ patientListClassName }) {
                     <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                       {item.oxygen_saturation}
                     </td>
+                    {pathname === "patients" && (
+                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                        {item.nok_name}
+                      </td>
+                    )}
+                    {pathname === "patients" && (
+                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                        {item.nok_phonenumber.replace(
+                          /^(\d{2,3})(\d{3,4})(\d{4})$/,
+                          `$1-$2-$3`
+                        )}
+                      </td>
+                    )}
                     <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
                       {item.doctor_name}
                     </td>
