@@ -152,8 +152,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://k7a507.p.ssafy.io",
     "http://k7a507.p.ssafy.io",
     "http://127.0.0.1:8080",
-    "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SAMESITE = 'None'
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
