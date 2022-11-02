@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
-import { requestPatientList } from "api/patients";
+import { requestPatientList } from "api/nurse/patients";
 
 const tempPatientLiST = {
   count: 158,
