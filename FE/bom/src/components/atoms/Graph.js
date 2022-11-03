@@ -96,7 +96,7 @@ function Graph({
     <>
       {isPC && (
         <>
-          {part == "체온" && (
+          {part === "체온" && (
             <ResponsiveContainer width="100%" height="90%">
               <LineChart
                 data={data}
@@ -122,7 +122,7 @@ function Graph({
               </LineChart>
             </ResponsiveContainer>
           )}
-          {part == "심박수" && (
+          {part === "심박수" && (
             <ResponsiveContainer width="100%" height="90%">
               <LineChart
                 data={data}
@@ -148,8 +148,61 @@ function Graph({
               </LineChart>
             </ResponsiveContainer>
           )}
-          {part == "산소포화도" && (
+          {part === "산소포화도" && (
             <ResponsiveContainer width="100%" height="90%">
+              <LineChart
+                data={data}
+                margin={{
+                  top: 0,
+                  right: 50,
+                  // left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[30, 45]} />
+                <Tooltip />
+                <Legend verticalAlign="top" width="100%" />
+                <Line
+                  type="monotone"
+                  dataKey="최대"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+
+          {part === "전압" && (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{
+                  top: 0,
+                  right: 50,
+                  // left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[30, 45]} />
+                <Tooltip />
+                <Legend verticalAlign="top" width="100%" />
+                <Line
+                  type="monotone"
+                  dataKey="최대"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+          {part === "온도" && (
+            <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={data}
                 margin={{
@@ -178,7 +231,7 @@ function Graph({
       )}
       {!isPC && (
         <>
-          {part == "체온" && (
+          {part === "체온" && (
             <ResponsiveContainer width="100%" height={150}>
               <LineChart
                 data={data}
@@ -204,7 +257,7 @@ function Graph({
               </LineChart>
             </ResponsiveContainer>
           )}
-          {part == "심박수" && (
+          {part === "심박수" && (
             <ResponsiveContainer width="100%" height={150}>
               <LineChart
                 data={data}
@@ -230,7 +283,7 @@ function Graph({
               </LineChart>
             </ResponsiveContainer>
           )}
-          {part == "산소포화도" && (
+          {part === "산소포화도" && (
             <ResponsiveContainer width="100%" height={150}>
               <LineChart
                 data={data}
