@@ -131,13 +131,13 @@ $ python manage.py runserver
 
 
 
-# 2. 간호사, 보호자
+# 2. 병동, 환자
 
 ### 로그인
 
 - **trailing slash 주의!**
 
-- 보호자(환자)와 병동 모두 같은 api
+- 환자와 병동 모두 같은 api
 
 - 재로그인시 access token, refresh token 모두 재발급
 
@@ -156,7 +156,7 @@ $ python manage.py runserver
   | username | String | 로그인 아이디   | O         | sw507         |
   | password | String | 로그인 비밀번호 | O         | xptmxmdlqslek |
 
-- Response (200 성공)
+- Response: 200 성공
 
   ```
   {
@@ -178,7 +178,7 @@ $ python manage.py runserver
 
 - **trailing slash 주의!**
 
-- 보호자(환자)와 병동 모두 같은 api
+- 환자와 병동 모두 같은 api
 
 - POST
 
@@ -230,6 +230,40 @@ $ python manage.py runserver
   ```
 
 
+
+### 유저 타입
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/accounts/user/usertype
+  ```
+
+- Response: 병동
+
+  ```
+  {
+      "userType": "ward",
+      "number": "507"
+  }
+  ```
+
+- Response: 환자
+
+  ```
+  {
+      "userType": "patient",
+      "number": "225070001"
+  }
+  ```
+
+
+
+# 3. 병동
 
 ### 환자 정보 상세 조회
 
@@ -284,6 +318,8 @@ $ python manage.py runserver
 
 - 실시간(now) + 기간(period)
 
+- 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
+
 - 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
 
 - access token 필요
@@ -302,83 +338,40 @@ $ python manage.py runserver
   http://127.0.0.1:8000/api/wards/patients/225070001/temperature
   ```
 
-- Response
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070001/temperature?period=month
+  ```
+
+- Params
+
+  | Key    | Type   | Description                                 | Mandatory | Example |
+  | ------ | ------ | ------------------------------------------- | --------- | ------- |
+  | period | String | month<br />week<br />day<br />now (default) |           | month   |
+
+- Response: month
 
   ```
-  {
-      "now": {
-          "id": 15,
-          "temperature": 36,
-          "now": "2022-11-02T22:30:10"
-      },
-      "period": [
-          {
-              "id": 4,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:15"
-          },
-          {
-              "id": 5,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:20"
-          },
-          {
-              "id": 6,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:25"
-          },
-          {
-              "id": 7,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:30"
-          },
-          {
-              "id": 8,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:35"
-          },
-          {
-              "id": 9,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:40"
-          },
-          {
-              "id": 10,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:45"
-          },
-          {
-              "id": 11,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:50"
-          },
-          {
-              "id": 12,
-              "temperature": 36,
-              "now": "2022-11-02T22:29:55"
-          },
-          {
-              "id": 13,
-              "temperature": 36,
-              "now": "2022-11-02T22:30:00"
-          },
-          {
-              "id": 14,
-              "temperature": 36,
-              "now": "2022-11-02T22:30:05"
-          },
-          {
-              "id": 15,
-              "temperature": 36,
-              "now": "2022-11-02T22:30:10"
-          }
-      ]
-  }
+  
+  ```
+
+- Response: week
+
+  ```
+  ```
+
+- Response: day
+
+  ```
+  
+  ```
+
+- Response: now
+
+  ```
+  
   ```
 
 
-
-# 3. 간호사
 
 ### 병동 정보 조회
 
