@@ -351,29 +351,518 @@ $ python manage.py runserver
 - Response: month
 
   ```
-  
+  {
+      "now": {
+          "temperature": null,
+          "now": null
+      },
+      "period": [
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-02"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-03"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-04"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-05"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-06"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-07"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-08"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-09"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-10"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-11"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-12"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-13"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-14"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-15"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-16"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-17"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-18"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-19"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-20"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-21"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-22"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-23"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-24"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-25"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-26"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-27"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-28"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-29"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-30"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-01"
+          }
+      ]
+  }
   ```
 
 - Response: week
 
   ```
+  {
+      "now": {
+          "temperature": null,
+          "now": null
+      },
+      "period": [
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-26 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-26 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-27 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-27 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-28 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-28 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-29 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-29 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-30 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-09-30 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-01 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-01 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 12:00:00"
+          }
+      ]
+  }
   ```
 
 - Response: day
 
   ```
-  
+  {
+      "now": {
+          "temperature": null,
+          "now": null
+      },
+      "period": [
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-01 22:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-01 23:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 00:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 01:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 02:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 03:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 04:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 05:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 06:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 07:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 08:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 09:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 10:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 11:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 12:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 13:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 14:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 15:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 16:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 17:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 18:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 19:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 20:00:00"
+          },
+          {
+              "maxTemperature": 0.0,
+              "minTemperature": 0.0,
+              "now": "2022-10-02 21:00:00"
+          }
+      ]
+  }
   ```
 
 - Response: now
 
   ```
-  
+  {
+      "now": {
+          "temperature": null,
+          "now": null
+      },
+      "period": [
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:30"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:35"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:40"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:45"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:50"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:30:55"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:00"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:05"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:10"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:15"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:20"
+          },
+          {
+              "temperature": 0.0,
+              "now": "2022-10-02 22:31:25"
+          }
+      ]
+  }
   ```
 
 
 
-### 병동 정보 조회
+### 환자 심박수 조회
+
+- 실시간(now) + 기간(period)
+
+- 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
+
+- 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/<str:patientNumber>/bpm
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070001/bpm
+  ```
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070001/bpm?period=month
+  ```
+
+- Params
+
+  | Key    | Type   | Description                                 | Mandatory | Example |
+  | ------ | ------ | ------------------------------------------- | --------- | ------- |
+  | period | String | month<br />week<br />day<br />now (default) |           | month   |
+
+
+
+### 환자 산소포화도 조회
+
+- 실시간(now) + 기간(period)
+
+- 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
+
+- 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/<str:patientNumber>/oxygen-saturation
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070001/oxygen-saturation
+  ```
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070001/oxygen-saturation?period=month
+  ```
+
+- Params
+
+  | Key    | Type   | Description                                 | Mandatory | Example |
+  | ------ | ------ | ------------------------------------------- | --------- | ------- |
+  | period | String | month<br />week<br />day<br />now (default) |           | month   |
+
+
+
+### 병동 정보 조회: 수정 필요
 
 - access token 필요
 
@@ -399,12 +888,158 @@ $ python manage.py runserver
 
 
 
-### 환자 목록 조회
+### 환자 목록 조회: 수정 필요
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients
+  ```
+
+- Response
+
+  ```
+  
+  ```
 
 
 
 ### 간호사 목록 조회
 
+- 해당 병동에서 근무하는 간호사만 조회
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/nurse
+  ```
+
+- Response
+
+  ```
+  [
+      {
+          "id": 1,
+          "name": "임진경",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+          "phonenumber": "01012341234",
+          "email": "nurse@gmail.com",
+          "position": "간호과장"
+      },
+      {
+          "id": 12,
+          "name": "임진경",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+          "phonenumber": "01012341234",
+          "email": "nurse@gmail.com",
+          "position": "수간호사"
+      },
+      {
+          "id": 13,
+          "name": "임진경",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+          "phonenumber": "01012341234",
+          "email": "nurse@gmail.com",
+          "position": "책임간호사"
+      },
+      {
+          "id": 22,
+          "name": "임진경",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+          "phonenumber": "01012341234",
+          "email": "nurse@gmail.com",
+          "position": "주임간호사"
+      },
+      {
+          "id": 32,
+          "name": "임진경",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+          "phonenumber": "01012341234",
+          "email": "nurse@gmail.com",
+          "position": "평간호사"
+      }
+  ]
+  ```
+
 
 
 ### 의사 목록 조회
+
+- 해당 병동에 입원한 환자를 담당하는 의사만 조회
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/doctor
+  ```
+
+- Response
+
+  ```
+  [
+      {
+          "id": 1,
+          "name": "이대현",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+          "phonenumber": "01056785678",
+          "email": "doctor@gmail.com",
+          "department": "신경외과"
+      },
+      {
+          "id": 2,
+          "name": "이대현",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+          "phonenumber": "01056785678",
+          "email": "doctor@gmail.com",
+          "department": "정형외과"
+      },
+      {
+          "id": 4,
+          "name": "이대현",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+          "phonenumber": "01056785678",
+          "email": "doctor@gmail.com",
+          "department": "소아청소년과"
+      },
+      {
+          "id": 7,
+          "name": "이대현",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+          "phonenumber": "01056785678",
+          "email": "doctor@gmail.com",
+          "department": "산부인과"
+      },
+      {
+          "id": 21,
+          "name": "이대현",
+          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+          "phonenumber": "01056785678",
+          "email": "doctor@gmail.com",
+          "department": "흉부외과"
+      }
+  ]
+  ```
+
+  
+
+### BMS
+
+
+
+### 알림 조회
+
+
+
+### 알림 확인
