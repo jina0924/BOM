@@ -55,37 +55,37 @@ function Graph({
   isPC,
   data = [
     {
-      name: "Page A",
+      name: "2020-11-01",
       최소: 35.2,
       최대: 36.6,
     },
     {
-      name: "Page B",
+      name: "2020-11-02",
       최소: 36.6,
       최대: 40.0,
     },
     {
-      name: "Page C",
+      name: "2020-11-03",
       최소: 36.5,
       최대: 37.2,
     },
     {
-      name: "Page D",
+      name: "2020-11-04",
       최소: 37,
       최대: 39,
     },
     {
-      name: "Page E",
+      name: "2020-11-05",
       최소: 38,
       최대: 40.1,
     },
     {
-      name: "Page F",
+      name: "2020-11-06",
       최소: 35,
       최대: 38,
     },
     {
-      name: "Page G",
+      name: "2020-11-07",
       최소: 34,
       최대: 36,
     },
@@ -97,14 +97,14 @@ function Graph({
       {isPC && (
         <>
           {part == "체온" && (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="90%">
               <LineChart
                 data={data}
                 margin={{
                   top: 0,
                   right: 50,
                   // left: 20,
-                  // bottom: 5,
+                  bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -123,14 +123,14 @@ function Graph({
             </ResponsiveContainer>
           )}
           {part == "심박수" && (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="90%">
               <LineChart
                 data={data}
                 margin={{
                   top: 0,
                   right: 50,
                   // left: 20,
-                  // bottom: 5,
+                  bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -149,14 +149,14 @@ function Graph({
             </ResponsiveContainer>
           )}
           {part == "산소포화도" && (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="90%">
               <LineChart
                 data={data}
                 margin={{
                   top: 0,
                   right: 50,
                   // left: 20,
-                  // bottom: 5,
+                  bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
