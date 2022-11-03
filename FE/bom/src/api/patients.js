@@ -1,7 +1,7 @@
-import NurseApi from "./UserApi";
+import UserApi from "api/UserApi";
 
 function requestPatientList(patientNumber, success, fail) {
-  NurseApi.get(`wards/patients/${patientNumber}`).then(success).catch(fail);
+  UserApi.get(`wards/patients/${patientNumber}`).then(success).catch(fail);
 }
 
 export { requestPatientList };
