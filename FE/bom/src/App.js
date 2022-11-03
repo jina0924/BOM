@@ -6,15 +6,9 @@ import ContactBtn from "components/atoms/ContactBtn";
 
 import ls from "helper/LocalStorage";
 
-// import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
 import { requestAccessToken } from "api/login";
 
 function App() {
-  // const location = useLocation();
-  const navigate = useNavigate();
-
   function getAccessTokenSuccess(res) {
     console.log(res);
   }
@@ -28,9 +22,6 @@ function App() {
     const refreshToken = ls.get("refreshToken");
     if (!!refreshToken) {
       requestAccessToken(getAccessTokenSuccess, getAccessTokenFail);
-    } else {
-      alert("다시 로그인하세요");
-      navigate("/");
     }
   }, 270000);
 
