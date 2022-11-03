@@ -5,7 +5,7 @@ import Patients from "components/pages/Patients";
 import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
-import Test from 'components/pages/Test'
+import Test from "components/pages/Test";
 
 import {
   Routes,
