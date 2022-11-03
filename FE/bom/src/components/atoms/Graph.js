@@ -12,43 +12,43 @@ import {
 
 // data & style guide
 
-const data = [
-  {
-    name: "Page A",
-    최소: 40,
-    최대: 24,
-  },
-  {
-    name: "Page B",
-    최소: 30,
-    최대: 13,
-  },
-  {
-    name: "Page C",
-    최소: 20,
-    최대: 40,
-  },
-  {
-    name: "Page D",
-    최소: 27,
-    최대: 39,
-  },
-  {
-    name: "Page E",
-    최소: 18,
-    최대: 48,
-  },
-  {
-    name: "Page F",
-    최소: 23,
-    최대: 38,
-  },
-  {
-    name: "Page G",
-    최소: 34,
-    최대: 43,
-  },
-];
+// const data = [
+//   {
+//     name: "Page A",
+//     최소: 40,
+//     최대: 24,
+//   },
+//   {
+//     name: "Page B",
+//     최소: 30,
+//     최대: 13,
+//   },
+//   {
+//     name: "Page C",
+//     최소: 20,
+//     최대: 40,
+//   },
+//   {
+//     name: "Page D",
+//     최소: 27,
+//     최대: 39,
+//   },
+//   {
+//     name: "Page E",
+//     최소: 18,
+//     최대: 48,
+//   },
+//   {
+//     name: "Page F",
+//     최소: 23,
+//     최대: 38,
+//   },
+//   {
+//     name: "Page G",
+//     최소: 34,
+//     최대: 43,
+//   },
+// ];
 
 function Graph({
   part,
@@ -94,7 +94,88 @@ function Graph({
 }) {
   return (
     <>
-      {isPC && ""}
+      {isPC && (
+        <>
+          {part == "체온" && (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{
+                  top: 0,
+                  right: 50,
+                  // left: 20,
+                  // bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[30, 45]} />
+                <Tooltip />
+                <Legend verticalAlign="top" width="100%" />
+                <Line
+                  type="monotone"
+                  dataKey="최대"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+          {part == "심박수" && (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{
+                  top: 0,
+                  right: 50,
+                  // left: 20,
+                  // bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[70, 80]} />
+                <Tooltip />
+                <Legend verticalAlign="top" width="100%" />
+                <Line
+                  type="monotone"
+                  dataKey="최대"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+          {part == "산소포화도" && (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={data}
+                margin={{
+                  top: 0,
+                  right: 50,
+                  // left: 20,
+                  // bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis type="number" domain={[30, 45]} />
+                <Tooltip />
+                <Legend verticalAlign="top" width="100%" />
+                <Line
+                  type="monotone"
+                  dataKey="최대"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </>
+      )}
       {!isPC && (
         <>
           {part == "체온" && (

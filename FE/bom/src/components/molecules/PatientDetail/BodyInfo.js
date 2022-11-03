@@ -36,8 +36,8 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
                 <div className="live-info-box col-span-2 h-full pl-[36px]">
                   <LiveInfo isPC={isPC} value="36.5 ℃" />
                 </div>
-                <div className="graph-box col-span-3 h-full text-2xs">
-                  <Graph />
+                <div className="graph-box col-span-3  text-2xs">
+                  {/* <Graph part={part} isPC={isPC} /> */}
                 </div>
               </div>
             </>
@@ -64,6 +64,9 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
                 <div className="live-info-box col-span-2 h-full pl-[36px]">
                   <LiveInfo isPC={isPC} value="150 bpm" />
                 </div>
+                <div className="graph-box col-span-3 text-2xs">
+                  {/* <Graph part={part} isPC={isPC} /> */}
+                </div>
               </div>
             </>
           )}
@@ -88,6 +91,9 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
               <div className="content-box grid grid-cols-5 px-3 h-5/6">
                 <div className="live-info-box col-span-2 h-full pl-[36px]">
                   <LiveInfo isPC={isPC} value="95%" />
+                </div>
+                <div className="graph-box col-span-3 text-2xs">
+                  <Graph part={part} isPC={isPC} />
                 </div>
               </div>
             </>
