@@ -79,4 +79,34 @@ class TemperatureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PatientStatus
-        fields = ('id', 'temperature', 'now',)
+        fields = ('temperature', 'now',)
+
+
+class BpmSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PatientStatus
+        fields = ('bpm', 'now',)
+
+
+class OxygenSaturationSerializer(serializers.ModelSerializer):
+
+    oxygenSaturation = serializers.IntegerField(source='oxygen_saturation')
+
+    class Meta:
+        model = PatientStatus
+        fields = ('oxygenSaturation', 'now',)
+
+
+class NurseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Nurse
+        fields = ('id', 'name', 'image', 'phonenumber', 'email', 'position',)
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Doctor
+        fields = '__all__'
