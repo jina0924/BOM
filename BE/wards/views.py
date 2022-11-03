@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, get_list_or_404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import requests
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -65,7 +65,7 @@ def patient(request):
     return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
 
 
-# 환자 정보 상세 조회
+# 병동: 환자 정보 상세 조회
 @api_view(['GET'])
 def patient_detail(request, patient_number):
 
@@ -75,7 +75,7 @@ def patient_detail(request, patient_number):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# 병동 정보 조회
+# 병동: 병동 정보 조회
 @api_view(['GET'])
 def wards(request, ward_number):
     # user = get_object_or_404(User, username=request.user)
@@ -87,23 +87,108 @@ def wards(request, ward_number):
     return Response({'result': '일단 답변이 가네요! access token이 유효합니다!'}, status=status.HTTP_200_OK)
 
 
-# 환자 체온 조회
+# 병동: 환자 체온 조회
 # 실시간 - 가장 최근 데이터
 # 기본 - 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
 @api_view(['GET'])
 def temperature(request, patient_number):
 
-    now = datetime.datetime(2022, 11, 2, 22, 30, 10).strftime('%Y-%m-%d %H:%M:%S')
-    # now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 2022-11-02 23:29:58
-
-    one_minute_ago = (datetime.datetime(2022, 11, 2, 22, 30, 10) + relativedelta(minutes=-1)).strftime('%Y-%m-%d %H:%M:%S')
-    # one_minute_ago = (datetime.datetime.now() + relativedelta(minutes=-1)).strftime('%Y-%m-%d %H:%M:%S')
-
-    now_temperature = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now).last()
-    period_temperature = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now, now__gte=one_minute_ago)
-    
+    now = datetime.datetime(2022, 11, 2, 22, 29, 23)
+    # now = datetime.datetime.now()
+    now = now + relativedelta(seconds=-(now.second % 5))
+    now_cleansing = now.strftime('%Y-%m-%d %H:%M:%S')
+    now_temperature = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now_cleansing).last()  # 실시간
     now_serializer = TemperatureSerializer(now_temperature)
+    period = request.GET.get('period')
+
+    # delta 단위 = 초
+    if period == 'month':
+        start = 2592000  # 60 * 60 * 24 * 30
+        delta = 86400  # 60 * 60 * 24
+        period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+
+    elif period == 'week':
+        start = 604800  # 60 * 60 * 24 * 7
+        delta = 43200  # 60 * 60 * 12
+        if now.hour >= 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
+        elif now.hour < 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+
+    elif period == 'day':
+        start = 86400  # 60 * 60 * 24
+        delta = 3600  # 60 * 60
+        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+
+    elif period == None or period == 'now':
+        start = 60
+        delta = 5
+        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second - (now.second) % 5)
+
+    else:
+        return Response({'result': '올바르지 않은 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    period_start = period_now + relativedelta(seconds=-start)
+
+    period_data = []
+
+    while period_start < period_now:
+
+        period_end = period_start + relativedelta(seconds=delta)
+        
+        if period == 'month':
+            period_temperature = PatientStatus.objects.filter(patient__number=patient_number, now__lt=period_end, now__gte=period_start)
+
+        elif period == 'week' or period == 'day' or period == None or period == 'now':
+            period_temperature = PatientStatus.objects.filter(patient__number=patient_number, now__lte=period_end, now__gt=period_start).values('temperature', 'now')
+
+        if period == 'month' or period == 'week' or period == 'day':
+            max_temperature = period_temperature.order_by('temperature').last()
+            min_temperature = period_temperature.order_by('temperature').first()
+
+            if max_temperature and min_temperature:
+                max_temperature = max_temperature['temperature']
+                min_temperature = min_temperature['temperature']
+
+            else:
+                max_temperature = 0
+                min_temperature = 0
+
+            data = {
+                'maxTemperature': max_temperature,
+                'minTemperature': min_temperature,
+                'time': period_start
+            }
+
+        # elif period == None or period == 'now':
+
+        #     data = {
+        #         'time': now
+        #     }
+        
+        period_data.append(data)
+        period_start = period_end
+
+    return Response({'1': period_data})
+
+    tmp = []
+
+    if len(period_temperature) == 13:
+        period_temperature = period_temperature[1:]
+    
+    elif len(period_temperature) < 12:
+        
+        for i in range(12 - len(period_temperature)):
+            now_datetime = (now + relativedelta(minutes=-1) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
+            
+            data = {
+            'temperature': 0.0,
+            'now': now_datetime
+            }        
+            tmp.append(data)
+
     period_serializer = TemperatureSerializer(period_temperature, many=True)
 
-    return Response({'now': now_serializer.data, 'period': period_serializer.data}, status=status.HTTP_200_OK)
-    # return Response({'result': 1}, status=status.HTTP_200_OK)
+    period = tmp + period_serializer.data
+
+    return Response({'now': now_serializer.data, 'period': period}, status=status.HTTP_200_OK)

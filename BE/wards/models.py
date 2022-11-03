@@ -57,7 +57,7 @@ class Patient(models.Model):
 
 
 class PatientStatus(models.Model):
-    temperature = models.IntegerField()
+    temperature = models.FloatField()
     bpm = models.IntegerField()
     oxygen_saturation = models.IntegerField()
     slope = models.IntegerField(null=True)
