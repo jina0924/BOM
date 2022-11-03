@@ -5,7 +5,9 @@ import Patients from "components/pages/Patients";
 import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
-import Test from 'components/pages/Test'
+import Test from "components/pages/Test";
+
+import ls from "helper/LocalStorage";
 
 import {
   Routes,
@@ -14,17 +16,62 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
+function checkAuth() {
+  // 병동 로그인인지 환자 번호 로그인인지 구분할 것
+  return !!ls.get("accessToken");
+}
+
+function CheckAuth({ children }) {
+  if (checkAuth()) return children;
+  return <Navigate to="/login" />;
+}
+
 export default function RouterConfiguration() {
   return (
     <Router>
       <Routes>
         <Route path="/test" element={<Test />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/patients" element={<Patients />} />
-        <Route path="/patient/:id" element={<PatientDetail />} />
-        <Route path="/nurses" element={<Nurses />} />
-        <Route path="/doctors" element={<Doctors />} />
+        <Route
+          path="/"
+          element={
+            <CheckAuth>
+              <Main />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/patients"
+          element={
+            <CheckAuth>
+              <Patients />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/patient/:id"
+          element={
+            <CheckAuth>
+              <PatientDetail />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/doctors"
+          element={
+            <CheckAuth>
+              <Doctors />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/nurses"
+          element={
+            <CheckAuth>
+              <Nurses />
+            </CheckAuth>
+          }
+        />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { requestLogin } from "api/common/login";
+import { requestLogin, requestUserInfo } from "api/login";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
@@ -25,14 +25,21 @@ function Login() {
     setPassword(password);
   }
 
-  function loginSuccess(res) {
+  function getUserInfoSuccess(res) {
+    // 병동로그인인지 환자로그인인지에 따라 navigate 분리
+    navigate("/");
+  }
+
+  function getUserInfoFail(err) {
+    console.log(err);
+  }
+
+  async function loginSuccess(res) {
     const accessToken = res.data.access_token;
     const refreshToken = res.data.refresh_token;
-    const user = res.data.user;
     ls.set("accessToken", accessToken);
     ls.set("refreshToken", refreshToken);
-    console.log(res);
-    navigate("/main");
+    await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   function loginFail(err) {
