@@ -16,31 +16,31 @@ function Doctors() {
             <span>1병동 주치의 목록</span>
           </div>
           <div className="profiles-box h-[68vh] grid grid-cols-5">
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
-            <div className="profile-box col-span-1 px-2 pb-2">
+            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
               <ProfileCard />
             </div>
           </div>
