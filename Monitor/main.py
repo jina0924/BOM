@@ -16,10 +16,15 @@ import numpy as np
 
 import max30102
 import hrcalc
+from mlx90614 import MLX90614 
+import Adafruit_DHT
 
 import RPi.GPIO as GPIO
 import spidev
 import time
+import subprocess
+
+from conf import config
 
 before = [-1,-1]
 minV = [4.25, 4.25]
@@ -125,6 +130,9 @@ def getSensor():
     global battery_amount_val,temp_battery, temp_human
     global db,temps,idx
     t=0
+
+    s = Adafruit_DHT.DHT11
+    
     while True:
 
         if(exit_flag == 1):
@@ -141,11 +149,15 @@ def getSensor():
         
         
         #temp_battery
-        temp_battery += 1
+        _,tb = Adafruit_DHT.read_retry(s,23)
+        temp_battery = int(tb)
 
         # temp_human
-        temp_human += 1
-
+        if(is_Finger == True):
+            human_sensor = MLX90614()
+            temp_human = round(human_sensor.get_object_1(),1)
+        else:
+            temp_human = 0
         #heart
        # heart_rate += 1
         #spo += 1
@@ -188,7 +200,7 @@ def getHeart():
     m = max30102.MAX30102()
     
     while (exit_flag == 0):
-        red, ir = m.read_sequential(50)
+        red, ir = m.read_sequential(150)
 
         if(exit_flag == 1):
             break
@@ -209,7 +221,8 @@ def getHeart():
             #print("sp detect : ",spb)
 
             if(hrb == True and hr != -999):
-                hearts.append(int(hr))
+                heart_rate = int(hr)
+                hearts.append(heart_rate)
                 #heart_rate = int(sum(list(hearts)[50:])/10)
                 #hearts.pop()
                 #hearts.append(heart_rate)
@@ -279,6 +292,8 @@ class MainPage(QDialog,QWidget,mainUi):
         if(is_Finger == True):
             self.finger_img.hide()
             self.finger_img_2.hide()
+            self.finger_img_3.hide()
+
         self.plot()
         self.is_bms_page = False
         
@@ -324,9 +339,12 @@ class MainPage(QDialog,QWidget,mainUi):
         if(is_Finger == True):
             self.finger_img.hide()
             self.finger_img_2.hide()
+            self.finger_img_3.hide()
         else:
             self.finger_img.show()
             self.finger_img_2.show()
+            self.finger_img_3.show()
+
         self.temp_label.setText(str(temp_human))
         self.heart_label.setText(str(heart_rate))
         self.o2_label.setText(str(spo2))
@@ -346,6 +364,7 @@ class MainPage(QDialog,QWidget,mainUi):
         #t.join()
         t1.join()
         t2.join()
+        #subprocess.run("sudo reboot",shell = True)
         quit()
 
 class BmsPage(QDialog,QWidget,bmsUi):
@@ -382,13 +401,14 @@ widgets = QStackedWidget()
 widgets.addWidget(main_page)
 widgets.setGeometry(0,0,1280,720)
 
-#
-# while (connect_db == False):
-#     try:
-#         db = mysql.connector.connect(host="localhost",user='user', password='pw', database='db_name',buffered=True)
-#         connect_db = True
-#     except Exception as e:
-#         print(e)
+
+while (connect_db == False):
+     try:
+         db = mysql.connector.connect(host=config["host"],user=config["user"], password=config["pw"], database=config["database"],buffered=True)
+         connect_db = True
+
+     except Exception as e:
+         print(e)
 
 print("show widget")
 widgets.show()
