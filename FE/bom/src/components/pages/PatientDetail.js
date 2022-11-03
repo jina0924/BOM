@@ -31,36 +31,41 @@ function PatientDetail() {
           <SideBar />
           <div className="right-box col-span-5 h-full">
             <HeadBar />
-            <div className="filter-download-btn-box flex justify-end pr-10 h-[9vh] text-xs items-center">
-              <select
-                name="기간"
-                id="기간"
-                className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
-              >
-                <option value="null">기간</option>
-                <option value="0">1 달</option>
-                <option value="1">1 주</option>
-                <option value="2">1 일</option>
-              </select>
-              <DownloadBtn />
+            <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
+              <div className="device-btn-box pl-10">
+                <Btn
+                  className={
+                    "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main focus:outline-none"
+                  }
+                  content={component === 1 ? "환자 정보" : "디바이스 정보"}
+                  onClickFunction={() => {
+                    component === 1 ? setComponent(0) : setComponent(1);
+                  }}
+                />
+              </div>
+              <div className="filter-download-btn flex justify-end">
+                <select
+                  name="기간"
+                  id="기간"
+                  className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
+                >
+                  <option value="null">기간</option>
+                  <option value="0">실시간</option>
+                  <option value="1">1 일</option>
+                  <option value="1">7 일</option>
+                  <option value="2">30 일</option>
+                </select>
+                <DownloadBtn />
+              </div>
             </div>
             {/* 전체 서머리 페이지 */}
             {component === 0 && (
-              <div className="components grid grid-cols-5 px-10 h-[75vh]">
-                <div className="components-left col-span-2">
-                  <div className="left-first-component pr-8 pb-8 h-[35vh]">
+              <div className="components grid grid-cols-2 px-10 h-[75vh]">
+                <div className="components-left col-span-1">
+                  <div className="left-first-component pr-8 pb-8 h-1/2">
                     <PatientDetailInfo />
                   </div>
-                  <div className="left-second-component pr-8 pb-5 h-[40vh]">
-                    <DeviceSummary
-                      onZoom={() => {
-                        setComponent(1);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="components-right col-span-3 h-full">
-                  <div className="right-first-component pb-5 h-1/3">
+                  <div className="left-second-component pr-8 pb-5 h-1/2">
                     <BodyInfo
                       isPC={isPC}
                       part="체온"
@@ -69,7 +74,25 @@ function PatientDetail() {
                       }}
                     />
                   </div>
-                  <div className="right-second-component pb-5 h-1/3">
+                  {/* <div className="left-second-component pr-8 pb-5 h-1/2">
+                    <DeviceSummary
+                      onZoom={() => {
+                        setComponent(1);
+                      }}
+                    />
+                  </div> */}
+                </div>
+                <div className="components-right col-span-1">
+                  {/* <div className="right-first-component pb-5 h-1/3">
+                    <BodyInfo
+                      isPC={isPC}
+                      part="체온"
+                      onZoom={() => {
+                        setComponent(2);
+                      }}
+                    />
+                  </div> */}
+                  <div className="right-second-component pb-8 h-1/2">
                     <BodyInfo
                       isPC={isPC}
                       part="심박수"
@@ -78,7 +101,7 @@ function PatientDetail() {
                       }}
                     />
                   </div>
-                  <div className="right-third-component pb-5 h-1/3">
+                  <div className="right-third-component pb-5 h-1/2">
                     <BodyInfo
                       isPC={isPC}
                       part="산소포화도"
