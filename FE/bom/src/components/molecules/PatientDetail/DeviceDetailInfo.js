@@ -12,9 +12,6 @@ function DeviceDetailInfo({ onZoom }) {
           content="BMS 상세 정보"
           contentClassName="text-main text-lg"
         />
-        <div className="arrow-box" onClick={onZoom}>
-          <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
-        </div>
       </div>
       <div className="content-box"></div>
     </div>
