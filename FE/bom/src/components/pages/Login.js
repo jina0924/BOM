@@ -38,7 +38,7 @@ function Login() {
   function getUserInfoSuccess(res) {
     // 병동로그인인지 환자로그인인지에 따라 navigate 분리
     console.log(res);
-    // navigate("/");
+    navigate("/");
   }
 
   function getUserInfoFail(err) {
@@ -120,7 +120,7 @@ function Login() {
           <Logo size="l" logoClassName="h-[10%]" />
           <div className="bg-white rounded-l-[20px] M-login-box flex-col items-center login-frame shadow-login w-[70vw] h-[65vh] rounded-[20px] flex">
             <div className="login-frame h-full">
-              <h2 className="font-extrabold text-3xl text-main h-[15%] text-center mt-10">
+              <h2 className="font-extrabold text-3xl text-main h-[15%] text-center mt-10 mb-2">
                 로그인
               </h2>
               <form action="POST" onSubmit={onSubmitLogin}>
