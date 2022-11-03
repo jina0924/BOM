@@ -282,14 +282,18 @@ class Ui_Form(object):
         self.bmsg.setStyleSheet(u"color: rgb(26, 50, 99);")
         self.finger_img = QLabel(Form)
         self.finger_img.setObjectName(u"finger_img")
-        self.finger_img.setGeometry(QRect(560, 440, 41, 41))
+        self.finger_img.setGeometry(QRect(560, 442, 41, 41))
         self.finger_img.setStyleSheet(u"border-image: url(:/icons/img/finger_off.png);\n"
 "background-color:rgb(255,255,255);")
         self.finger_img_2 = QLabel(Form)
         self.finger_img_2.setObjectName(u"finger_img_2")
-        self.finger_img_2.setGeometry(QRect(560, 630, 41, 41))
+        self.finger_img_2.setGeometry(QRect(560, 634, 41, 41))
         self.finger_img_2.setStyleSheet(u"border-image: url(:/icons/img/finger_off.png);\n"
 "background-color:rgb(255,255,255);")
+        self.finger_img_3 = QLabel(Form)
+        self.finger_img_3.setObjectName(u"finger_img_3")
+        self.finger_img_3.setGeometry(QRect(560,250,41,41))
+        self.finger_img_3.setStyleSheet(u"border-image: url(:/icons/img/finger_off.png);background-color:rgb(255,255,255);")
 
         self.first_back = QLabel(Form)
         self.first_back.setObjectName(u"first_back")
@@ -379,6 +383,7 @@ class Ui_Form(object):
         self.sps_graph.raise_()
         self.finger_img.raise_()
         self.finger_img_2.raise_()
+        self.finger_img_3.raise_()
         self.first_back.raise_()
         self.first_logo.raise_()
 
@@ -436,8 +441,10 @@ class Ui_Form(object):
 "\ubc30\ud130\ub9ac\ub97c \ud074\ub9ad\ud558\uc138\uc694", None))
         self.finger_img.setText("")
         self.finger_img_2.setText("")
+        self.finger_img_3.setText("")
         self.first_back.setText("")
         self.first_logo.setText("")
+        
 
     # retranslateUi
 
