@@ -186,6 +186,8 @@ def getSensor():
                 if(temp_human < 37 and spo2 >= 95 and heart_rate > 40 and heart_rate <140):
                     is_warn=False
                     print("Turn off warn")
+        else:
+            is_warn = False
         
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ns =datetime.now().second
@@ -251,7 +253,7 @@ def getHeart():
                 if(abs(be_heart_rate - heart_rate) > 20):
                     heart_rate = (be_heart_rate + heart_rate)/2
 
-                heart_rate = (be_heart_rate * 0.2 + heart_rate * 0.8)
+                heart_rate = int(be_heart_rate * 0.2 + heart_rate * 0.8)
                 hearts.append(heart_rate)
                 be_heart_rate = heart_rate
                 #heart_rate = int(sum(list(hearts)[50:])/10)
