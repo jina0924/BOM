@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
-import { requestPatientList } from "api/nurse/patients";
+import { requestPatientList } from "api/patients";
 
 const tempPatientLiST = {
   count: 158,
