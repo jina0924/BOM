@@ -50,7 +50,8 @@ function Login() {
     const refreshToken = res.data.refresh_token;
     ls.set("accessToken", accessToken);
     ls.set("refreshToken", refreshToken);
-    await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
+    navigate("/");
+    // await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   function loginFail(err) {
