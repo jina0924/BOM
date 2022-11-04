@@ -39,4 +39,8 @@ function requestUserInfo(success, fail) {
 // }
 
 // export { requestLogin, requestUserInfo, loginSuccess, loginFail };
-export { requestLogin, requestUserInfo };
+
+function requestLogout(success, fail) {
+  UserApi.post("accounts/user/logout/").then(success).catch(fail);
+}
+export { requestLogin, requestUserInfo, requestLogout };
