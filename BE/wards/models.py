@@ -5,6 +5,7 @@ from django.conf import settings
 class Ward(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     number = models.CharField(max_length=3)
+    user_type = models.CharField(max_length=4, default='ward')
 
     class Meta:
         managed = True
@@ -48,6 +49,7 @@ class Patient(models.Model):
     nok_phonenumber = models.CharField(max_length=11)
     ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
+    user_type = models.CharField(max_length=7, default='patient')
 
     class Meta:
         managed = True
@@ -55,7 +57,7 @@ class Patient(models.Model):
 
 
 class PatientStatus(models.Model):
-    temperature = models.IntegerField()
+    temperature = models.FloatField()
     bpm = models.IntegerField()
     oxygen_saturation = models.IntegerField()
     slope = models.IntegerField(null=True)

@@ -13,7 +13,7 @@ class Bms(models.Model):
 
 
 class BmsStatus(models.Model):
-    temperature = models.IntegerField()
+    temperature = models.FloatField()
     now = models.DateTimeField()
     bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
     
