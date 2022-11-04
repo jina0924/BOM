@@ -1,6 +1,7 @@
 import React from "react";
 
 import Title from "components/atoms/Title";
+import Graph from "components/atoms/Graph";
 
 function PatientProgress() {
   return (
@@ -13,7 +14,9 @@ function PatientProgress() {
           contentClassName="text-main font-bold text-lg"
         />
       </div>
-      <div className="patient-progress-graph h-5/6"></div>
+      <div className="patient-progress-graph h-5/6">
+        <Graph part="입원환자추이" />
+      </div>
     </div>
   );
 }

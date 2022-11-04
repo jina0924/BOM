@@ -1,6 +1,7 @@
 import React from "react";
 
 import Title from "components/atoms/Title";
+import DonutGraph from "components/atoms/DonutGraph";
 
 function ActiveBed() {
   return (
@@ -13,7 +14,9 @@ function ActiveBed() {
           contentClassName="text-main font-bold text-lg"
         />
       </div>
-      <div className="active-bed-graph h-5/6"></div>
+      <div className="active-bed-graph h-5/6">
+        <DonutGraph />
+      </div>
     </div>
   );
 }
