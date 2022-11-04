@@ -33,15 +33,40 @@ function PatientDetail() {
             <HeadBar />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
-                <Btn
-                  className={
-                    "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main focus:outline-none"
-                  }
-                  content={component === 1 ? "환자 정보" : "디바이스 정보"}
-                  onClickFunction={() => {
-                    component === 1 ? setComponent(0) : setComponent(1);
-                  }}
-                />
+                {component === 0 || component === 1 ? (
+                  <div className="info-change-btns flex justify-start">
+                    <Btn
+                      className={`${
+                        component === 1 &&
+                        "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28 mr-3 focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
+                      } 
+                      ${
+                        component === 0 &&
+                        "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28 mr-3 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
+                      }
+                        `}
+                      content="환자 정보"
+                      onClickFunction={() => {
+                        setComponent(0);
+                      }}
+                    />
+                    <Btn
+                      className={`${
+                        component === 0 &&
+                        "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28  focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
+                      } 
+                    ${
+                      component === 1 &&
+                      "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl  w-28 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
+                    }
+                      `}
+                      content="디바이스 정보"
+                      onClickFunction={() => {
+                        setComponent(1);
+                      }}
+                    />
+                  </div>
+                ) : null}
               </div>
               <div className="filter-download-btn flex justify-end">
                 <select
