@@ -314,7 +314,66 @@ $ python manage.py runserver
 
 
 
-### 환자 체온 조회
+### 환자 건강 정보 조회
+
+- 실시간(now) + 기간(period)
+
+- 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
+
+- 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/<str:patientNumber>/health
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070030/health
+  ```
+
+  ```
+  http://127.0.0.1:8000/api/wards/patients/225070030/health?period=month
+  ```
+
+- Params
+
+  | Key    | Type   | Description                                 | Mandatory | Example |
+  | ------ | ------ | ------------------------------------------- | --------- | ------- |
+  | period | String | month<br />week<br />day<br />now (default) |           | month   |
+
+- Response: month
+
+  ```
+  
+  ```
+
+- Response: week
+
+  ```
+  
+  ```
+
+- Response: day
+
+  ```
+  
+  ```
+
+- Response: now
+
+  ```
+  ```
+
+
+
+### 환자 체온 조회: 사용X
 
 - 실시간(now) + 기간(period)
 
@@ -335,11 +394,11 @@ $ python manage.py runserver
 - URL example
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/temperature
+  http://127.0.0.1:8000/api/wards/patients/225070030/temperature
   ```
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/temperature?period=month
+  http://127.0.0.1:8000/api/wards/patients/225070030/temperature?period=month
   ```
 
 - Params
@@ -790,7 +849,7 @@ $ python manage.py runserver
 
 
 
-### 환자 심박수 조회
+### 환자 심박수 조회: 사용X
 
 - 실시간(now) + 기간(period)
 
@@ -811,11 +870,11 @@ $ python manage.py runserver
 - URL example
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/bpm
+  http://127.0.0.1:8000/api/wards/patients/225070030/bpm
   ```
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/bpm?period=month
+  http://127.0.0.1:8000/api/wards/patients/225070030/bpm?period=month
   ```
 
 - Params
@@ -826,7 +885,7 @@ $ python manage.py runserver
 
 
 
-### 환자 산소포화도 조회
+### 환자 산소포화도 조회: 사용X
 
 - 실시간(now) + 기간(period)
 
@@ -847,11 +906,11 @@ $ python manage.py runserver
 - URL example
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/oxygen-saturation
+  http://127.0.0.1:8000/api/wards/patients/225070030/oxygen-saturation
   ```
 
   ```
-  http://127.0.0.1:8000/api/wards/patients/225070001/oxygen-saturation?period=month
+  http://127.0.0.1:8000/api/wards/patients/225070030/oxygen-saturation?period=month
   ```
 
 - Params
@@ -912,6 +971,8 @@ $ python manage.py runserver
 
 - 해당 병동에서 근무하는 간호사만 조회
 
+- 최근 등록에서 오래된 순으로
+
 - access token 필요
 
 - GET
@@ -922,51 +983,74 @@ $ python manage.py runserver
   http://127.0.0.1:8000/api/wards/nurse
   ```
 
-- Response
+- URL example
 
   ```
-  [
-      {
-          "id": 1,
-          "name": "임진경",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
-          "phonenumber": "01012341234",
-          "email": "nurse@gmail.com",
-          "position": "간호과장"
-      },
-      {
-          "id": 12,
-          "name": "임진경",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
-          "phonenumber": "01012341234",
-          "email": "nurse@gmail.com",
-          "position": "수간호사"
-      },
-      {
-          "id": 13,
-          "name": "임진경",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
-          "phonenumber": "01012341234",
-          "email": "nurse@gmail.com",
-          "position": "책임간호사"
-      },
-      {
-          "id": 22,
-          "name": "임진경",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
-          "phonenumber": "01012341234",
-          "email": "nurse@gmail.com",
-          "position": "주임간호사"
-      },
-      {
-          "id": 32,
-          "name": "임진경",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
-          "phonenumber": "01012341234",
-          "email": "nurse@gmail.com",
-          "position": "평간호사"
-      }
-  ]
+  http://127.0.0.1:8000/api/wards/nurse
+  ```
+
+  ```
+  http://127.0.0.1:8000/api/wards/nurse?limit=2&page=2
+  ```
+
+- Params
+
+  | Key   | Type | Description | Mandatory | Example |
+  | ----- | ---- | ----------- | --------- | ------- |
+  | page  | Int  | 1 기본값    |           |         |
+  | limit | Int  | 10 기본값   |           |         |
+
+- Response: params 없는 경우
+
+  ```
+  {
+      "count": 5,
+      "next": null,
+      "previous": null,
+      "results": [
+          {
+              "id": 32,
+              "name": "임진경",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+              "phonenumber": "01012341234",
+              "email": "nurse@gmail.com",
+              "position": "평간호사"
+          },
+          {
+              "id": 22,
+              "name": "임진경",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+              "phonenumber": "01012341234",
+              "email": "nurse@gmail.com",
+              "position": "주임간호사"
+          },
+          {
+              "id": 13,
+              "name": "임진경",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+              "phonenumber": "01012341234",
+              "email": "nurse@gmail.com",
+              "position": "책임간호사"
+          },
+          {
+              "id": 12,
+              "name": "임진경",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+              "phonenumber": "01012341234",
+              "email": "nurse@gmail.com",
+              "position": "수간호사"
+          },
+          {
+              "id": 1,
+              "name": "임진경",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/nurse/default.jpg",
+              "phonenumber": "01012341234",
+              "email": "nurse@gmail.com",
+              "position": "간호과장"
+          }
+      ],
+      "now": 1
+  }
   ```
 
 
@@ -974,6 +1058,8 @@ $ python manage.py runserver
 ### 의사 목록 조회
 
 - 해당 병동에 입원한 환자를 담당하는 의사만 조회
+
+- 최근 등록에서 오래된 순으로
 
 - access token 필요
 
@@ -985,54 +1071,78 @@ $ python manage.py runserver
   http://127.0.0.1:8000/api/wards/doctor
   ```
 
-- Response
+- URL example
 
   ```
-  [
-      {
-          "id": 1,
-          "name": "이대현",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
-          "phonenumber": "01056785678",
-          "email": "doctor@gmail.com",
-          "department": "신경외과"
-      },
-      {
-          "id": 2,
-          "name": "이대현",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
-          "phonenumber": "01056785678",
-          "email": "doctor@gmail.com",
-          "department": "정형외과"
-      },
-      {
-          "id": 4,
-          "name": "이대현",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
-          "phonenumber": "01056785678",
-          "email": "doctor@gmail.com",
-          "department": "소아청소년과"
-      },
-      {
-          "id": 7,
-          "name": "이대현",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
-          "phonenumber": "01056785678",
-          "email": "doctor@gmail.com",
-          "department": "산부인과"
-      },
-      {
-          "id": 21,
-          "name": "이대현",
-          "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
-          "phonenumber": "01056785678",
-          "email": "doctor@gmail.com",
-          "department": "흉부외과"
-      }
-  ]
+  http://127.0.0.1:8000/api/wards/doctor
   ```
 
-  
+  ```
+  http://127.0.0.1:8000/api/wards/doctor?limit=2&page=2
+  ```
+
+- Params
+
+  | Key   | Type | Description | Mandatory | Example |
+  | ----- | ---- | ----------- | --------- | ------- |
+  | page  | Int  | 1 기본값    |           |         |
+  | limit | Int  | 10 기본값   |           |         |
+
+- Response: params 없는 경우
+
+  ```
+  {
+      "count": 5,
+      "next": null,
+      "previous": null,
+      "results": [
+          {
+              "id": 21,
+              "name": "이대현",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+              "phonenumber": "01056785678",
+              "email": "doctor@gmail.com",
+              "department": "흉부외과"
+          },
+          {
+              "id": 7,
+              "name": "이대현",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+              "phonenumber": "01056785678",
+              "email": "doctor@gmail.com",
+              "department": "산부인과"
+          },
+          {
+              "id": 4,
+              "name": "이대현",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+              "phonenumber": "01056785678",
+              "email": "doctor@gmail.com",
+              "department": "소아청소년과"
+          },
+          {
+              "id": 2,
+              "name": "이대현",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+              "phonenumber": "01056785678",
+              "email": "doctor@gmail.com",
+              "department": "정형외과"
+          },
+          {
+              "id": 1,
+              "name": "이대현",
+              "image": "https://thundervolt.s3.ap-northeast-2.amazonaws.com/doctor/default.jpg",
+              "phonenumber": "01056785678",
+              "email": "doctor@gmail.com",
+              "department": "신경외과"
+          }
+      ],
+      "now": 1
+  }
+  ```
+
+
+
 
 ### BMS
 

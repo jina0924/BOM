@@ -50,6 +50,7 @@ class Patient(models.Model):
     ward = models.ForeignKey(Ward, on_delete=models.PROTECT)
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
     user_type = models.CharField(max_length=7, default='patient')
+    is_warning = models.BooleanField(default=False)
 
     class Meta:
         managed = True
