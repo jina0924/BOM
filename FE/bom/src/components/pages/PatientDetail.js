@@ -1,4 +1,5 @@
 import { useState, React, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 // components
 import SideBar from "components/molecules/common/SideBar";
@@ -12,17 +13,47 @@ import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInf
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
 
+// API
+import { requestPatientList } from "api/patientDetail";
+
 function PatientDetail() {
   const [component, setComponent] = useState(0);
   const [isPC, setIsPC] = useState(true);
+  const [ward, setWard] = useState("");
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [birth, setBirth] = useState("");
+  const [sex, setSex] = useState("");
+  const [nokName, setNokName] = useState("");
+  const [nokPhonenumber, setNokPhonenumber] = useState("");
+  const [doctor, setDoctor] = useState("");
+  const params = useParams();
 
   useEffect(() => {
     window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
   }, []);
 
+  useEffect(() => {
+    requestPatientList(params.id, requestPatientListSuccess, (err) =>
+      console.log(err)
+    );
+  }, [params]);
+
   setInterval(() => {
     window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
   }, 1000);
+
+  const requestPatientListSuccess = (res) => {
+    console.log(res.data);
+    setWard(res.data.ward.numbner);
+    setUsername(res.data.user.username);
+    setName(res.data.name);
+    setBirth(res.data.birth);
+    setSex(res.data.sex);
+    setNokName(res.data.nokName);
+    setNokPhonenumber(res.data.nokPhonenumber);
+    setDoctor(res.data.doctor.name);
+  };
 
   return (
     <>
@@ -88,7 +119,15 @@ function PatientDetail() {
               <div className="components grid grid-cols-2 px-10 h-[75vh]">
                 <div className="components-left col-span-1">
                   <div className="left-first-component pr-8 pb-8 h-1/2">
-                    <PatientDetailInfo />
+                    <PatientDetailInfo
+                      username={username}
+                      name={name}
+                      birth={birth}
+                      sex={sex}
+                      nokName={nokName}
+                      nokPhonenumber={nokPhonenumber}
+                      doctor={doctor}
+                    />
                   </div>
                   <div className="left-second-component pr-8 pb-5 h-1/2">
                     <BodyInfo
@@ -99,24 +138,8 @@ function PatientDetail() {
                       }}
                     />
                   </div>
-                  {/* <div className="left-second-component pr-8 pb-5 h-1/2">
-                    <DeviceSummary
-                      onZoom={() => {
-                        setComponent(1);
-                      }}
-                    />
-                  </div> */}
                 </div>
                 <div className="components-right col-span-1">
-                  {/* <div className="right-first-component pb-5 h-1/3">
-                    <BodyInfo
-                      isPC={isPC}
-                      part="체온"
-                      onZoom={() => {
-                        setComponent(2);
-                      }}
-                    />
-                  </div> */}
                   <div className="right-second-component pb-8 h-1/2">
                     <BodyInfo
                       isPC={isPC}
