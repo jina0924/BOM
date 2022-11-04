@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { useLocation } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import PatientSearchBar from "components/molecules/PatientList/PatientSearchBar";
 import PatientList from "components/molecules/common/PatientList";
+import { useEffect } from "react";
 
 function Patients() {
+  const location = useLocation();
+  const [patientListBtn, setPatientListBtn] = useState(0);
+  const [component, setComponent] = useState(0);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setPatientListBtn(1);
+    } else if (location.pathname === "/patients") {
+      setPatientListBtn(2);
+    }
+  });
+
   return (
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
       <SideBar />
