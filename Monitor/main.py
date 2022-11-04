@@ -37,8 +37,10 @@ battery_amount_val = 100
 is_charge = True
 temp_battery = 10
 temp_human =36.5
-heart_rate = 120
-spo2 = 80
+heart_rate = 0
+be_heart_rate = 0
+spo2 = 0
+be_spo2 = 0
 
 exit_flag = 0
 
@@ -215,7 +217,7 @@ warnchange = False
 is_warn = False
 
 def getHeart():
-    global heart_rate,spo2
+    global heart_rate,spo2, be_heart_rate, be_spo2
     global hearts, sps,idx_h
     global is_Finger,o2Warn,warnchange
 
@@ -243,8 +245,15 @@ def getHeart():
             #print("sp detect : ",spb)
 
             if(hrb == True and hr != -999):
+                if(be_heart_rate == 0):
+                    be_heart_rate = int(hr)
                 heart_rate = int(hr)
+                if(abs(be_heart_rate - heart_rate) > 20):
+                    heart_rate = (be_heart_rate + heart_rate)/2
+
+                heart_rate = (be_heart_rate * 0.2 + heart_rate * 0.8)
                 hearts.append(heart_rate)
+                be_heart_rate = heart_rate
                 #heart_rate = int(sum(list(hearts)[50:])/10)
                 #hearts.pop()
                 #hearts.append(heart_rate)
