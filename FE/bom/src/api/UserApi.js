@@ -1,17 +1,17 @@
 import axios from "axios";
 
-import ls from "../helper/LocalStorage";
+import ls from "helper/LocalStorage";
 
 axios.defaults.withCredentials = true;
 
-const NurseApi = axios.create({
+const UserApi = axios.create({
   baseURL: "https://thundervolt.co.kr/api/",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-NurseApi.interceptors.request.use(
+UserApi.interceptors.request.use(
   (config) => {
     const accessToken = ls.get("accessToken");
     if (accessToken) {
@@ -24,4 +24,4 @@ NurseApi.interceptors.request.use(
   }
 );
 
-export default NurseApi;
+export default UserApi;

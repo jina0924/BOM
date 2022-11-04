@@ -12,7 +12,7 @@ function MenuItem({ menu, children, isActive }) {
       <div
         className={
           isActive
-            ? `list-none p-4 rounded-[10px] bg-back text-main`
+            ? `list-none p-4 rounded-[10px] bg-back text-main outline-none`
             : `list-none p-4 rounded-[10px] text-font2 hover:bg-back hover:text-main`
         }
       >
