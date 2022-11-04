@@ -10,7 +10,8 @@ urlpatterns = [
     path('patients/<str:patient_number>/temperature', views.temperature),
     path('patients/<str:patient_number>/bpm', views.bpm),
     path('patients/<str:patient_number>/oxygen-saturation', views.oxygen_saturation),
-    path('nurse', views.nurse),
-    path('doctor', views.doctor),
+    path('patients/<str:patient_number>/health', views.health),
+    path('nurse', views.NurseAPI.as_view()),
+    path('doctor', views.DoctorAPI.as_view()),
     path('<str:ward_number>', views.wards),
 ]

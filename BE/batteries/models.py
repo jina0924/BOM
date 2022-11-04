@@ -24,7 +24,7 @@ class BmsStatus(models.Model):
 
 class Battery(models.Model):
     register_date = models.DateTimeField()
-    max_voltage = models.IntegerField()
+    max_voltage = models.FloatField()
     bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
 
     class Meta:
@@ -33,7 +33,7 @@ class Battery(models.Model):
 
 
 class BatteryStatus(models.Model):
-    voltage = models.IntegerField()
+    voltage = models.FloatField()
     amount = models.IntegerField()
     now = models.DateTimeField()
     battery = models.ForeignKey(Battery, on_delete=models.PROTECT)
