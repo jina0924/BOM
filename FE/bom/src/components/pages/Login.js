@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { requestLogin, requestUserInfo } from "api/login";
+import { requestLogin, requestUserInfo } from "api/account";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
