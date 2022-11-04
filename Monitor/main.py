@@ -56,7 +56,7 @@ xitem = list(range(60))
 bms_id = 333
 patient_id = 777
 connect_db = False
-
+bt_id=[]
 
 charge = 16
 cell1 = 0 
@@ -128,11 +128,12 @@ def read_voltage(adcChannel):
 
 def getSensor():
     global battery_amount_val,temp_battery, temp_human
-    global db,temps,idx
-    t=0
+    global db,temps,idx,is_warn
+    #t=0
 
     s = Adafruit_DHT.DHT11
-    
+    cursor = db.cursor()
+
     while True:
 
         if(exit_flag == 1):
@@ -168,29 +169,50 @@ def getSensor():
 
         now = datetime.strftime(datetime.now(),"%M:%S")
         idx.append(str(now))
-        sleep(1)
+        #sleep(1)
         
-        t+=1
+       # t+=1
 
+        if (is_Finger == True):
+            if(is_warn == False):
+                if(temp_human >= 38 or spo2 <= 94 or heart_rate <=30 or heart_rate >= 150):
+                    is_warn = True
+                    cursor.execute(f'update patient set is_warning = 1 where id = {patient_id};')
+                    db.commit()
+                    print("Turn on warn")
+            else:
+                if(temp_human < 37 and spo2 >= 95 and heart_rate > 40 and heart_rate <140):
+                    is_warn=False
+                    print("Turn off warn")
+        
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ns =datetime.now().second
 
-
-
-
-        if(t == 5 ):
+        if(ns %5==0 ):
             #db_human
             #db_battery
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            # c= db.cursor()
-            # c.execute(f'insert into bmstest(bms_id,patient_id,temp,time) value ({bms_id},{patient_id},{temp_human},\'{now}\');')
-            # c.close()
-            # db.commit()
-            t =0
+            cursor.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
+            cursor.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
+            cursor.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
+            cursor.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+            cursor.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
 
+            db.commit()
+            
+            # c.execute(f'insert into bmstest(bms_id,patient_id,temp,time) value ({bms_id},{patient_id},{temp_human},\'{now}\');')
+           # t =0
+            
+            print("update db")
+
+        sleep(1)
+    cursor.close()
 
 
 is_Finger = False
 o2Warn = False
 warnchange = False
+is_warn = False
 
 def getHeart():
     global heart_rate,spo2
@@ -241,16 +263,16 @@ def getHeart():
                     warnchange = True
             else:
                 sps.append(sps[59])
-
+            
 
 
         now = datetime.strftime(datetime.now(),"%M:%S")
         idx_h.append(str(now))
 
-t1 = threading.Thread(target=getSensor)
-t2 = threading.Thread(target=getHeart)
-t1.start()
-t2.start()
+#t1 = threading.Thread(target=getSensor)
+#t2 = threading.Thread(target=getHeart)
+#t1.start()
+#t2.start()
 
 
 
@@ -364,6 +386,7 @@ class MainPage(QDialog,QWidget,mainUi):
         #t.join()
         t1.join()
         t2.join()
+        db.close()
         #subprocess.run("sudo reboot",shell = True)
         quit()
 
@@ -401,6 +424,7 @@ widgets = QStackedWidget()
 widgets.addWidget(main_page)
 widgets.setGeometry(0,0,1280,720)
 
+#db = mysql.connector.connect(host=config["host"],user=config["user"], password=config["pw"], database=config["database"],buffered=True)
 
 while (connect_db == False):
      try:
@@ -409,6 +433,36 @@ while (connect_db == False):
 
      except Exception as e:
          print(e)
+
+c= db.cursor()
+c.execute(f'select patient_id from bms where id = {bms_id}')
+db.commit()
+for (res) in c :
+    patient_id = res[0]
+
+c.execute(f'select A.number, A.name, A.birth, A.sex, A.nok_name, A.nok_phonenumber, B.name from patient A join doctor B on A.doctor_id=B.id where A.id = {patient_id}')
+db.commit()
+for(res) in c:
+    main_page.p_num.setText(str(res[0]))
+    main_page.p_name.setText(str(res[1]))
+    main_page.p_age.setText(str(res[2]))
+    main_page.p_gender.setText(str(res[3]))
+    main_page.p_gard.setText(str(res[4]))
+    main_page.p_gard_2.setText(str(res[5]))
+    main_page.doctor_name.setText(str(res[6]))
+
+c.execute(f'select id from battery where bms_id={bms_id}')
+db.commit()
+
+for (res) in c:
+    bt_id.append(res[0])
+c.close()
+
+t1 = threading.Thread(target=getSensor)
+t2 = threading.Thread(target=getHeart)
+
+t1.start()
+t2.start()
 
 print("show widget")
 widgets.show()
