@@ -11,7 +11,7 @@ function SideBar() {
   // console.log(menuIndex);
 
   useEffect(() => {
-    if (location.pathname === "/main") {
+    if (location.pathname === "/") {
       setMenuIndex(0);
     } else if (location.pathname === `/patients`) {
       setMenuIndex(1);
@@ -26,7 +26,7 @@ function SideBar() {
     <div className="col-span-1 rounded-l-[20px] bg-white shadow-side h-[95vh]">
       <Logo logoClassName="pl-8 h-[11vh]" />
       <ul className="menu-list">
-        <Link to="/main">
+        <Link to="/">
           <MenuItem menu="home" isActive={menuIndex === 0 ? true : false}>
             홈
           </MenuItem>
