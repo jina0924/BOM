@@ -59,10 +59,11 @@ function Login() {
     alert("다시 한 번 작성해주세요");
   }
 
-  function onSubmitLogin(event) {
+  async function onSubmitLogin(event) {
     event.preventDefault();
     // 유효성 검사
-    requestLogin(username, password, loginSuccess, loginFail);
+    await requestLogin(username, password, loginSuccess, loginFail);
+    // await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   return (
