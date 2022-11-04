@@ -51,10 +51,11 @@ class PatientSerializer(serializers.ModelSerializer):
     nokName = serializers.CharField(source='nok_name')
     nokPhonenumber = serializers.CharField(source='nok_phonenumber')
     userType = serializers.CharField(source='user_type', default='patient')
+    isWarning = serializers.BooleanField(source='is_warning', default=False)
 
     class Meta:
         model = Patient
-        fields = ('id', 'ward', 'user', 'name', 'number', 'hospitalizedDate', 'dischargedDate', 'birth', 'sex', 'nokName', 'nokPhonenumber', 'userType', 'doctor',)
+        fields = ('id', 'ward', 'user', 'name', 'number', 'hospitalizedDate', 'dischargedDate', 'birth', 'sex', 'nokName', 'nokPhonenumber', 'userType', 'doctor', 'isWarning',)
 
 
 class WardDetailSerializer(serializers.ModelSerializer):
@@ -110,3 +111,15 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = '__all__'
+
+
+class HealthSerializer(serializers.ModelSerializer):
+
+    체온 = serializers.FloatField(source='temperature')
+    심박수 = serializers.IntegerField(source='bpm')
+    산소포화도 = serializers.IntegerField(source='oxygen_saturation')
+    시간 = serializers.DateTimeField(source='now')
+
+    class Meta:
+        model = PatientStatus
+        fields = ('체온', '심박수', '산소포화도', '시간',)

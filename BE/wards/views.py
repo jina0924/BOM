@@ -6,12 +6,16 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert
-from .serializers import WardSerializer, PatientSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer
+from .serializers import WardSerializer, PatientSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer
 import datetime
 import jwt
 from thundervolt.settings import SECRET_KEY
 import datetime
 from dateutil.relativedelta import relativedelta
+from rest_framework.pagination import PageNumberPagination
+from pagination import PaginationHandlerMixin
+from rest_framework.views import APIView
+from django.db.models import Max, Min
 
 
 User = get_user_model()
@@ -436,47 +440,266 @@ def oxygen_saturation(request, patient_number):
     return Response({'now': now_serializer.data, 'period': period}, status=status.HTTP_200_OK)
 
 
+# pagination limit
+class NurseDoctorPagination(PageNumberPagination):
+    page_size_query_param = 'limit'
+    page_size = 10
+
+
 # 병동: 간호사 목록 조회
-@api_view(['GET'])
-def nurse(request):
-    
-    token = request.META.get('HTTP_AUTHORIZATION')[7:]
+class NurseAPI(APIView, PaginationHandlerMixin):
+    pagination_class = NurseDoctorPagination
+    serializer_class = NurseSerializer
 
-    user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
+    def get(self, request, format=None, *args, **kwargs):
 
-    if Ward.objects.filter(user_id=user_id):
-        ward = Ward.objects.get(user_id=user_id)
-    
-    else:
-        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+        token = request.META.get('HTTP_AUTHORIZATION')[7:]
 
-    nurses = Nurse.objects.filter(ward=ward)
-    serializer = NurseSerializer(nurses, many=True)
+        user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+        if Ward.objects.filter(user_id=user_id):
+            ward = Ward.objects.get(user_id=user_id)
+        
+        else:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+
+        nurses = Nurse.objects.filter(ward=ward).order_by('-pk')
+
+        page = self.paginate_queryset(nurses)
+
+        if page is not None:
+            serializer = self.get_paginated_response(self.serializer_class(page, many=True).data)
+        else:
+            serializer = self.serializer_class(nurses, many=True)
+
+        previous = serializer.data.get('previous')
+        if previous != None:
+            if 'page=' in previous:
+                previous = int(previous.split('page=')[1])
+            else:
+                previous = 1
+        else:
+            previous = 0
+            next = 2
+
+        next = serializer.data.get('next')
+        if next != None:
+            next = int(next.split('page=')[1])
+        else:
+            next = int(previous) + 2
+
+        now = (previous + next) // 2
+
+        serializer.data['now'] = now
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # 병동: 의사 목록 조회
-@api_view(['GET'])
-def doctor(request):
+class DoctorAPI(APIView, PaginationHandlerMixin):
+    pagination_class = NurseDoctorPagination
+    serializer_class =DoctorSerializer
+
+    def get(self, request, format=None, *args, **kwargs):
+        token = request.META.get('HTTP_AUTHORIZATION')[7:]
+
+        user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
+
+        if Ward.objects.filter(user_id=user_id):
+            ward = Ward.objects.get(user_id=user_id)
+
+        else:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
     
-    token = request.META.get('HTTP_AUTHORIZATION')[7:]
+        doctors = Doctor.objects.filter(patient__ward=ward).order_by('-pk').distinct()
 
-    user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
+        page = self.paginate_queryset(doctors)
 
-    if Ward.objects.filter(user_id=user_id):
-        ward = Ward.objects.get(user_id=user_id)
+        if page is not None:
+            serializer = self.get_paginated_response(self.serializer_class(page, many=True).data)
+        else:
+            serializer = self.serializer_class(doctors, many=True)
 
-    else:
-        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+        previous = serializer.data.get('previous')
+        if previous != None:
+            if 'page=' in previous:
+                previous = int(previous.split('page=')[1])
+            else:
+                previous = 1
+        else:
+            previous = 0
+            next = 2
 
-    doctors = set(Doctor.objects.filter(patient__ward=ward))
-    serializer = DoctorSerializer(doctors, many=True)
+        next = serializer.data.get('next')
+        if next != None:
+            next = int(next.split('page=')[1])
+        else:
+            next = int(previous) + 2
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+        now = (previous + next) // 2
+
+        serializer.data['now'] = now
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # 병동: 환자 목록 조회
 @api_view(['GET'])
 def patients(request):
     pass
+
+
+# 병동: 환자 건강 정보 조회
+# 실시간 - 가장 최근 데이터
+# 기본 - 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
+@api_view(['GET'])
+def health(request, patient_number):
+
+    now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+    # now = datetime.datetime.now()
+    now = now + relativedelta(seconds=-(now.second % 5))
+    now_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now).last()  # 실시간
+    now_serializer = HealthSerializer(now_health)
+
+    period = request.GET.get('period')
+
+    # delta 단위 = 초
+    if period == 'month':
+        start = 2592000  # 60 * 60 * 24 * 30
+        delta = 86400  # 60 * 60 * 24
+        data_count = 30
+        period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0) + relativedelta(seconds=-1)
+
+    elif period == 'week':
+        start = 604800  # 60 * 60 * 24 * 7
+        delta = 43200  # 60 * 60 * 12
+        data_count = 14
+        if now.hour >= 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
+        elif now.hour < 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+
+    elif period == 'day':
+        start = 86400  # 60 * 60 * 24
+        delta = 3600  # 60 * 60
+        data_count = 24
+        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+
+    elif period == None or period == 'now':
+        start = 60
+
+        period_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
+        period_serializer = HealthSerializer(period_health, many=True)
+
+        tmp = []
+    
+        if len(period_health) < 12:
+            
+            for i in range(1, 12 - len(period_health) + 1):
+                now_datetime = (now + relativedelta(seconds=-start) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
+                
+                data = {
+                'temperature': 0.0,
+                'bpm': 0,
+                'oxygenSaturation': 0,
+                'now': now_datetime
+                }        
+                tmp.append(data)
+
+        period = tmp + period_serializer.data
+
+        return Response({'now': now_serializer.data, 'period': period}, status=status.HTTP_200_OK)
+
+    else:
+        return Response({'result': '올바르지 않은 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    period_start = period_now + relativedelta(seconds=-start)
+   
+    period_temperature = []
+    period_bpm = []
+    period_oxygen_saturation = []
+
+    while period_start < period_now:
+
+        period_end = period_start + relativedelta(seconds=delta)
+
+        period_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=period_end, now__gt=period_start)
+
+        max_temperature = period_health.aggregate(최고=Max('temperature'))['최고']
+        min_temperature = period_health.aggregate(최저=Min('temperature'))['최저']
+
+        max_bpm = period_health.aggregate(최대=Max('bpm'))['최대']
+        min_bpm = period_health.aggregate(최소=Min('bpm'))['최소']
+
+        max_oxygen_saturation = period_health.aggregate(최고=Max('oxygen_saturation'))['최고']
+        min_oxygen_saturation = period_health.aggregate(최저=Min('oxygen_saturation'))['최저']
+
+        if max_temperature:
+            temperature = {
+                '시간': period_end,
+                '최고': max_temperature,
+                '최저': min_temperature
+            }
+            period_temperature.append(temperature)
+
+            bpm = {
+                '시간': period_end,
+                '최대': max_bpm,
+                '최소': min_bpm
+            }
+
+            period_bpm.append(bpm)
+            
+            oxygen_saturation = {
+                '시간': period_end,
+                '최고': max_oxygen_saturation,
+                '최저': min_oxygen_saturation
+            }
+
+            period_oxygen_saturation.append(oxygen_saturation)
+        
+        period_start = period_end
+
+    tmp_temperature = []
+    tmp_bpm = []
+    tmp_oxygen_saturation = []
+    
+    if len(period_temperature) < data_count:
+        
+        for i in range(1, data_count - len(period_temperature) + 1):
+            now_datetime = period_now + relativedelta(seconds=-start) + relativedelta(seconds=(i * delta))
+            if period == 'month':
+                now = now_datetime.strftime('%Y-%m-%d')
+
+            elif period == 'week':
+                now = now_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+            elif period == 'day':
+                now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H:%M:%S')
+
+            temperature = {
+                '시간': now,
+                '최고': 0.0,
+                '최저': 0.0
+            }
+            tmp_temperature.append(temperature)
+
+            bpm = {
+                '시간': now,
+                '최대': 0,
+                '최소': 0
+            }
+            tmp_bpm.append(bpm)
+
+            oxygen_saturation = {
+                '시간': now,
+                '최고': 0,
+                '최저': 0
+            }
+            tmp_oxygen_saturation.append(oxygen_saturation)
+
+    result_temperature = tmp_temperature + period_temperature
+    result_bpm = tmp_bpm + period_bpm
+    result_oxygen_saturation = tmp_oxygen_saturation + period_oxygen_saturation
+
+    return Response({'실시간': now_serializer.data, '체온': result_temperature, '심박수': result_bpm, '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
