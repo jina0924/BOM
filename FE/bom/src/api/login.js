@@ -1,5 +1,8 @@
 import UserApi from "api/UserApi";
-import axios from "axios";
+// import axios from "axios";
+
+// 만료 시간
+// const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
 
 function requestLogin(username, password, success, fail) {
   UserApi.post("accounts/user/login/", {
@@ -10,21 +13,30 @@ function requestLogin(username, password, success, fail) {
     .catch(fail);
 }
 
+// function loginSuccess(res) {
+//   const accessToken = res.data.access_token;
+//   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+//   // const refreshToken = res.data.refresh_token;
+//   setTimeout(requestSilentRefresh, JWT_EXPIRY_TIME - 60000);
+// }
+
+// function loginFail(err) {
+//   console.log(err);
+//   alert("다시 한 번 작성해주세요.");
+// }
+
 // function requestLogout()
 
 function requestUserInfo(success, fail) {
   UserApi.get("accounts/user/").then(success).catch(fail);
 }
 
-function requestAccessToken(success, fail) {
-  axios
-    .post("https://thundervolt.co.kr/api/accounts/user/token/refresh/", {
-      headers: {
-        Authorization: localStorage.getItem("refreshToken"),
-      },
-    })
-    .then(success)
-    .catch(fail);
-}
+// function requestSilentRefresh() {
+//   axios
+//     .post("accounts/user/token/refresh/")
+//     .then(loginSuccess)
+//     .catch((err) => console.log(err));
+// }
 
-export { requestLogin, requestUserInfo, requestAccessToken };
+// export { requestLogin, requestUserInfo, loginSuccess, loginFail };
+export { requestLogin, requestUserInfo };
