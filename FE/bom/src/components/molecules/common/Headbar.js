@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { requestLogout } from "api/login";
+import { requestLogout } from "api/account";
 
 import { UilBell } from "@iconscout/react-unicons";
 import { UilAngleDown } from "@iconscout/react-unicons";
