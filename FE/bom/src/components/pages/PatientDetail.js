@@ -44,8 +44,7 @@ function PatientDetail() {
   }, 1000);
 
   const requestPatientListSuccess = (res) => {
-    console.log(res.data);
-    setWard(res.data.ward.numbner);
+    setWard(res.data.ward.number);
     setUsername(res.data.user.username);
     setName(res.data.name);
     setBirth(res.data.birth);
@@ -61,7 +60,7 @@ function PatientDetail() {
         <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
           <SideBar />
           <div className="right-box col-span-5 h-full">
-            <HeadBar />
+            <HeadBar wardNum={ward} />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
                 {component === 0 || component === 1 ? (
