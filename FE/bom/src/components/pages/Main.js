@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import WardInfo from "components/molecules/Main/WardInfo";
@@ -22,18 +24,24 @@ function Main() {
         <div className="information-zone flex flex-col">
           <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
             <WardInfo wardInfoTitle="wardName" wardInfoDetail={wardName} />
-            <WardInfo
-              wardInfoTitle="countPatients"
-              wardInfoDetail={countPatients}
-            />
-            <WardInfo
-              wardInfoTitle="countDoctors"
-              wardInfoDetail={countDoctors}
-            />
-            <WardInfo
-              wardInfoTitle="countNurses"
-              wardInfoDetail={countNurses}
-            />
+            <Link to="/patients">
+              <WardInfo
+                wardInfoTitle="countPatients"
+                wardInfoDetail={countPatients}
+              />
+            </Link>
+            <Link to="/doctors">
+              <WardInfo
+                wardInfoTitle="countDoctors"
+                wardInfoDetail={countDoctors}
+              />
+            </Link>
+            <Link to="/nurses">
+              <WardInfo
+                wardInfoTitle="countNurses"
+                wardInfoDetail={countNurses}
+              />
+            </Link>
           </div>
           <div className="px-7 grid grid-cols-5 gap-8">
             <div className="patient-list h-[62vh] col-span-3">
