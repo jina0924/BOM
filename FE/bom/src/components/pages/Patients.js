@@ -21,21 +21,42 @@ function Patients() {
     }
   });
 
+  useEffect(() => {
+    console.log(component);
+  }, [component]);
+
   return (
-    <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
-      <SideBar />
-      <div className="info-zone col-span-5">
-        <HeadBar />
-        <div className="flex flex-col justify-center items-center h-[84vh]">
-          <div className="h-[12vh] w-full px-8">
-            <PatientSearchBar />
-          </div>
-          <div className="px-8 h-[72vh] pb-4 w-full">
-            <PatientList />
+    <>
+      {component === 0 && (
+        <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
+          <SideBar />
+          <div className="info-zone col-span-5">
+            <HeadBar />
+            <div className="flex flex-col justify-center items-center h-[84vh]">
+              <div className="h-[12vh] w-full">
+                <PatientSearchBar />
+              </div>
+              <div className="px-8 h-[72vh] pb-4 w-full">
+                <PatientList
+                  nowPage="patients"
+                  onZoom={() => setComponent(1)}
+                  onOff={false}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+      {component === 1 && (
+        <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
+          <PatientList
+            nowPage="patients"
+            onZoom={() => setComponent(0)}
+            onOff={true}
+          />
+        </div>
+      )}
+    </>
   );
 }
 
