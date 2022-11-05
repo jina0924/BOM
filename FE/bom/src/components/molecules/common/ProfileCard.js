@@ -3,23 +3,20 @@ import React from "react";
 import ProfileImage from "components/atoms/ProfileImage";
 import ContactBtn from "components/atoms/ContactBtn";
 
-function ProfileCard({ nurse }) {
+function ProfileCard({ person }) {
   return (
     <div className="profile-card bg-white rounded-[20px] h-full">
       <div className="profile-img-box h-1/2 w-full flex justify-center items-center">
         <div className="profile-img h-2/3 aspect-square">
-          <ProfileImage
-            imageURL={`https://pbs.twimg.com/profile_images/1374979417915547648/vKspl9Et_400x400.jpg`}
-            person="의사"
-          />
+          <ProfileImage imageURL={person.image} person={person.name} />
         </div>
       </div>
       <div className="profile-name-grade-box h-1/4 flex flex-col justify-center">
         <div className="name-box flex justify-center text-lg font-extrabold text-main">
-          <span>김허준</span>
+          <span>{person.name}</span>
         </div>
         <div className="grade-box flex justify-center text-sm text-main">
-          <span>싸피 양호원</span>
+          <span>{person.position || person.department}</span>
         </div>
       </div>
       <div className="profile-contact-box h-1/5 flex justify-center items-center">
