@@ -10,8 +10,6 @@ import { requestNurseList } from "api/nurses";
 function Nurses() {
   const [isPC, setIsPC] = useState(true);
   const [count, setCount] = useState(0);
-  const [next, setNext] = useState(null);
-  const [previous, setPrevious] = useState(null);
   const [nurses, setNurses] = useState([]);
   const [now, setNow] = useState(1);
 
@@ -24,18 +22,23 @@ function Nurses() {
   }, 1000);
 
   useEffect(() => {
-    requestNurseList("", requestPatientListSuccess, (err) => console.log(err));
+    requestNurseList("", requestNurseListSuccess, (err) => console.log(err));
   }, []);
 
   useEffect(() => {}, []);
 
-  const requestPatientListSuccess = (res) => {
-    console.log(res);
+  const requestNurseListSuccess = (res) => {
     setCount(res.data.count);
-    setNext(res.data.next);
-    setPrevious(res.data.previous);
     setNurses(res.data.results);
     setNow(res.data.now);
+  };
+
+  const handlePageChange = (page) => {
+    setNow(page);
+    const params = { page: page };
+    requestNurseList(params, requestNurseListSuccess, (err) =>
+      console.log(err)
+    );
   };
 
   return (
@@ -50,45 +53,22 @@ function Nurses() {
           <div className="profiles-box h-[68vh] grid grid-cols-5">
             {nurses.map((nurse, id, array) => {
               return (
-                <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-                  <ProfileCard nurse={nurse} />
+                <div
+                  key={id}
+                  className="profile-box col-span-1 px-2 pb-2 h-[34vh]"
+                >
+                  <ProfileCard person={nurse} />
                 </div>
               );
             })}
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
-            <div className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
-              <ProfileCard />
-            </div>
           </div>
           <div className="pagination-box h-[8vh] flex items-center justify-center">
             <CustomPagination
-              page={1}
-              itemsCount={8}
-              totalCount={80}
+              page={now}
+              itemsCount={10}
+              totalCount={count}
               pageRange={5}
+              onChange={handlePageChange}
             />
           </div>
         </div>
