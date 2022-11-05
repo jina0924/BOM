@@ -33,15 +33,15 @@ function PatientDetail() {
     window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
   }, []);
 
+  setInterval(() => {
+    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+  }, 1000);
+
   useEffect(() => {
     requestPatientList(params.id, requestPatientListSuccess, (err) =>
       console.log(err)
     );
   }, [params]);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
 
   const requestPatientListSuccess = (res) => {
     setWard(res.data.ward.number);
