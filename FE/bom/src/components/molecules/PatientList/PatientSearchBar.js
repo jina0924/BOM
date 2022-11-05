@@ -15,8 +15,8 @@ function PatientSearchBar() {
   }
 
   return (
-    <div className="searchbar-box flex justify-between items-center h-full py-4">
-      <div className="input-box h-full flex items-center">
+    <div className="searchbar-box grid grid-cols-10 items-center h-full py-4 px-8">
+      <div className="input-box h-full col-span-9 flex items-center">
         <UilSearch className="text-base text-main absolute ml-4" size={22} />
         <Input
           type="text"

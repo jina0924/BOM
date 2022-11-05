@@ -109,7 +109,7 @@ const tempPatientLiST = {
   ],
 };
 
-function PatientList({ nowPage }) {
+function PatientList({ nowPage, onZoom, onOff }) {
   const [patientList, setPatientList] = useState([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -117,6 +117,7 @@ function PatientList({ nowPage }) {
   // const [previous, setPrevious] = useState(0);
   // const [patient, setPatient] = useState({});
   const [pathname, setPathname] = useState("");
+  const [component, setComponent] = useState(0);
 
   const location = useLocation();
 
@@ -172,6 +173,16 @@ function PatientList({ nowPage }) {
                 자세히 보기
               </span>
             </Link>
+          )}
+          {nowPage === "patients" && onOff === false && (
+            <div onClick={onZoom}>
+              <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
+            </div>
+          )}
+          {nowPage === "patients" && onOff === true && (
+            <div onClick={onZoom}>
+              <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer" />
+            </div>
           )}
         </div>
       </div>
