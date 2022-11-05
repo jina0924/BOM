@@ -22,20 +22,25 @@ function Main() {
       <div className="info-zone col-span-5">
         <HeadBar wardNum={wardName} />
         <div className="information-zone flex flex-col">
+          {/* 병동 정보 카드 */}
           <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
+            {/* 병동 정보 */}
             <WardInfo wardInfoTitle="wardName" wardInfoDetail={wardName} />
+            {/* 입원 환자 수 */}
             <Link to="/patients">
               <WardInfo
                 wardInfoTitle="countPatients"
                 wardInfoDetail={countPatients}
               />
             </Link>
+            {/* 의사 수 */}
             <Link to="/doctors">
               <WardInfo
                 wardInfoTitle="countDoctors"
                 wardInfoDetail={countDoctors}
               />
             </Link>
+            {/* 간호사 수 */}
             <Link to="/nurses">
               <WardInfo
                 wardInfoTitle="countNurses"
@@ -43,14 +48,19 @@ function Main() {
               />
             </Link>
           </div>
+          {/* 병동 상세 데이터 카드 */}
           <div className="px-7 grid grid-cols-5 gap-8">
+            {/* 환자 목록 */}
             <div className="patient-list h-[62vh] col-span-3">
-              <PatientList />
+              <PatientList nowPage="main" />
             </div>
+            {/* 병동 데이터 그래프 카드 */}
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
+              {/* 입원 환자 추이 */}
               <div className="patient-progres h-[22vh]">
                 <PatientProgress />
               </div>
+              {/* 병상 가동률 */}
               <div className="active-bed h-[37vh]">
                 <ActiveBed />
               </div>
