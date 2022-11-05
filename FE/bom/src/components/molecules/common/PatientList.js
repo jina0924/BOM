@@ -166,7 +166,6 @@ function PatientList({ nowPage, onZoom, onOff }) {
           contentClassName="text-main font-bold text-lg"
         />
         <div className="arrow-box">
-          {/* 더보기, 확장, 축소 버튼 */}
           {nowPage === "main" && (
             <Link to="/patients">
               <span className="text-font2 text-sm hover:cursor-pointer hover:text-sub2 hover:font-semibold">
@@ -233,48 +232,103 @@ function PatientList({ nowPage, onZoom, onOff }) {
               <tbody>
                 {patientList.map((item, key) => (
                   <tr key={key} className="" onClick={onClickPatientDetailInfo}>
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {key + 1}
                     </td>
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.pk}
                     </td>
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.name}
                     </td>
                     {pathname === "patients" && item.gender === "M" && (
-                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      <td
+                        className={
+                          "text-center font-semibold border-b-[.5px] border-gray" +
+                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                        }
+                      >
                         남
                       </td>
                     )}
                     {pathname === "patients" && item.gender === "F" && (
-                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      <td
+                        className={
+                          "text-center font-semibold border-b-[.5px] border-gray" +
+                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                        }
+                      >
                         여
                       </td>
                     )}
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.status_temperature}
                     </td>
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.status_bpm}
                     </td>
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.oxygen_saturation}
                     </td>
                     {pathname === "patients" && (
-                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      <td
+                        className={
+                          "text-center font-semibold border-b-[.5px] border-gray" +
+                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                        }
+                      >
                         {item.nok_name}
                       </td>
                     )}
                     {pathname === "patients" && (
-                      <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                      <td
+                        className={
+                          "text-center font-semibold border-b-[.5px] border-gray" +
+                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                        }
+                      >
                         {item.nok_phonenumber.replace(
                           /^(\d{2,3})(\d{3,4})(\d{4})$/,
                           `$1-$2-$3`
                         )}
                       </td>
                     )}
-                    <td className="text-center text-xs font-semibold border-b-[.5px] border-gray py-2.5">
+                    <td
+                      className={
+                        "text-center font-semibold border-b-[.5px] border-gray" +
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      }
+                    >
                       {item.doctor_name}
                     </td>
                   </tr>

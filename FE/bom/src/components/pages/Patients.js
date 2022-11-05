@@ -55,6 +55,7 @@ function Patients() {
             onOff={true}
           />
         </div>
+        // 열 간격, 글자 크기 클래스 prop
       )}
     </>
   );
