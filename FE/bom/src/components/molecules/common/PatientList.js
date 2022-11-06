@@ -22,7 +22,7 @@ const tempPatientLiST = {
       pk: "0001",
       name: "임진경",
       gender: "M",
-      status_temperature: 36.5,
+      status_temperature: 40.5,
       status_bpm: 129,
       oxygen_saturation: 100,
       nok_name: "임진경",
@@ -33,7 +33,7 @@ const tempPatientLiST = {
       pk: "0002",
       name: "임진경",
       gender: "F",
-      status_temperature: 36.5,
+      status_temperature: 34.5,
       status_bpm: 129,
       oxygen_saturation: 100,
       nok_name: "임진경",
@@ -45,7 +45,7 @@ const tempPatientLiST = {
       name: "임진경",
       gender: "F",
       status_temperature: 36.5,
-      status_bpm: 129,
+      status_bpm: 80,
       oxygen_saturation: 100,
       nok_name: "임진경",
       nok_phonenumber: "01012345678",
@@ -56,7 +56,7 @@ const tempPatientLiST = {
       name: "임진경",
       gender: "F",
       status_temperature: 36.5,
-      status_bpm: 129,
+      status_bpm: 20,
       oxygen_saturation: 100,
       nok_name: "임진경",
       nok_phonenumber: "01012345678",
@@ -175,12 +175,12 @@ function PatientList({ nowPage, onZoom, onOff }) {
           )}
           {nowPage === "patients" && onOff === false && (
             <div onClick={onZoom}>
-              <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
+              <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer hover:h-[20px]" />
             </div>
           )}
           {nowPage === "patients" && onOff === true && (
             <div onClick={onZoom}>
-              <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer" />
+              <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer hover:h-[20px]" />
             </div>
           )}
         </div>
@@ -277,17 +277,20 @@ function PatientList({ nowPage, onZoom, onOff }) {
                       </td>
                     )}
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                      }
+                      className={`text-center font-semibold border-b-[.5px] border-gray
+                        ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
+                        ${item.status_temperature > 37.5 && " text-sub1"}
+                        ${item.status_temperature < 35 && " text-sub2"}`}
                     >
                       {item.status_temperature}
                     </td>
                     <td
                       className={
                         "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5") +
+                        (item.status_bpm > 100 || item.status_bpm < 60
+                          ? " text-sub1"
+                          : "")
                       }
                     >
                       {item.status_bpm}
