@@ -58,6 +58,31 @@ class PatientSerializer(serializers.ModelSerializer):
         fields = ('id', 'ward', 'user', 'name', 'number', 'hospitalizedDate', 'dischargedDate', 'birth', 'sex', 'nokName', 'nokPhonenumber', 'userType', 'doctor', 'isWarning',)
 
 
+class PatientDetailSerializer(serializers.ModelSerializer):
+
+    class WardSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = Ward
+            fields = ('id', 'number',)
+
+    class DoctorSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = Doctor
+            fields = ('id', 'name',)
+    
+    ward = WardSerializer(read_only=True)
+    doctor = DoctorSerializer(read_only=True)
+    nokName = serializers.CharField(source='nok_name')
+    nokPhonenumber = serializers.CharField(source='nok_phonenumber')
+    userType = serializers.CharField(source='user_type', default='patient')
+
+    class Meta:
+        model = Patient
+        fields = ('id', 'ward', 'name', 'number', 'birth', 'sex', 'nokName', 'nokPhonenumber', 'userType', 'doctor',)
+
+
 class WardDetailSerializer(serializers.ModelSerializer):
 
     class UserSerializer(serializers.ModelSerializer):
@@ -68,12 +93,14 @@ class WardDetailSerializer(serializers.ModelSerializer):
     
     user = UserSerializer(read_only=True)
     
-    patientCount = serializers.IntegerField(source='patient_set.count', read_only=True)
+    patientCount = serializers.IntegerField()
+    doctorCount = serializers.IntegerField()
     nurseCount = serializers.IntegerField(source='nurse_set.count', read_only=True)
+    utilization = serializers.IntegerField()
 
     class Meta:
         model = Ward
-        fields = '__all__'
+        fields = ('id', 'user', 'number', 'patientCount', 'nurseCount', 'doctorCount', 'utilization',)
 
 
 class TemperatureSerializer(serializers.ModelSerializer):
