@@ -1,5 +1,5 @@
 FROM node:16.16.0 as build-stage
-# ENV WDS_SOCKET_PORT=443
+ENV WDS_SOCKET_PORT=443
 WORKDIR /var/jenkins_home/workspace/thundervolt/FE/bom
 
 COPY package*.json ./
