@@ -215,7 +215,7 @@ function PatientDetail() {
         </div>
       )}
       {!isPC && (
-        <div className="patient-detail bg-back my-5">
+        <div className="patient-detail bg-back py-5">
           <div className="log0">
             <Logo logoClassName="justify-center pb-5" />
           </div>
