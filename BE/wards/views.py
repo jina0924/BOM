@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert
-from .serializers import WardSerializer, PatientSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer, PatientStatusSerializer
+from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer, PatientStatusSerializer
 import datetime
 import jwt
 from thundervolt.settings import SECRET_KEY
@@ -22,53 +22,132 @@ from django.db.models.functions import Coalesce
 User = get_user_model()
 
 
-# 병동 등록
-@api_view(['POST'])
-@permission_classes([AllowAny])
+# 병동 등록 (POST)
+# 병동: 병동 정보 조회 (GET)
+# 병동 번호, 입원환자 수, 의사 수, 간호사 수, 입원환자 추이, 병상 가동률 (GET)
+@api_view(['GET', 'POST'])
 def ward(request):
 
-    requests.post('http://127.0.0.1:8000/api/accounts/user/new', data=request.data)
+    def get():
 
-    username = request.data['username']
-    user = User.objects.get(username=username)
+        token = request.META.get('HTTP_AUTHORIZATION')[7:]
 
-    serializer = WardSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(user=user, )
+        user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
 
-    # if request.data['isStaff'] == True:
-    #     user.update(is_staff=True)
+        if Ward.objects.filter(user_id=user_id):
+            ward = Ward.objects.get(user_id=user_id)
+            
+        else:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
+        patient_count = Patient.objects.filter(ward=ward, discharged_date=None).count()
+        doctor_count = Doctor.objects.filter(patient__ward=ward).distinct().count()
+        utilization = Patient.objects.filter(ward=ward, discharged_date=None).count()
 
+        ward = Ward.objects.filter(user_id=user_id).annotate(patientCount=Coalesce(patient_count,0), doctorCount=Coalesce(doctor_count,0), utilization=Coalesce(utilization,0))[0]
 
-# 환자 등록
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def patient(request):
+        serializer = WardDetailSerializer(ward)
+
+        now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+        # now = datetime.datetime.now()
+        now_year = now.year
+        now_month = now.month
+        
+        period_now = datetime.datetime(now_year, now_month, 1, 0, 0, 0)
+        period_start = period_now + relativedelta(months=-6)
+
+        tendency = []
+        
+        while period_start < period_now:
+            period_end = period_start + relativedelta(months=1)
+
+            # patients_new = Patient.objects.filter(ward=ward, hospitalized_date__gte=period_start, hospitalized_date__lt=period_end).count()
+            patients = Patient.objects.filter(ward=ward, hospitalized_date__lt=period_end, discharged_date__gte=period_start).count()
+
+            # patients = patients_new + patients_old
+
+            data = {
+                'month': period_start.strftime('%Y-%m'),
+                'count': patients
+            }
+
+            tendency.append(data)
+
+            period_start = period_end
+
+        result = dict()
+        result.update(serializer.data)
+        result['tendency'] = tendency
+
+        return Response(result, status=status.HTTP_200_OK)
+
+    def post():
+        requests.post('http://127.0.0.1:8000/api/accounts/user/new', data=request.data)
+
+        username = request.data['username']
+        user = User.objects.get(username=username)
+
+        serializer = WardSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=user, )
+
+        return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
+
+    if request.method == 'GET':
+        return get()
     
-    requests.post('http://127.0.0.1:8000/api/accounts/user/new', data=request.data)
+    elif request.method == 'POST':
+        return post()
 
-    username = request.data['username']
-    user = User.objects.get(username=username)
 
-    ward = Ward.objects.get(number=request.data['number'])
-    doctor = Doctor.objects.get(pk=request.data['doctor'])
+# 환자 등록 (POST)
+# 환자: 상세 정보 조회 (GET)
+@api_view(['GET', 'POST'])
+def patient(request):
 
-    serializer = PatientSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        this_year = str(datetime.datetime.today().year)[2:]
-        ward_number = request.data['number']
-        cnt = Patient.objects.filter(number__startswith=(this_year + ward_number)).count()
-        patient_number = this_year + str(ward_number) + '0'*(4-len(str(cnt+1))) + str(cnt+1)
+    def get():
+        token = request.META.get('HTTP_AUTHORIZATION')[7:]
 
-        user.username = patient_number
-        user.save()
+        user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
 
-        serializer.save(user=user, ward=ward, doctor=doctor, number=patient_number)
+        if Patient.objects.filter(user_id=user_id):
+            patient = Patient.objects.get(user_id=user_id)
+            
+        else:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
+        serializer = PatientDetailSerializer(patient)
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post():
+        requests.post('http://127.0.0.1:8000/api/accounts/user/new', data=request.data)
+
+        username = request.data['username']
+        user = User.objects.get(username=username)
+
+        ward = Ward.objects.get(number=request.data['number'])
+        doctor = Doctor.objects.get(pk=request.data['doctor'])
+
+        serializer = PatientSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            this_year = str(datetime.datetime.today().year)[2:]
+            ward_number = request.data['number']
+            cnt = Patient.objects.filter(number__startswith=(this_year + ward_number)).count()
+            patient_number = this_year + str(ward_number) + '0'*(4-len(str(cnt+1))) + str(cnt+1)
+
+            user.username = patient_number
+            user.save()
+
+            serializer.save(user=user, ward=ward, doctor=doctor, number=patient_number)
+
+        return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
+
+    if request.method == 'GET':
+        return get()
+    
+    elif request.method == 'POST':
+        return post()
 
 # 병동: 환자 정보 상세 조회
 @api_view(['GET'])
@@ -86,7 +165,7 @@ def patient_detail(request, patient_number):
 
     patient = get_object_or_404(Patient, number=patient_number, ward=ward)
 
-    serializer = PatientSerializer(patient)
+    serializer = PatientDetailSerializer(patient)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -94,7 +173,7 @@ def patient_detail(request, patient_number):
 # 병동: 병동 정보 조회
 # 병동 번호, 입원환자 수, 의사 수, 간호사 수, 입원환자 추이, 병상 가동률
 @api_view(['GET'])
-def wards(request, ward_number):
+def wards(request):
     # user = get_object_or_404(User, username=request.user)
     # ward = get_object_or_404(Ward, user=user)
     
@@ -677,10 +756,10 @@ def health(request, patient_number):
                 now_datetime = (now + relativedelta(seconds=-start) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
                 
                 data = {
-                'temperature': 0.0,
-                'bpm': 0,
-                'oxygenSaturation': 0,
-                'now': now_datetime
+                '체온': 0.0,
+                '심박수': 0,
+                '산소포화도': 0,
+                '시간': now_datetime
                 }        
                 tmp.append(data)
 
@@ -787,3 +866,49 @@ def health(request, patient_number):
     result_oxygen_saturation = tmp_oxygen_saturation + period_oxygen_saturation
 
     return Response({'실시간': now_serializer.data, '체온': result_temperature, '심박수': result_bpm, '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
+
+
+# 환자: 건강 정보 조회
+# 실시간 + 최근 1분
+@api_view(['GET'])
+def patient_health(request):
+    
+    token = request.META.get('HTTP_AUTHORIZATION')[7:]
+
+    user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
+
+    if Patient.objects.filter(user_id=user_id):
+        patient = Patient.objects.get(user_id=user_id)
+        
+    else:
+        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+
+    now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+    # now = datetime.datetime.now()
+    now = now + relativedelta(seconds=-(now.second % 5))
+    health = PatientStatus.objects.filter(patient=patient, now__lte=now).last()
+    serializer = HealthSerializer(health)
+
+    start = 60
+
+    period_health = PatientStatus.objects.filter(patient=patient, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
+    period_serializer = HealthSerializer(period_health, many=True)
+
+    tmp = []
+
+    if len(period_health) < 12:
+        
+        for i in range(1, 12 - len(period_health) + 1):
+            now_datetime = (now + relativedelta(seconds=-start) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
+            
+            data = {
+            '체온': 0.0,
+            '심박수': 0,
+            '산소포화도': 0,
+            '시간': now_datetime
+            }        
+            tmp.append(data)
+
+    period = tmp + period_serializer.data
+
+    return Response({'now': serializer.data, 'period': period}, status=status.HTTP_200_OK)
