@@ -21,6 +21,22 @@ from django.db.models.functions import Coalesce
 User = get_user_model()
 
 
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def ward_register(request):
+
+#     requests.post('http://127.0.0.1:8000/api/accounts/user/new', data=request.data)
+
+#     username = request.data['username']
+#     user = User.objects.get(username=username)
+
+#     serializer = WardSerializer(data=request.data)
+#     if serializer.is_valid(raise_exception=True):
+#         serializer.save(user=user, )
+
+#     return Response({'result': serializer.data}, status=status.HTTP_201_CREATED)
+
+
 # 병동 등록 (POST)
 # 병동: 병동 정보 조회 (GET)
 # 병동 번호, 입원환자 수, 의사 수, 간호사 수, 입원환자 추이, 병상 가동률 (GET)
@@ -60,10 +76,7 @@ def ward(request):
         while period_start < period_now:
             period_end = period_start + relativedelta(months=1)
 
-            # patients_new = Patient.objects.filter(ward=ward, hospitalized_date__gte=period_start, hospitalized_date__lt=period_end).count()
             patients = Patient.objects.filter(ward=ward, hospitalized_date__lt=period_end, discharged_date__gte=period_start).count()
-
-            # patients = patients_new + patients_old
 
             data = {
                 'month': period_start.strftime('%Y-%m'),
@@ -697,6 +710,19 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
 # 기본 - 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
 @api_view(['GET'])
 def health(request, patient_number):
+
+    token = request.META.get('HTTP_AUTHORIZATION')[7:]
+
+    user_id = jwt.decode(token, SECRET_KEY, 'HS256').get('user_id')
+
+    if Ward.objects.filter(user_id=user_id):
+        ward = Ward.objects.get(user_id=user_id)
+        
+    else:
+        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+
+    if ward.number != patient_number[2:5]:
+        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
     now = datetime.datetime(2022, 10, 2, 22, 31, 25)
     # now = datetime.datetime.now()
