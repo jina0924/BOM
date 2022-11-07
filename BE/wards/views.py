@@ -849,23 +849,23 @@ def health(request, patient_number):
 
             temperature = {
                 '시간': period_value,
-                '최고': max_temperature,
-                '최저': min_temperature
+                '최대': max_temperature,
+                '최소': min_temperature
             }
             period_temperature.append(temperature)
 
             bpm = {
                 '시간': period_value,
-                '최고': max_bpm,
-                '최저': min_bpm
+                '최대': max_bpm,
+                '최소': min_bpm
             }
 
             period_bpm.append(bpm)
             
             oxygen_saturation = {
                 '시간': period_value,
-                '최고': max_oxygen_saturation,
-                '최저': min_oxygen_saturation
+                '최대': max_oxygen_saturation,
+                '최소': min_oxygen_saturation
             }
 
             period_oxygen_saturation.append(oxygen_saturation)
@@ -891,22 +891,22 @@ def health(request, patient_number):
 
             temperature = {
                 '시간': now,
-                '최고': 0.0,
-                '최저': 0.0
+                '최대': 0.0,
+                '최소': 0.0
             }
             tmp_temperature.append(temperature)
 
             bpm = {
                 '시간': now,
-                '최고': 0,
-                '최저': 0
+                '최대': 0,
+                '최소': 0
             }
             tmp_bpm.append(bpm)
 
             oxygen_saturation = {
                 '시간': now,
-                '최고': 0,
-                '최저': 0
+                '최대': 0,
+                '최소': 0
             }
             tmp_oxygen_saturation.append(oxygen_saturation)
 
