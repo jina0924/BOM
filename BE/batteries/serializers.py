@@ -12,8 +12,9 @@ class BmsStatusSerializer(serializers.ModelSerializer):
 
     battery_set = BatterySerializer(many=True, read_only=True)
 
-    now = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    시간 = serializers.DateTimeField(source='now', format='%Y-%m-%d %H:%M:%S')
+    온도 = serializers.IntegerField(source='temperature')
 
     class Meta:
         model = BmsStatus
-        fields = ('id', 'battery_set', 'temperature', 'now', 'bms_id',)
+        fields = ('id', 'battery_set', '온도', '시간', 'bms_id',)
