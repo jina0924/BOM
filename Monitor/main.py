@@ -18,6 +18,7 @@ import max30102
 import hrcalc
 from mlx90614 import MLX90614 
 import Adafruit_DHT
+import gyro
 
 import RPi.GPIO as GPIO
 import spidev
@@ -41,6 +42,7 @@ heart_rate = 0
 be_heart_rate = 0
 spo2 = 0
 be_spo2 = 0
+is_fall = False
 
 exit_flag = 0
 
@@ -129,12 +131,13 @@ def read_voltage(adcChannel):
     
 
 def getSensor():
-    global battery_amount_val,temp_battery, temp_human
-    global db,temps,idx,is_warn
+    global battery_amount_val,temp_battery, temp_human,is_charge
+    global db,temps,idx,is_warn,is_fall,c
     #t=0
 
     s = Adafruit_DHT.DHT11
-    cursor = db.cursor()
+    #cursor = db.cursor()
+    #g=gyro.Gyro()
 
     while True:
 
@@ -164,8 +167,8 @@ def getSensor():
         #heart
        # heart_rate += 1
         #spo += 1
-
-
+        
+        #gyro
 
         temps.append(temp_human)
 
@@ -179,38 +182,26 @@ def getSensor():
             if(is_warn == False):
                 if(temp_human >= 38 or spo2 <= 94 or heart_rate <=30 or heart_rate >= 150):
                     is_warn = True
-                    cursor.execute(f'update patient set is_warning = 1 where id = {patient_id};')
-                    db.commit()
-                    print("Turn on warn")
+                    db_pub(0)
             else:
-                if(temp_human < 37 and spo2 >= 95 and heart_rate > 40 and heart_rate <140):
+                if(temp_human < 37 and spo2 >= 95 and heart_rate > 40 and heart_rate <140 and is_fall == False):
                     is_warn=False
                     print("Turn off warn")
         else:
             is_warn = False
         
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ns =datetime.now().second
 
         if(ns %5==0 ):
             #db_human
             #db_battery
-            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cursor.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
-            cursor.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
-            cursor.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
-            cursor.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
-            cursor.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
-
-            db.commit()
+            if(is_Finger==True):
+                db_pub(1)
             
-            # c.execute(f'insert into bmstest(bms_id,patient_id,temp,time) value ({bms_id},{patient_id},{temp_human},\'{now}\');')
-           # t =0
             
-            print("update db")
 
         sleep(1)
-    cursor.close()
+    c.close()
 
 
 is_Finger = False
@@ -226,7 +217,7 @@ def getHeart():
     m = max30102.MAX30102()
     
     while (exit_flag == 0):
-        red, ir = m.read_sequential(150)
+        red, ir = m.read_sequential()
 
         if(exit_flag == 1):
             break
@@ -280,6 +271,49 @@ def getHeart():
         now = datetime.strftime(datetime.now(),"%M:%S")
         idx_h.append(str(now))
 
+
+def db_pub(mode):
+    global db,c
+
+    #warning mode
+    if(mode == 0):
+        c.execute(f'update patient set is_warning = 1 where id = {patient_id};')
+        db.commit()
+        print("Turn on warn")
+
+
+    #5sec mode
+    else:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
+        c.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
+        c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+
+        db.commit()
+
+    print("db update")
+
+def getGyro():
+    global is_fall,is_warn
+    
+    g= gyro.Gyro()
+    while(1):
+        if(exit_flag == 1):
+            break
+
+        _,_,_,is_fall = g.read_gyro()
+        #print(is_fall)
+        
+        if(is_Finger==True):
+            if(is_warn==False and is_fall==True):
+                is_warn = True
+                db_pub(0)
+        else:
+            is_fall = False
+
+        sleep(0.3)
 #t1 = threading.Thread(target=getSensor)
 #t2 = threading.Thread(target=getHeart)
 #t1.start()
@@ -297,6 +331,8 @@ class MainPage(QDialog,QWidget,mainUi):
         self.battery_amount_bar.setGeometry(93, 65, 0.8 * battery_amount_val, 44)
         if(is_charge == True):
             self.label_8.show()
+        else:
+            self.label_8.hide()
         #self.battery_amount.setText("충전중")
         self.clock_timer = QTimer(self)
         self.clock_timer.setInterval(1000)  # 1000ms = 1sec , 화면 렌더링 주기
@@ -397,6 +433,7 @@ class MainPage(QDialog,QWidget,mainUi):
         #t.join()
         t1.join()
         t2.join()
+        t3.join()
         db.close()
         #subprocess.run("sudo reboot",shell = True)
         quit()
@@ -467,13 +504,14 @@ db.commit()
 
 for (res) in c:
     bt_id.append(res[0])
-c.close()
+#c.close()
 
 t1 = threading.Thread(target=getSensor)
 t2 = threading.Thread(target=getHeart)
-
+t3 = threading.Thread(target=getGyro)
 t1.start()
 t2.start()
+t3.start()
 
 print("show widget")
 widgets.show()
