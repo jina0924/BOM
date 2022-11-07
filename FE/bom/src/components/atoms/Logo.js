@@ -35,6 +35,19 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
               </span>
             </div>
           )}
+          {size === "xl" && (
+            <div className={`flex items-center ${logoClassName}`}>
+              {/* <Link to="/"> */}
+              <img
+                src={symbol}
+                alt="BOM 심볼"
+                className="inline mr-4 w-[60px]"
+              />
+              <span className="font-righteous text-main text-4xl tracking-wider">
+                BOM
+              </span>
+            </div>
+          )}
         </>
       )}
       {!disabled && (
