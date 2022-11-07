@@ -1,13 +1,12 @@
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
-function DonutGraph({
-  data = [
-    { name: "가동 중", value: 400 },
-    { name: "잔여 병상", value: 100 },
-  ],
-}) {
+function DonutGraph({ utilization }) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const data = [
+    { name: "가동 중", value: 100 },
+    { name: "잔여 병상", value: 100 - { utilization } },
+  ];
 
   return (
     <ResponsiveContainer width="100%" height="100%">
