@@ -14,20 +14,30 @@ import { requestWardInfo } from "api/main";
 import { requestPatientList } from "api/patients";
 
 function Main() {
-  // 데이터 받아오면 초기값 수정할 것
-  const [wardName, setWardName] = useState("5");
-  const [patientCount, setPatientCount] = useState(10);
-  const [doctorCount, setDoctorCount] = useState(10);
-  const [nurseCount, setNurseCount] = useState(10);
+  // 병동 정보
+  const [wardName, setWardName] = useState("000");
+  const [patientCount, setPatientCount] = useState(1);
+  const [doctorCount, setDoctorCount] = useState(1);
+  const [nurseCount, setNurseCount] = useState(1);
+
+  // 환자 목록
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [page, setPage] = useState(1);
+
+  // 입원 환자 추이
+  const [patientTendency, setPatientTendency] = useState([]);
+
+  // 병상 가동률
+  const [utilization, setUtilization] = useState(1);
 
   function wardInfoSuccess(res) {
     setWardName(res.data.number);
     setPatientCount(res.data.patientCount);
     setDoctorCount(res.data.doctorCount);
     setNurseCount(res.data.nurseCount);
+    setPatientTendency(res.data.tendency);
+    setUtilization(res.data.utilization);
   }
 
   function wardInfoFail(err) {
@@ -108,11 +118,11 @@ function Main() {
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
               <div className="patient-progres h-[22vh]">
-                <PatientProgress />
+                <PatientProgress patientTendency={patientTendency} />
               </div>
               {/* 병상 가동률 */}
               <div className="active-bed h-[37vh]">
-                <ActiveBed />
+                <ActiveBed utilization={utilization} />
               </div>
             </div>
           </div>

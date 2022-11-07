@@ -3,7 +3,7 @@ import React from "react";
 import Title from "components/atoms/Title";
 import Graph from "components/atoms/Graph";
 
-function PatientProgress() {
+function PatientProgress({ patientTendency }) {
   return (
     <div className="patient-progress shadow-box bg-white rounded-[20px] pr-5 h-full">
       <div className="patient-progress-title h-1/6 py-4 px-6">
@@ -15,7 +15,7 @@ function PatientProgress() {
         />
       </div>
       <div className="patient-progress-graph h-5/6">
-        <Graph part="입원환자추이" />
+        <Graph part="입원환자추이" data={patientTendency} />
       </div>
     </div>
   );
