@@ -6,4 +6,10 @@ function requestPatientList(page, limit, success, fail) {
     .catch(fail);
 }
 
-export { requestPatientList };
+function requestSearchPatient(page, limit, keyword, success, fail) {
+  UserApi.get(`wards/patients?page=${page}&limit=${limit}&patient=${keyword}`)
+    .then(success)
+    .catch(fail);
+}
+
+export { requestPatientList, requestSearchPatient };
