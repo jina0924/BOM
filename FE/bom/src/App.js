@@ -11,9 +11,9 @@ function App() {
       <div className="test">
         {/* <PatientDetail /> */}
         {/* <ContactBtn iconTag="UilPhone" /> */}
-        <DeviceNotSupport />
+        {/* <DeviceNotSupport /> */}
       </div>
-      {/* <RouterConfiguration /> */}
+      <RouterConfiguration />
     </div>
   );
 }
