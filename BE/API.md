@@ -1798,7 +1798,7 @@ $ python manage.py runserver
 
   ```
   {
-      "count": 16,
+      "count": 14,
       "next": "http://127.0.0.1:8000/api/wards/patients?page=2",
       "previous": null,
       "results": [
@@ -1807,12 +1807,15 @@ $ python manage.py runserver
               "number": "225070039",
               "name": "이지수",
               "sex": "F",
-              "temperature": 36.1,
-              "bpm": 69,
-              "oxygenSaturation": 97,
+              "temperature": 0.0,
+              "bpm": 0,
+              "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 21,
+              "doctor": {
+                  "id": 21,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
@@ -1825,33 +1828,42 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 2,
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
               "id": 1,
               "number": "225070001",
-              "name": "이지수",
+              "name": "김유민",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 7,
+              "doctor": {
+                  "id": 7,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
               "id": 38,
               "number": "225070038",
-              "name": "이지수",
+              "name": "문요성",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 1,
+              "doctor": {
+                  "id": 1,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -1864,20 +1876,26 @@ $ python manage.py runserver
               "oxygenSaturation": 98,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
               "id": 29,
               "number": "225070029",
-              "name": "이지수",
+              "name": "문요성",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -1890,7 +1908,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -1903,7 +1924,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           }
       ],
@@ -1915,7 +1939,7 @@ $ python manage.py runserver
 
   ```
   {
-      "count": 16,
+      "count": 14,
       "next": "http://127.0.0.1:8000/api/wards/patients?limit=10&page=2",
       "previous": null,
       "results": [
@@ -1924,12 +1948,15 @@ $ python manage.py runserver
               "number": "225070039",
               "name": "이지수",
               "sex": "F",
-              "temperature": 36.1,
-              "bpm": 69,
-              "oxygenSaturation": 97,
+              "temperature": 0.0,
+              "bpm": 0,
+              "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 21,
+              "doctor": {
+                  "id": 21,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
@@ -1942,33 +1969,42 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 2,
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
               "id": 1,
               "number": "225070001",
-              "name": "이지수",
+              "name": "김유민",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 7,
+              "doctor": {
+                  "id": 7,
+                  "name": "이대현"
+              },
               "isWarning": true
           },
           {
               "id": 38,
               "number": "225070038",
-              "name": "이지수",
+              "name": "문요성",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 1,
+              "doctor": {
+                  "id": 1,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -1981,20 +2017,26 @@ $ python manage.py runserver
               "oxygenSaturation": 98,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
               "id": 29,
               "number": "225070029",
-              "name": "이지수",
+              "name": "문요성",
               "sex": "F",
               "temperature": 0.0,
               "bpm": 0,
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -2007,7 +2049,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -2020,7 +2065,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 4,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -2033,7 +2081,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 2,
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
@@ -2046,7 +2097,10 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 2,
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
               "isWarning": false
           }
       ],
@@ -2058,13 +2112,29 @@ $ python manage.py runserver
 
   ```
   {
-      "count": 13,
-      "next": null,
-      "previous": "http://127.0.0.1:8000/api/wards/patients?limit=10&patient=%EC%9D%B4%EC%A7%80%EC%88%98",
+      "count": 11,
+      "next": "http://127.0.0.1:8000/api/wards/patients?page=2&patient=%EC%9D%B4%EC%A7%80%EC%88%98",
+      "previous": null,
       "results": [
           {
-              "id": 19,
-              "number": "225070019",
+              "id": 777,
+              "number": "225070039",
+              "name": "이지수",
+              "sex": "F",
+              "temperature": 36.2,
+              "bpm": 67,
+              "oxygenSaturation": 98,
+              "nokName": "정진아",
+              "nokPhonenumber": "01012345678",
+              "doctor": {
+                  "id": 21,
+                  "name": "이대현"
+              },
+              "isWarning": true
+          },
+          {
+              "id": 24,
+              "number": "225070024",
               "name": "이지수",
               "sex": "F",
               "temperature": 0.0,
@@ -2072,12 +2142,31 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 7,
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
+              "isWarning": true
+          },
+          {
+              "id": 30,
+              "number": "225070030",
+              "name": "이지수",
+              "sex": "F",
+              "temperature": 35.805517803912075,
+              "bpm": 84,
+              "oxygenSaturation": 98,
+              "nokName": "정진아",
+              "nokPhonenumber": "01012345678",
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
-              "id": 18,
-              "number": "225070018",
+              "id": 27,
+              "number": "225070027",
               "name": "이지수",
               "sex": "F",
               "temperature": 0.0,
@@ -2085,12 +2174,15 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 7,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
               "isWarning": false
           },
           {
-              "id": 15,
-              "number": "225070015",
+              "id": 26,
+              "number": "225070026",
               "name": "이지수",
               "sex": "F",
               "temperature": 0.0,
@@ -2098,11 +2190,62 @@ $ python manage.py runserver
               "oxygenSaturation": 0,
               "nokName": "정진아",
               "nokPhonenumber": "01012345678",
-              "doctor": 1,
+              "doctor": {
+                  "id": 4,
+                  "name": "이대현"
+              },
+              "isWarning": false
+          },
+          {
+              "id": 25,
+              "number": "225070025",
+              "name": "이지수",
+              "sex": "F",
+              "temperature": 0.0,
+              "bpm": 0,
+              "oxygenSaturation": 0,
+              "nokName": "정진아",
+              "nokPhonenumber": "01012345678",
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
+              "isWarning": false
+          },
+          {
+              "id": 23,
+              "number": "225070023",
+              "name": "이지수",
+              "sex": "F",
+              "temperature": 0.0,
+              "bpm": 0,
+              "oxygenSaturation": 0,
+              "nokName": "정진아",
+              "nokPhonenumber": "01012345678",
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
+              "isWarning": false
+          },
+          {
+              "id": 22,
+              "number": "225070022",
+              "name": "이지수",
+              "sex": "F",
+              "temperature": 0.0,
+              "bpm": 0,
+              "oxygenSaturation": 0,
+              "nokName": "정진아",
+              "nokPhonenumber": "01012345678",
+              "doctor": {
+                  "id": 2,
+                  "name": "이대현"
+              },
               "isWarning": false
           }
       ],
-      "now": 2
+      "now": 1
   }
   ```
 
