@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path('bms', views.bms),
+    path('<str:patient_number>/bms', views.bms),
 ]

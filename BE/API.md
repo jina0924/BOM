@@ -316,6 +316,8 @@ $ python manage.py runserver
 
 ### 환자 건강 정보 조회
 
+- 해당 병동에 입원 중인 환자 데이터만 조회 가능
+
 - 실시간(now) + 기간(period)
 
 - 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
@@ -2427,36 +2429,16 @@ $ python manage.py runserver
 
 
 
-### 실시간 BMS 상태 조회: 수정필요
-
-- 온도, 전압, 잔량
-
-- access token 필요
-
-- GET
-
-- URL
-
-  ```
-  ```
-
-- Response
-
-  ```
-  ```
-
-
-
-### 배터리 조회: 수정필요
+### BMS, 배터리 실시간 및 기간 조회: 수정필요
 
 - 실시간(now) + 기간(period)
+
+- 온도, 전압, 잔량
 
 - 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
 
 - 기본: 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
 
-- 전압, 온도
-
 - access token 필요
 
 - GET
@@ -2464,6 +2446,13 @@ $ python manage.py runserver
 - URL
 
   ```
+  http://127.0.0.1:8000/api/batteries/patientNumber/bms
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/batteries/225070030/bms
   ```
 
 - Params
