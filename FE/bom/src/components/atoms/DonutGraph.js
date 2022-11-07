@@ -1,10 +1,10 @@
 import React from "react";
-import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 function DonutGraph({ utilization }) {
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const COLORS = ["#FFB400", "#BFBFBF", "#FFBB28", "#FF8042"];
   const data = [
-    { name: "가동 중", value: 100 },
+    { name: "가동 중", value: { utilization } },
     { name: "잔여 병상", value: 100 - { utilization } },
   ];
 
@@ -16,7 +16,7 @@ function DonutGraph({ utilization }) {
           dataKey="value"
           cx="50%"
           cy="50%"
-          innerRadius={70}
+          innerRadius={60}
           outerRadius={90}
           fill="#82ca9d"
           label
@@ -25,6 +25,7 @@ function DonutGraph({ utilization }) {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
+        <Legend layout="vertical" verticalAlign="middle" align="right" />
       </PieChart>
     </ResponsiveContainer>
   );
