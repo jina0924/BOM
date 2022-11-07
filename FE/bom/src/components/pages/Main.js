@@ -10,17 +10,33 @@ import PatientProgress from "components/molecules/Main/PatientProgress";
 import ActiveBed from "components/molecules/Main/ActiveBed";
 
 // api
+import { requestWardInfo } from "api/main";
 import { requestPatientList } from "api/patients";
 
 function Main() {
   // 데이터 받아오면 초기값 수정할 것
   const [wardName, setWardName] = useState("5");
-  const [countPatients, setCountPatients] = useState(10);
-  const [countDoctors, setDoctors] = useState(10);
-  const [countNurses, setNurses] = useState(10);
+  const [patientCount, setPatientCount] = useState(10);
+  const [doctorCount, setDoctorCount] = useState(10);
+  const [nurseCount, setNurseCount] = useState(10);
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [page, setPage] = useState(1);
+
+  function wardInfoSuccess(res) {
+    setWardName(res.data.number);
+    setPatientCount(res.data.patientCount);
+    setDoctorCount(res.data.doctorCount);
+    setNurseCount(res.data.nurseCount);
+  }
+
+  function wardInfoFail(err) {
+    console.lor(err);
+  }
+
+  useEffect(() => {
+    requestWardInfo(wardInfoSuccess, wardInfoFail);
+  }, []);
 
   function patientListSuccess(res) {
     const patientList = res.data.results;
@@ -56,22 +72,22 @@ function Main() {
             {/* 입원 환자 수 */}
             <Link to="/patients">
               <WardInfo
-                wardInfoTitle="countPatients"
-                wardInfoDetail={countPatients}
+                wardInfoTitle="patientCount"
+                wardInfoDetail={patientCount}
               />
             </Link>
             {/* 의사 수 */}
             <Link to="/doctors">
               <WardInfo
-                wardInfoTitle="countDoctors"
-                wardInfoDetail={countDoctors}
+                wardInfoTitle="doctorCount"
+                wardInfoDetail={doctorCount}
               />
             </Link>
             {/* 간호사 수 */}
             <Link to="/nurses">
               <WardInfo
-                wardInfoTitle="countNurses"
-                wardInfoDetail={countNurses}
+                wardInfoTitle="nurseCount"
+                wardInfoDetail={nurseCount}
               />
             </Link>
           </div>
