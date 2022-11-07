@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert
 from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer, PatientStatusSerializer
-import datetime
 import jwt
 from thundervolt.settings import SECRET_KEY
 import datetime
