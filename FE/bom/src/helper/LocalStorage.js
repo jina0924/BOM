@@ -25,6 +25,11 @@ const ls = {
       localStorage.removeItem(key);
     }
   },
+  clear: () => {
+    if (!localStorage) return null;
+
+    localStorage.clear();
+  },
 };
 
 export default ls;

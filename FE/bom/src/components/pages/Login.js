@@ -19,11 +19,20 @@ function Login() {
 
   useEffect(() => {
     window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+    isLoggedIn();
   }, []);
 
   setInterval(() => {
     window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
   }, 1000);
+
+  function isLoggedIn() {
+    if (ls.get("accessToken")) {
+      ls.get("userType") === "ward"
+        ? navigate("/")
+        : navigate(`/patient/${ls.get("number")}`);
+    }
+  }
 
   function onChangeUsername(event) {
     const username = event.target.value;
@@ -36,9 +45,17 @@ function Login() {
   }
 
   function getUserInfoSuccess(res) {
-    // 병동로그인인지 환자로그인인지에 따라 navigate 분리
     console.log(res);
-    navigate("/");
+    // 병동로그인인지 환자로그인인지에 따라 navigate 분리
+    const userType = res.data.userType;
+    const number = res.data.number;
+    ls.set("userType", userType);
+    ls.set("number", number);
+    if (userType === "ward") {
+      navigate("/");
+    } else {
+      navigate(`/patient/${number}`);
+    }
   }
 
   function getUserInfoFail(err) {
@@ -50,8 +67,7 @@ function Login() {
     const refreshToken = res.data.refresh_token;
     ls.set("accessToken", accessToken);
     ls.set("refreshToken", refreshToken);
-    navigate("/");
-    // await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
+    await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   function loginFail(err) {
