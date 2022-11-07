@@ -232,6 +232,7 @@ function Graph({
   ],
   style,
 }) {
+  const patients = "환자 수";
   return (
     <>
       {isPC && (
@@ -403,7 +404,7 @@ function Graph({
             </ResponsiveContainer>
           )}
           {part === "입원환자추이" && (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="99%" height="99%">
               <LineChart
                 data={data}
                 margin={{
@@ -414,7 +415,7 @@ function Graph({
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="시간" />
+                <XAxis dataKey="month" />
                 <YAxis type="number" domain={[0, 100]} />
                 <Tooltip />
                 {!!data[0].최대 && (
@@ -431,6 +432,9 @@ function Graph({
                 )}
                 {!!data[0].실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
+                )}
+                {!!data[0].patients && (
+                  <Line type="monotone" dataKey="환자 수" stroke="#82ca9d" />
                 )}
               </LineChart>
             </ResponsiveContainer>
