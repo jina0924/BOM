@@ -27,7 +27,7 @@ function PatientDetailInfo({
           iconTag="UilMedicalDrip"
           iconTagClassName="text-sub1 inline mr-3"
           content="환자 상세 정보"
-          contentClassName={`text-main ${isPC ? "text-lg" : "text-sm"}`}
+          contentClassName={"text-main " + (isPC ? "text-lg" : "text-sm")}
         />
       </div>
       <div className="content-box h-5/6 flex items-center justify-center">
