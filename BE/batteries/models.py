@@ -4,7 +4,7 @@ from wards.models import Patient
 
 class Bms(models.Model):
     temperature = models.IntegerField()
-    is_charge = models.BooleanField()
+    is_charge = models.BooleanField(default=False)
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
 
     class Meta:
@@ -13,7 +13,7 @@ class Bms(models.Model):
 
 
 class BmsStatus(models.Model):
-    temperature = models.FloatField()
+    temperature = models.IntegerField()
     now = models.DateTimeField()
     bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
     
