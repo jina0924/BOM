@@ -169,14 +169,21 @@ class PatientStatusSerializer(serializers.ModelSerializer):
 
 class PatientListSerializer(serializers.ModelSerializer):
 
-    # patientstatus_set = PatientStatusSerializer(many=True, read_only=True)
+    class DoctorSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = Doctor
+            fields = ('id', 'name',)
 
     temperature = serializers.FloatField()
     bpm = serializers.IntegerField()
     oxygenSaturation = serializers.IntegerField()
     nokName = serializers.CharField(source='nok_name')
     nokPhonenumber = serializers.CharField(source='nok_phonenumber')
+    doctor = DoctorSerializer(read_only=True)
     isWarning = serializers.BooleanField(source='is_warning', default=False)
+
+    # patientstatus_set = PatientStatusSerializer(many=True, read_only=True)
 
     class Meta:
         model = Patient
