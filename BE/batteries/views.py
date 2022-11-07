@@ -44,13 +44,25 @@ def bms(request, patient_number):
     else:
         return Response({'result': '해당 환자의 bms 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
-    now = datetime.datetime(2022, 11, 3, 19, 5, 0)
+    now = datetime.datetime(2022, 11, 4, 1, 20, 22)
     # now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
     now_bms = BmsStatus.objects.filter(bms=bms, now__lte=now).last()  # 실시간
     now_serializer = BmsStatusSerializer(now_bms)
 
     batteries = Battery.objects.filter(bms=bms)
+    battery1 = batteries[0].id
+    battery2 = batteries[1].id
+
+    battery1_now_voltage = BatteryStatus.objects.filter(battery_id=battery1, now__lte=now).last()
+    battery2_now_voltage = BatteryStatus.objects.filter(battery_id=battery2, now__lte=now).last()
+
+    result_now = dict()
+    result_now.update(now_serializer.data)
+    result_now['전압1'] = battery1_now_voltage.voltage
+    result_now['전압2'] = battery2_now_voltage.voltage
+    result_now['잔량1'] = battery1_now_voltage.amount
+    result_now['잔량2'] = battery2_now_voltage.amount
 
     period = request.GET.get('period')
 
@@ -80,18 +92,36 @@ def bms(request, patient_number):
         start = 60
 
         period_bms = BmsStatus.objects.filter(bms=bms, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
+        period_battery1 = BatteryStatus.objects.filter(battery_id=battery1, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
+        period_battery2 = BatteryStatus.objects.filter(battery_id=battery2, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
         
         period_temperature = []
+        period_voltage1 = []
+        period_voltage2 = []
 
         for i in range(len(period_bms)):
+
             temperature = {
                 '시간': period_bms.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
                 '온도': period_bms.values('temperature')[i]['temperature']
             }
-
             period_temperature.append(temperature)
 
+            voltage1 = {
+                '시간': period_battery1.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+                '전압1': period_battery1.values('voltage')[i]['voltage']
+            }
+            period_voltage1.append(voltage1)
+
+            voltage2 = {
+                '시간': period_battery2.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+                '전압2': period_battery2.values('voltage')[i]['voltage']
+            }
+            period_voltage2.append(voltage2)
+
         tmp_temperature = []
+        tmp_voltage1 = []
+        tmp_voltage2 = []
         
         if len(period_temperature) < 12:
             
@@ -104,9 +134,23 @@ def bms(request, patient_number):
                 }        
                 tmp_temperature.append(temperature)
 
-        result_temperature = tmp_temperature + period_temperature
+                voltage1 = {
+                    '시간': now_datetime,
+                    '전압1': 0.0
+                }        
+                tmp_voltage1.append(voltage1)
+                
+                voltage2 = {
+                    '시간': now_datetime,
+                    '전압2': 0.0
+                }        
+                tmp_voltage2.append(voltage2)
 
-        return Response({'실시간': now_serializer.data, '온도': result_temperature}, status=status.HTTP_200_OK)
+        result_temperature = tmp_temperature + period_temperature
+        result_voltage1 = tmp_voltage1 + period_voltage1
+        result_voltage2 = tmp_voltage2 + period_voltage2
+
+        return Response({'실시간': result_now, '온도': result_temperature, '전압1': result_voltage1, '전압2': result_voltage2}, status=status.HTTP_200_OK)
 
     else:
         return Response({'result': '올바르지 않은 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -114,14 +158,20 @@ def bms(request, patient_number):
     period_start = period_now + relativedelta(seconds=-start)
    
     period_temperature = []
+    period_voltage1 = []
+    period_voltage2 = []
 
     while period_start < period_now:
 
         period_end = period_start + relativedelta(seconds=delta)
 
         period_bms = BmsStatus.objects.filter(bms=bms, now__lte=period_end, now__gt=period_start)
+        period_battery1 = BatteryStatus.objects.filter(battery_id=battery1, now__lte=period_end, now__gt=period_start)
+        period_battery2 = BatteryStatus.objects.filter(battery_id=battery2, now__lte=period_end, now__gt=period_start)
 
         max_temperature = period_bms.aggregate(최고=Max('temperature'))['최고']
+        max_voltage1 = period_battery1.aggregate(최고=Max('voltage'))['최고']
+        max_voltage2 = period_battery2.aggregate(최고=Max('voltage'))['최고']
 
         if max_temperature:
             
@@ -132,13 +182,27 @@ def bms(request, patient_number):
 
             temperature = {
                 '시간': period_value,
-                '온도': max_temperature,
+                '최고': max_temperature,
             }
             period_temperature.append(temperature)
+        
+            voltage1 = {
+                '시간': period_value,
+                '최고': max_voltage1,
+            }
+            period_voltage1.append(voltage1)
+        
+            voltage2 = {
+                '시간': period_value,
+                '최고': max_voltage2,
+            }
+            period_voltage2.append(voltage2)
         
         period_start = period_end
 
     tmp_temperature = []
+    tmp_voltage1 = []
+    tmp_voltage2 = []
     
     if len(period_temperature) < data_count:
         
@@ -155,15 +219,28 @@ def bms(request, patient_number):
 
             temperature = {
                 '시간': now,
-                '최고': 0.0,
-                '최저': 0.0
+                '최고': 0
             }
             tmp_temperature.append(temperature)
 
+            voltage1 = {
+                '시간': now,
+                '최고': 0.0
+            }
+            tmp_voltage1.append(voltage1)
+
+            voltage2 = {
+                '시간': now,
+                '최고': 0.0
+            }
+            tmp_voltage2.append(voltage2)
+
     result_temperature = tmp_temperature + period_temperature
+    result_voltage1 = tmp_voltage1 + period_voltage1
+    result_voltage2 = tmp_voltage2 + period_voltage2
 
-    return Response({'실시간': now_serializer.data, '체온': result_temperature}, status=status.HTTP_200_OK)
+    return Response({'실시간': result_now, '온도': result_temperature, '전압1': result_voltage1, '전압2': result_voltage2}, status=status.HTTP_200_OK)
 
-    
-    return Response({'result': 1}, status=status.HTTP_200_OK)
+
+
 
