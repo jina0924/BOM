@@ -25,8 +25,6 @@ function Nurses() {
     requestNurseList("", requestNurseListSuccess, (err) => console.log(err));
   }, []);
 
-  useEffect(() => {}, []);
-
   const requestNurseListSuccess = (res) => {
     setCount(res.data.count);
     setNurses(res.data.results);
