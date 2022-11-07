@@ -8,13 +8,14 @@ import PatientSearchBar from "components/molecules/PatientList/PatientSearchBar"
 import PatientList from "components/molecules/common/PatientList";
 
 // api
-import { requestPatientList } from "api/patients";
+import { requestPatientList, requestSearchPatient } from "api/patients";
 
 function Patients() {
   const [component, setComponent] = useState(0);
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
 
   function patientListSuccess(res) {
     console.log(res);
@@ -36,6 +37,10 @@ function Patients() {
     setPage(page);
   }
 
+  function onSearch() {
+    requestSearchPatient(page, 9, keyword, patientListSuccess, patientListFail);
+  }
+
   return (
     <>
       {component === 0 && (
@@ -45,7 +50,11 @@ function Patients() {
             <HeadBar />
             <div className="flex flex-col justify-center items-center h-[84vh]">
               <div className="h-[12vh] w-full">
-                <PatientSearchBar />
+                <PatientSearchBar
+                  keyword={keyword}
+                  onChangeInput={(e) => setKeyword(e.target.value)}
+                  onSearch={onSearch}
+                />
               </div>
               <div className="px-8 h-[72vh] pb-4 w-full">
                 <PatientList
