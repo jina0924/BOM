@@ -856,8 +856,8 @@ def health(request, patient_number):
 
             bpm = {
                 '시간': period_value,
-                '최대': max_bpm,
-                '최소': min_bpm
+                '최고': max_bpm,
+                '최저': min_bpm
             }
 
             period_bpm.append(bpm)
@@ -898,8 +898,8 @@ def health(request, patient_number):
 
             bpm = {
                 '시간': now,
-                '최대': 0,
-                '최소': 0
+                '최고': 0,
+                '최저': 0
             }
             tmp_bpm.append(bpm)
 
