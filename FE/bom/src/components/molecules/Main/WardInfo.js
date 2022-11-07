@@ -15,7 +15,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
               contentClassName="text-main font-bold text-lg"
             />
           )}
-          {wardInfoTitle === "countPatients" && (
+          {wardInfoTitle === "patientCount" && (
             <Title
               iconTag="UilMedicalDrip"
               iconTagClassName="text-sub1 inline mr-3"
@@ -23,7 +23,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
               contentClassName="text-main font-bold text-lg"
             />
           )}
-          {wardInfoTitle === "countDoctors" && (
+          {wardInfoTitle === "doctorCount" && (
             <Title
               iconTag="UilUserMd"
               iconTagClassName="text-sub1 inline mr-3"
@@ -31,7 +31,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
               contentClassName="text-main font-bold text-lg"
             />
           )}
-          {wardInfoTitle === "countNurses" && (
+          {wardInfoTitle === "nurseCount" && (
             <Title
               iconTag="UilUserNurse"
               iconTagClassName="text-sub1 inline mr-3"
@@ -46,17 +46,17 @@ function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
               {wardInfoDetail} 병동
             </span>
           )}
-          {wardInfoTitle === "countPatients" && (
+          {wardInfoTitle === "patientCount" && (
             <span className="font-suit text-main ml-9 text-base">
               {wardInfoDetail}
             </span>
           )}
-          {wardInfoTitle === "countDoctors" && (
+          {wardInfoTitle === "doctorCount" && (
             <span className="font-suit text-main ml-9 text-base">
               {wardInfoDetail}
             </span>
           )}
-          {wardInfoTitle === "countNurses" && (
+          {wardInfoTitle === "nurseCount" && (
             <span className="font-suit text-main ml-9 text-base">
               {wardInfoDetail}
             </span>
