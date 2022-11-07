@@ -1,20 +1,13 @@
 import React from "react";
 
-function Input({
-  type,
-  className,
-  placeholder,
-  value,
-  onKeyupFunction,
-  onChange,
-}) {
+function Input({ type, className, placeholder, value, onKeyup, onChange }) {
   return (
     <input
       type={type}
       className={className}
       placeholder={placeholder}
       value={value}
-      onKeyUp={onKeyupFunction}
+      // onKeyUp={onKeyup}
       onChange={onChange}
     />
   );

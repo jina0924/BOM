@@ -5,14 +5,14 @@ import Btn from "components/atoms/Btn";
 
 import { UilSearch } from "@iconscout/react-unicons";
 
-function PatientSearchBar() {
-  const [inputValue, setInputValue] = useState("");
+function PatientSearchBar({ keyword, onChangeInput, onSearch }) {
+  // const [inputValue, setInputValue] = useState("");
 
-  function onChangeInput(event) {
-    const inputValue = event.target.value;
-    setInputValue(inputValue);
-    console.log(inputValue);
-  }
+  // function onChangeInput(event) {
+  //   const inputValue = event.target.value;
+  //   setInputValue(inputValue);
+  //   console.log(inputValue);
+  // }
 
   return (
     <div className="searchbar-box grid grid-cols-10 items-center h-full py-4 px-8">
@@ -22,15 +22,15 @@ function PatientSearchBar() {
           type="text"
           className="bg-white rounded-[20px] w-[67vw] shadow-box px-12 h-[50px] focus:outline-none placeholder:text-sm"
           placeholder="환자 번호나 이름으로 검색하기"
-          onKeyUp=""
-          value={inputValue}
+          onKeyUp={onSearch}
+          value={keyword}
           onChange={onChangeInput}
         />
       </div>
       <div className="btn-box col-span-1 h-[50px]">
         <Btn
           className="text-white font-semibold bg-main shadow-loginbtn rounded-[20px] w-[8vw] h-full"
-          onClick=""
+          onClick={onSearch}
           content="검색"
         />
       </div>
