@@ -41,6 +41,17 @@ function Patients() {
     requestSearchPatient(page, 9, keyword, patientListSuccess, patientListFail);
   }
 
+  function onKeyPressSearch(event) {
+    if (event.key === "Enter") {
+      requestSearchPatient(
+        page,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
+    }
+  }
   return (
     <>
       {component === 0 && (
@@ -54,6 +65,7 @@ function Patients() {
                   keyword={keyword}
                   onChangeInput={(e) => setKeyword(e.target.value)}
                   onSearch={onSearch}
+                  onKeyPress={onKeyPressSearch}
                 />
               </div>
               <div className="px-8 h-[72vh] pb-4 w-full">
