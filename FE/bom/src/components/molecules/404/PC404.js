@@ -15,6 +15,10 @@ function PC404({ userType = "guest" }) {
     navigate(`/patient/${ls.get("number")}`);
   };
 
+  const toPatientDetail = () => {
+    navigate(`/patient/${ls.get("number")}`);
+  };
+
   useEffect(() => {
     if (userType === "guest") {
       setBtnContent("로그인");
@@ -52,9 +56,7 @@ function PC404({ userType = "guest" }) {
           <Btn
             className="bg-main text-white px-10 py-4 rounded-[20px]"
             content={btnContent}
-            onClick={() => {
-              navigate(`/patient/${ls.get("number")}`);
-            }}
+            onClick={userType === "patient" && toPatientDetail}
           />
         </div>
       </div>
