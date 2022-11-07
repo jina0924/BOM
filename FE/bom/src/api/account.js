@@ -28,7 +28,7 @@ function requestLogin(username, password, success, fail) {
 // function requestLogout()
 
 function requestUserInfo(success, fail) {
-  UserApi.get("accounts/user/").then(success).catch(fail);
+  UserApi.get("accounts/user/usertype").then(success).catch(fail);
 }
 
 // function requestSilentRefresh() {

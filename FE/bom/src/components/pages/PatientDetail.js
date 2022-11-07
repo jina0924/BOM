@@ -1,5 +1,7 @@
 import { useState, React, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import ls from "helper/LocalStorage";
+import { useNavigate } from "react-router-dom";
 
 // components
 import SideBar from "components/molecules/common/SideBar";
@@ -14,11 +16,12 @@ import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
 
 // API
-import { requestPatientList } from "api/patientDetail";
+import { requestPatientDetail } from "api/patientDetail";
 
-function PatientDetail() {
+function PatientDetail({ isPC }) {
+  const navigate = useNavigate();
+  const params = useParams();
   const [component, setComponent] = useState(0);
-  const [isPC, setIsPC] = useState(true);
   const [ward, setWard] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -27,25 +30,38 @@ function PatientDetail() {
   const [nokName, setNokName] = useState("");
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
-  const params = useParams();
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
-
-  useEffect(() => {
-    requestPatientList(params.id, requestPatientListSuccess, (err) =>
-      console.log(err)
-    );
+    const userType = ls.get("userType");
+    if (userType === "ward") {
+      requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
+        console.log(err)
+      );
+    }
+    if (userType === "patient") {
+      requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
+        console.log(err)
+      );
+    }
   }, [params]);
 
-  const requestPatientListSuccess = (res) => {
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
+  };
+
+  const requestPatientDetailSuccess = (res) => {
+    console.log(res);
     setWard(res.data.ward.number);
-    setUsername(res.data.user.username);
+    setUsername(res.data.number);
     setName(res.data.name);
     setBirth(res.data.birth);
     setSex(res.data.sex);

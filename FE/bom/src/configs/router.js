@@ -6,6 +6,7 @@ import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
 import Test from "components/pages/Test";
+import DeviceNotSupport from "components/pages/DeviceNotSupport";
 
 import ls from "helper/LocalStorage";
 
@@ -15,28 +16,59 @@ import {
   Navigate,
   BrowserRouter as Router,
 } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function checkAuth() {
   // 병동 로그인인지 환자 번호 로그인인지 구분할 것
-  return !!ls.get("accessToken");
+  if (ls.get("accessToken") && ls.get("userType") === "ward") {
+    return 0;
+  } else if (ls.get("accessToken") && ls.get("userType") === "patient") {
+    return 1;
+  } else {
+    return 2;
+  }
 }
 
 function CheckAuth({ children }) {
-  if (checkAuth()) return children;
-  return <Navigate to="/login" />;
+  console.log(children.type.name);
+  console.log(window.location.pathname.substring(9));
+  if (checkAuth() === 0) {
+    return children;
+  } else if (checkAuth() === 1) {
+    if (
+      children.type.name === "PatientDetail" &&
+      ls.get("number") === parseInt(window.location.pathname.substring(9))
+    ) {
+      return children;
+    }
+  } else {
+    ls.clear();
+    return <Navigate to="/login" />;
+  }
+  // return <Navigate to="/login" />;
 }
 
 export default function RouterConfiguration() {
+  const [isPC, setIsPC] = useState();
+
+  useEffect(() => {
+    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+  }, []);
+
+  setInterval(() => {
+    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+  }, 1000);
+
   return (
     <Router>
       <Routes>
         <Route path="/test" element={<Test />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login isPC={isPC} />} />
         <Route
           path="/"
           element={
             <CheckAuth>
-              <Main />
+              <Main isPC={isPC} />
             </CheckAuth>
           }
         />
@@ -44,7 +76,7 @@ export default function RouterConfiguration() {
           path="/patients"
           element={
             <CheckAuth>
-              <Patients />
+              <Patients isPC={isPC} />
             </CheckAuth>
           }
         />
@@ -52,7 +84,7 @@ export default function RouterConfiguration() {
           path="/patient/:id"
           element={
             <CheckAuth>
-              <PatientDetail />
+              <PatientDetail isPC={isPC} />
             </CheckAuth>
           }
         />
@@ -60,7 +92,7 @@ export default function RouterConfiguration() {
           path="/doctors"
           element={
             <CheckAuth>
-              <Doctors />
+              <Doctors isPC={isPC} />
             </CheckAuth>
           }
         />
@@ -68,9 +100,13 @@ export default function RouterConfiguration() {
           path="/nurses"
           element={
             <CheckAuth>
-              <Nurses />
+              <Nurses isPC={isPC} />
             </CheckAuth>
           }
+        />
+        <Route
+          path="/deviceNotSupported"
+          element={<DeviceNotSupport isPC={isPC} />}
         />
       </Routes>
     </Router>
