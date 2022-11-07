@@ -11,6 +11,7 @@ function CustomPagination({
   pageRange,
   onChange,
 }) {
+  // console.log(page, itemsCount, totalCount);
   return (
     <Pagination
       activePage={page}

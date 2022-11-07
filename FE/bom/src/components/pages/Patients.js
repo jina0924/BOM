@@ -1,29 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import PatientSearchBar from "components/molecules/PatientList/PatientSearchBar";
 import PatientList from "components/molecules/common/PatientList";
-import { useEffect } from "react";
+
+// api
+import { requestPatientList } from "api/patients";
 
 function Patients() {
-  const location = useLocation();
-  const [patientListBtn, setPatientListBtn] = useState(0);
   const [component, setComponent] = useState(0);
+  const [patientList, setPatientList] = useState([]);
+  const [count, setCount] = useState(1);
+  const [page, setPage] = useState(1);
+
+  function patientListSuccess(res) {
+    console.log(res);
+    console.log(res.data.results);
+    setPatientList(res.data.results);
+    setCount(res.data.count);
+    setPage(res.data.now);
+  }
+
+  function patientListFail(err) {
+    console.log("실패", err);
+  }
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      setPatientListBtn(1);
-    } else if (location.pathname === "/patients") {
-      setPatientListBtn(2);
-    }
-  });
+    requestPatientList(page, 9, patientListSuccess, patientListFail);
+  }, [page]);
 
-  useEffect(() => {
-    console.log(component);
-  }, [component]);
+  function handlePageChange(page) {
+    setPage(page);
+  }
 
   return (
     <>
@@ -38,6 +49,11 @@ function Patients() {
               </div>
               <div className="px-8 h-[72vh] pb-4 w-full">
                 <PatientList
+                  patientList={patientList}
+                  page={page}
+                  count={count}
+                  limit={9}
+                  handlePageChange={handlePageChange}
                   nowPage="patients"
                   onZoom={() => setComponent(1)}
                   onOff={false}
@@ -50,6 +66,11 @@ function Patients() {
       {component === 1 && (
         <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
           <PatientList
+            patientList={patientList}
+            page={page}
+            count={count}
+            limit={9}
+            handlePageChange={handlePageChange}
             nowPage="patients"
             onZoom={() => setComponent(0)}
             onOff={true}

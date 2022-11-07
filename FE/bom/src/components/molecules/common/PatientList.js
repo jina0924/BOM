@@ -6,118 +6,30 @@ import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
 // api
-import { requestPatientList } from "api/patients";
+// import { requestPatientList } from "api/patients";
 
 import {
   UilArrowResizeDiagonal,
   UilArrowDownLeft,
 } from "@iconscout/react-unicons";
 
-const tempPatientLiST = {
-  count: 158,
-  next: "",
-  previous: "",
-  results: [
-    {
-      pk: "0001",
-      name: "임진경",
-      gender: "M",
-      status_temperature: 40.5,
-      status_bpm: 129,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0002",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 34.5,
-      status_bpm: 129,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0003",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 80,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0004",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 20,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0005",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 129,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0006",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 129,
-      oxygen_saturation: 80,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0007",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 129,
-      oxygen_saturation: 100,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-    {
-      pk: "0008",
-      name: "임진경",
-      gender: "F",
-      status_temperature: 36.5,
-      status_bpm: 129,
-      oxygen_saturation: 94,
-      nok_name: "임진경",
-      nok_phonenumber: "01012345678",
-      doctor_name: "임진경",
-    },
-  ],
-};
-
-function PatientList({ nowPage, onZoom, onOff }) {
-  const [patientList, setPatientList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(0);
-  // const [next, setNext] = useState(0);
-  // const [previous, setPrevious] = useState(0);
-  // const [patient, setPatient] = useState({});
+function PatientList({
+  patientList,
+  page,
+  count,
+  limit,
+  handlePageChange,
+  nowPage,
+  onZoom,
+  onOff,
+}) {
+  // console.log(patientList);
+  // const [patientList, setPatientList] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const [count, setCount] = useState(1);
+  // const [limit, setLimit] = useState(8);
   const [pathname, setPathname] = useState("");
-  const [component, setComponent] = useState(0);
+  // const [component, setComponent] = useState(0);
 
   const location = useLocation();
 
@@ -131,29 +43,37 @@ function PatientList({ nowPage, onZoom, onOff }) {
     }
   }, [location]);
 
-  function patientListSuccess(res) {
-    console.log(res);
-  }
+  // async function patientListSuccess(res) {
+  //   console.log(res);
+  //   setPatientList(res.data.results);
+  //   setCount(res.data.count);
+  //   setPage(res.data.now);
+  // }
 
-  function patientListFail(err) {
-    console.log(err);
-  }
+  // function patientListFail(err) {
+  //   console.log(err);
+  // }
 
   function onClickPatientDetailInfo(event) {
     event.preventDefault();
-    requestPatientList("225070001", patientListSuccess, patientListFail);
   }
 
-  function handlePageChange(page) {
-    setPage(page);
-  }
+  // function handlePageChange(page) {
+  //   setPage(page);
+  // }
 
-  useEffect(() => {
-    setPatientList(tempPatientLiST.results);
-    setCount(tempPatientLiST.count);
-    // setNext(tempPatientLiST.next);
-    // setPrevious(tempPatientLiST.previous);
-  }, []);
+  // useEffect(() => {
+  //   if (nowPage === "main") {
+  //     requestPatientList(page, 8, patientListSuccess, patientListFail);
+  //   } else if (nowPage === "patients") {
+  //     requestPatientList(page, 9, patientListSuccess, patientListFail);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  // console.log(patientList)
+  // console.log(patientList.count)
+  // }, [patientList]);
 
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
@@ -241,7 +161,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                       className={`text-center font-semibold border-b-[.5px] border-gray 
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
-                      {item.pk}
+                      {item.number}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
@@ -249,7 +169,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                     >
                       {item.name}
                     </td>
-                    {pathname === "patients" && item.gender === "M" && (
+                    {pathname === "patients" && item.sex === "M" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
                           ${
@@ -259,7 +179,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                         남
                       </td>
                     )}
-                    {pathname === "patients" && item.gender === "F" && (
+                    {pathname === "patients" && item.sex === "F" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
                           ${
@@ -272,32 +192,32 @@ function PatientList({ nowPage, onZoom, onOff }) {
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
-                        ${item.status_temperature > 37.5 && "text-sub1"}
-                        ${item.status_temperature < 35 && "text-blue"}`}
+                        ${item.temperature > 37.5 && "text-sub1"}
+                        ${item.temperature < 35 && "text-blue"}`}
                     >
-                      {item.status_temperature}
-                      {item.status_temperature > 37.5 && <span>▲</span>}
-                      {item.status_temperature < 35 && <span>▼</span>}
+                      {item.temperature}
+                      {item.temperature > 37.5 && <span>▲</span>}
+                      {item.temperature < 35 && <span>▼</span>}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} 
-                        ${item.status_bpm > 100 && "text-sub1"}
-                        ${item.status_bpm < 60 && "text-blue"}
+                        ${item.bpm > 100 && "text-sub1"}
+                        ${item.bpm < 60 && "text-blue"}
                         `}
                     >
-                      {item.status_bpm}
-                      {item.status_bpm > 100 && <span>▲</span>}
-                      {item.status_bpm < 60 && <span>▼</span>}
+                      {item.bpm}
+                      {item.bpm > 100 && <span>▲</span>}
+                      {item.bpm < 60 && <span>▼</span>}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
-                        item.oxygen_saturation < 95 && "text-sub1"
+                        item.oxygenSaturation < 95 && "text-sub1"
                       }
                       `}
                     >
-                      {item.oxygen_saturation}
+                      {item.oxygenSaturation}
                     </td>
                     {pathname === "patients" && (
                       <td
@@ -307,7 +227,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                           }
                         `}
                       >
-                        {item.nok_name}
+                        {item.nokName}
                       </td>
                     )}
                     {pathname === "patients" && (
@@ -317,7 +237,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                           (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
                         }
                       >
-                        {item.nok_phonenumber.replace(
+                        {item.nokPhonenumber.replace(
                           /^(\d{2,3})(\d{3,4})(\d{4})$/,
                           `$1-$2-$3`
                         )}
@@ -329,7 +249,7 @@ function PatientList({ nowPage, onZoom, onOff }) {
                         (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
                       }
                     >
-                      {item.doctor_name}
+                      {item.doctor.name}
                     </td>
                   </tr>
                 ))}
@@ -340,20 +260,11 @@ function PatientList({ nowPage, onZoom, onOff }) {
           <div className="pagination-number">
             <CustomPagination
               page={page}
-              itemsCount={8}
+              itemsCount={limit}
               totalCount={count}
               pageRange={5}
               onChange={handlePageChange}
             />
-            {/* <Pagination
-              activePage={page}
-              itemsCountPerPage={8}
-              totalItemsCount={count}
-              pageRangeDisplayed={5}
-              prevPageText={"<"}
-              nextPageText={">"}
-              onChange={handlePageChange}
-            /> */}
           </div>
         </div>
       </div>
