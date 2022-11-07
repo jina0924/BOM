@@ -64,14 +64,6 @@ function PatientDetail({ isPC }) {
         setNokName(res.data.nokName);
         setNokPhonenumber(res.data.nokPhonenumber);
         setDoctor(res.data.doctor.name);
-        const userType = ls.get("userType");
-        if (userType === "ward") {
-            setTimeout(requestPatientDetail, 10000, params.id, requestPatientDetailSuccess, err => console.log(err));
-        }
-        if (userType === "patient") {
-            requestPatientDetail(null, requestPatientDetailSuccess, err => console.log(err));
-            setTimeout(requestPatientDetail, 10000, null, requestPatientDetailSuccess, err => console.log(err));
-        }
     };
 
     return (
