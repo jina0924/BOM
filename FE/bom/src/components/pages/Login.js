@@ -120,7 +120,7 @@ function Login() {
                   </div>
                   <Btn
                     className="text-white bg-main shadow-loginbtn w-[18vw] text-sm h-9 rounded-full mt-5"
-                    onClick=""
+                    onClick={onSubmitLogin}
                     content="로그인"
                   />
                 </form>
