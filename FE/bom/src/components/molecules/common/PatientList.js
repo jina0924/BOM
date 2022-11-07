@@ -79,7 +79,7 @@ const tempPatientLiST = {
       gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
-      oxygen_saturation: 100,
+      oxygen_saturation: 80,
       nok_name: "임진경",
       nok_phonenumber: "01012345678",
       doctor_name: "임진경",
@@ -101,7 +101,7 @@ const tempPatientLiST = {
       gender: "F",
       status_temperature: 36.5,
       status_bpm: 129,
-      oxygen_saturation: 100,
+      oxygen_saturation: 94,
       nok_name: "임진경",
       nok_phonenumber: "01012345678",
       doctor_name: "임진경",
@@ -146,7 +146,6 @@ function PatientList({ nowPage, onZoom, onOff }) {
 
   function handlePageChange(page) {
     setPage(page);
-    console.log(page);
   }
 
   useEffect(() => {
@@ -233,82 +232,80 @@ function PatientList({ nowPage, onZoom, onOff }) {
                 {patientList.map((item, key) => (
                   <tr key={key} className="" onClick={onClickPatientDetailInfo}>
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                      }
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {key + 1}
                     </td>
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                      }
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {item.pk}
                     </td>
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                      }
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {item.name}
                     </td>
                     {pathname === "patients" && item.gender === "M" && (
                       <td
-                        className={
-                          "text-center font-semibold border-b-[.5px] border-gray" +
-                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                        }
+                        className={`text-center font-semibold border-b-[.5px] border-gray 
+                          ${
+                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
+                          }`}
                       >
                         남
                       </td>
                     )}
                     {pathname === "patients" && item.gender === "F" && (
                       <td
-                        className={
-                          "text-center font-semibold border-b-[.5px] border-gray" +
-                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                        }
+                        className={`text-center font-semibold border-b-[.5px] border-gray 
+                          ${
+                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
+                          }`}
                       >
                         여
                       </td>
                     )}
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray
-                        ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
-                        ${item.status_temperature > 37.5 && " text-sub1"}
-                        ${item.status_temperature < 35 && " text-sub2"}`}
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
+                        ${item.status_temperature > 37.5 && "text-sub1"}
+                        ${item.status_temperature < 35 && "text-blue"}`}
                     >
                       {item.status_temperature}
+                      {item.status_temperature > 37.5 && <span>▲</span>}
+                      {item.status_temperature < 35 && <span>▼</span>}
                     </td>
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5") +
-                        (item.status_bpm > 100 || item.status_bpm < 60
-                          ? " text-sub1"
-                          : "")
-                      }
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} 
+                        ${item.status_bpm > 100 && "text-sub1"}
+                        ${item.status_bpm < 60 && "text-blue"}
+                        `}
                     >
                       {item.status_bpm}
+                      {item.status_bpm > 100 && <span>▲</span>}
+                      {item.status_bpm < 60 && <span>▼</span>}
                     </td>
                     <td
-                      className={
-                        "text-center font-semibold border-b-[.5px] border-gray" +
-                        (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
+                      className={`text-center font-semibold border-b-[.5px] border-gray
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
+                        item.oxygen_saturation < 95 && "text-sub1"
                       }
+                      `}
                     >
                       {item.oxygen_saturation}
                     </td>
                     {pathname === "patients" && (
                       <td
-                        className={
-                          "text-center font-semibold border-b-[.5px] border-gray" +
-                          (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
-                        }
+                        className={`text-center font-semibold border-b-[.5px] border-gray
+                          ${
+                            onOff === true ? " text-sm py-4" : " text-xs py-2.5"
+                          }
+                        `}
                       >
                         {item.nok_name}
                       </td>
