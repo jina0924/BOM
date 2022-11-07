@@ -1,7 +1,9 @@
 import UserApi from "api/UserApi";
 
-function requestPatientList(patientNumber, success, fail) {
-  UserApi.get(`wards/patients/${patientNumber}`).then(success).catch(fail);
+function requestPatientDetail(patientNumber, success, fail) {
+  patientNumber !== null
+    ? UserApi.get(`wards/patients/${patientNumber}`).then(success).catch(fail)
+    : UserApi.get("wards/patient").then(success).catch(fail);
 }
 
-export { requestPatientList };
+export { requestPatientDetail };

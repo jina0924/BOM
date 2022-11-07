@@ -1,19 +1,26 @@
 import { React, useState, useEffect } from "react";
+import ls from "helper/LocalStorage";
+import { useNavigate } from "react-router-dom";
 
 import { UilLaptop, UilMobileAndroid } from "@iconscout/react-unicons";
 
 import Logo from "components/atoms/Logo";
 
-function DeviceNotSupport() {
-  const [isPC, setIsPC] = useState(true);
+function DeviceNotSupport({ isPC }) {
+  const navigate = useNavigate();
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
+    checkUserType();
+  }, [isPC]);
 
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && isPC) {
+      navigate("/main");
+    } else if (userType === "patient" && !isPC) {
+      navigate(`/patient/${ls.get("number")}`);
+    }
+  };
 
   return (
     <>
