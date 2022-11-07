@@ -8,7 +8,7 @@ SAMPLE_FREQ = 25
 # in algorithm.h, "DONOT CHANGE" comment is attached
 MA_SIZE = 4
 # sampling frequency * 4 (in algorithm.h)
-BUFFER_SIZE = 150
+BUFFER_SIZE = 100
 
 
 # this assumes ir_data and red_data as np.array
