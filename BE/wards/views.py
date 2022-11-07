@@ -68,7 +68,7 @@ def ward(request):
 
             data = {
                 'month': period_start.strftime('%Y-%m'),
-                'count': patients
+                '환자 수': patients
             }
 
             tendency.append(data)
@@ -168,19 +168,6 @@ def patient_detail(request, patient_number):
     serializer = PatientDetailSerializer(patient)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-# 병동: 병동 정보 조회
-# 병동 번호, 입원환자 수, 의사 수, 간호사 수, 입원환자 추이, 병상 가동률
-@api_view(['GET'])
-def wards(request):
-    # user = get_object_or_404(User, username=request.user)
-    # ward = get_object_or_404(Ward, user=user)
-    
-    # serializer = WardDetailSerializer(ward)
-    
-    # return Response({'result': serializer.data}, status=status.HTTP_200_OK)
-    return Response({'result': '일단 답변이 가네요! access token이 유효합니다!'}, status=status.HTTP_200_OK)
 
 
 # 병동: 환자 체온 조회 (사용안함)
@@ -746,26 +733,63 @@ def health(request, patient_number):
         start = 60
 
         period_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
-        period_serializer = HealthSerializer(period_health, many=True)
+        
+        period_temperature = []
+        period_bpm = []
+        period_oxygen_saturation = []
 
-        tmp = []
-    
+        for i in range(len(period_health)):
+            temperature = {
+                '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+                '체온': period_health.values('temperature')[i]['temperature']
+            }
+
+            bpm = {
+                '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+                '심박수': period_health.values('bpm')[i]['bpm']
+            }
+
+            oxygen_saturation = {
+                '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+                '산소포화도': period_health.values('oxygen_saturation')[i]['oxygen_saturation']
+            }
+
+            period_temperature.append(temperature)
+            period_bpm.append(bpm)
+            period_oxygen_saturation.append(oxygen_saturation)
+
+        tmp_temperature = []
+        tmp_bpm = []
+        tmp_oxygen_saturation = []
+        
         if len(period_health) < 12:
             
             for i in range(1, 12 - len(period_health) + 1):
                 now_datetime = (now + relativedelta(seconds=-start) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
                 
-                data = {
-                '체온': 0.0,
-                '심박수': 0,
-                '산소포화도': 0,
-                '시간': now_datetime
+                temperature = {
+                    '시간': now_datetime,
+                    '체온': 0.0
                 }        
-                tmp.append(data)
+                tmp_temperature.append(temperature)
 
-        period = tmp + period_serializer.data
+                bpm = {
+                    '시간': now_datetime,
+                    '심박수': 0
+                }
+                tmp_bpm.append(bpm)
 
-        return Response({'now': now_serializer.data, 'period': period}, status=status.HTTP_200_OK)
+                oxygen_saturation = {
+                    '시간': now_datetime,
+                    '산소포화도': 0
+                }
+                tmp_oxygen_saturation.append(oxygen_saturation)
+
+        result_temperature = tmp_temperature + period_temperature
+        result_bpm = tmp_bpm + period_bpm
+        result_oxygen_saturation = tmp_oxygen_saturation + period_oxygen_saturation
+
+        return Response({'실시간': now_serializer.data, '체온': result_temperature, '심박수': result_bpm, '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
 
     else:
         return Response({'result': '올바르지 않은 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -892,23 +916,60 @@ def patient_health(request):
     start = 60
 
     period_health = PatientStatus.objects.filter(patient=patient, now__lte=now, now__gt=(now + relativedelta(seconds=-start)))
-    period_serializer = HealthSerializer(period_health, many=True)
+    
+    period_temperature = []
+    period_bpm = []
+    period_oxygen_saturation = []
 
-    tmp = []
+    for i in range(len(period_health)):
+        temperature = {
+            '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+            '체온': period_health.values('temperature')[i]['temperature']
+        }
+
+        bpm = {
+            '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+            '심박수': period_health.values('bpm')[i]['bpm']
+        }
+
+        oxygen_saturation = {
+            '시간': period_health.values('now')[i]['now'].strftime('%Y-%m-%d %H:%M:%S'),
+            '산소포화도': period_health.values('oxygen_saturation')[i]['oxygen_saturation']
+        }
+
+        period_temperature.append(temperature)
+        period_bpm.append(bpm)
+        period_oxygen_saturation.append(oxygen_saturation)
+
+    tmp_temperature = []
+    tmp_bpm = []
+    tmp_oxygen_saturation = []
 
     if len(period_health) < 12:
         
         for i in range(1, 12 - len(period_health) + 1):
             now_datetime = (now + relativedelta(seconds=-start) + relativedelta(seconds=(i * 5))).strftime('%Y-%m-%d %H:%M:%S')
             
-            data = {
-            '체온': 0.0,
-            '심박수': 0,
-            '산소포화도': 0,
-            '시간': now_datetime
+            temperature = {
+                '시간': now_datetime,
+                '체온': 0.0
             }        
-            tmp.append(data)
+            tmp_temperature.append(temperature)
 
-    period = tmp + period_serializer.data
+            bpm = {
+                '시간': now_datetime,
+                '심박수': 0
+            }
+            tmp_bpm.append(bpm)
 
-    return Response({'now': serializer.data, 'period': period}, status=status.HTTP_200_OK)
+            oxygen_saturation = {
+                '시간': now_datetime,
+                '산소포화도': 0
+            }
+            tmp_oxygen_saturation.append(oxygen_saturation)
+
+    result_temperature = tmp_temperature + period_temperature
+    result_bpm = tmp_bpm + period_bpm
+    result_oxygen_saturation = tmp_oxygen_saturation + period_oxygen_saturation
+
+    return Response({'실시간': serializer.data, '체온': result_temperature, '심박수': result_bpm , '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
