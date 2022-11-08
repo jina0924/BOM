@@ -69,7 +69,6 @@ function Main() {
       patientListFail
     );
     setPatientListTimerID(timerID);
-    console.log("setTimeout", page);
   }
 
   function patientListFail(err) {
