@@ -18,13 +18,19 @@ import Btn from "components/atoms/Btn";
 // API
 import {
   requestPatientDetail,
+  requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
 } from "api/patientDetail";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
+  // url 상 환자번호
   const params = useParams();
+  // 컴포넌트 번호
   const [component, setComponent] = useState(0);
+  // 타이머
+  const [patientDetailTimerID, setPatientDetailTimerID] = useState("");
+  // 환자정보
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
@@ -32,13 +38,23 @@ function PatientDetail({ isPC }) {
   const [nokName, setNokName] = useState("");
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
+  // 환자 건강 정보
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
   const [liveOxygen, setLiveOxyzen] = useState(0);
-  const [filter, setFilter] = useState(0);
+  const [filter, setFilter] = useState({ period: "now" });
   const [temperatureData, setTemperatureData] = useState([]);
   const [heartbeatData, setHeartbeatData] = useState([]);
   const [oxyzenData, setOxyzenData] = useState([]);
+  // 환자 디바이스 정보
+  const [bmsTemperature, setBmsTemperature] = useState(0);
+  const [voltage1, setVoltage1] = useState(0);
+  const [voltage2, setVoltage2] = useState(0);
+  const [soc1, setSoc1] = useState(0);
+  const [soc2, setSoc2] = useState(0);
+  const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
+  const [voltage1Data, setVoltage1Data] = useState([]);
+  const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
@@ -46,12 +62,17 @@ function PatientDetail({ isPC }) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
-      requestPatientDetailHealthInfo(
-        params.id,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
+      if (component !== 1) {
+        requestPatientDetailHealthInfo(
+          params.id,
+          filter,
+          requestPatientDetailHealthInfoSuccess,
+          (err) => console.log(err)
+        );
+      }
+      if (component === 1) {
+        // 새로운 요청보내기
+      }
     }
     if (userType === "patient") {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
@@ -64,35 +85,7 @@ function PatientDetail({ isPC }) {
         (err) => console.log(err)
       );
     }
-  }, [params]);
-
-  setInterval(() => {
-    const userType = ls.get("userType");
-    const period =
-      filter === 0
-        ? { period: "now" }
-        : filter === 1
-        ? { period: "day" }
-        : filter === 2
-        ? { period: "week" }
-        : { period: "month" };
-    if (userType === "ward") {
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (userType === "patient") {
-      requestPatientDetailHealthInfo(
-        null,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-  }, 10000);
+  }, [params, filter]);
 
   useEffect(() => {
     checkUserType();
@@ -125,49 +118,38 @@ function PatientDetail({ isPC }) {
     setTemperatureData(res.data.체온);
     setHeartbeatData(res.data.심박수);
     setOxyzenData(res.data.산소포화도);
+    const timerID = setTimeout(
+      requestPatientDetailHealthInfo,
+      3000,
+      params.id,
+      filter,
+      requestPatientDetailHealthInfoSuccess,
+      (err) => console.log(err)
+    );
+    setPatientDetailTimerID(timerID);
   };
 
+  const requestPatientDetailDeviceInfoSuccess = (res) => {};
+
   const selectPeriod = (event) => {
-    console.log(event.target.value);
-    if (event.target.value === "0") {
-      setFilter(0);
-      const period = { period: "now" };
+    clearTimeout(patientDetailTimerID);
+    const period = { period: event.target.value };
+    setFilter(period);
+  };
+
+  const clickComponent = (number) => {
+    clearTimeout(patientDetailTimerID);
+    setComponent(number);
+    if (number == 0) {
       requestPatientDetailHealthInfo(
         params.id,
-        period,
+        filter,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
-    }
-    if (event.target.value === "1") {
-      setFilter(1);
-      const period = { period: "day" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (event.target.value === "2") {
-      setFilter(2);
-      const period = { period: "week" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (event.target.value === "3") {
-      setFilter(3);
-      const period = { period: "month" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
+    } else {
+      // 디바이스 정보 불러오기 API
+      requestPatientDetailDeviceInfo(params.id, filter);
     }
   };
 
@@ -194,7 +176,7 @@ function PatientDetail({ isPC }) {
                         `}
                       content="환자 정보"
                       onClick={() => {
-                        setComponent(0);
+                        clickComponent(0);
                       }}
                     />
                     <Btn
@@ -223,10 +205,10 @@ function PatientDetail({ isPC }) {
                   onChange={selectPeriod}
                 >
                   <option value="null">기간</option>
-                  <option value="0">실시간</option>
-                  <option value="1">1 일</option>
-                  <option value="2">7 일</option>
-                  <option value="3">30 일</option>
+                  <option value="now">실시간</option>
+                  <option value="day">1 일</option>
+                  <option value="week">7 일</option>
+                  <option value="month">30 일</option>
                 </select>
                 <DownloadBtn />
               </div>
@@ -291,7 +273,13 @@ function PatientDetail({ isPC }) {
             {component === 1 && (
               <div className="device-detail-full px-10 pb-5 h-[75vh]">
                 <div className="live-device-status pb-5 h-[25vh]">
-                  <LiveDeviceStatus />
+                  <LiveDeviceStatus
+                    bmsTemperature={bmsTemperature}
+                    voltage1={voltage1}
+                    voltage2={voltage2}
+                    soc1={soc1}
+                    soc2={soc2}
+                  />
                 </div>
                 <div className="device-detail-info pb-5 h-[50vh]">
                   <DeviceDetailInfo
