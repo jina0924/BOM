@@ -83,7 +83,7 @@ function Main() {
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
       <SideBar />
       <div className="info-zone col-span-5">
-        <HeadBar wardNum={wardName} />
+        <HeadBar />
         <div className="information-zone flex flex-col">
           {/* 병동 정보 카드 */}
           <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
@@ -127,12 +127,12 @@ function Main() {
             {/* 병동 데이터 그래프 카드 */}
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
-              <div className="patient-progres h-[22vh]">
+              <div className="patient-progres h-[24vh]">
                 <PatientProgress patientTendency={patientTendency} />
                 {/* <PatientProgress /> */}
               </div>
               {/* 병상 가동률 */}
-              <div className="active-bed h-[37vh]">
+              <div className="active-bed h-[35vh]">
                 <ActiveBed utilization={utilization} />
                 {/* <ActiveBed /> */}
               </div>
