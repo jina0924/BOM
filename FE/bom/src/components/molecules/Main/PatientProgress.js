@@ -14,7 +14,7 @@ function PatientProgress({ patientTendency }) {
           contentClassName="text-main font-bold text-lg"
         />
       </div>
-      <div className="patient-progress-graph h-5/6">
+      <div className="patient-progress-graph h-5/6 flex justify-center items-end">
         <Graph part="입원환자추이" data={patientTendency} />
       </div>
     </div>
