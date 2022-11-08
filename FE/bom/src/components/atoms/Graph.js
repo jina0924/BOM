@@ -404,7 +404,7 @@ function Graph({
             </ResponsiveContainer>
           )}
           {part === "입원환자추이" && (
-            <ResponsiveContainer width="99%" height="99%">
+            <ResponsiveContainer width="99%" height="90%">
               <LineChart
                 data={data}
                 margin={{
@@ -433,9 +433,15 @@ function Graph({
                 {!!data[0].실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )} */}
-                {/* {!!data[0].patients && (
-                  <Line type="monotone" dataKey="환자 수" stroke="#82ca9d" />
-                )} */}
+                {!!data[0] && (
+                  <Line
+                    type="monotone"
+                    dataKey="환자 수"
+                    stroke="#5C78B1"
+                    dot={{ r: 2 }}
+                  />
+                )}
+                <Legend verticalAlign="top" width="100%" />
               </LineChart>
             </ResponsiveContainer>
           )}
