@@ -2,7 +2,7 @@ import React from "react";
 import Title from "components/atoms/Title.js";
 import BMSIcon from "components/atoms/BMSIcon";
 
-function LiveDeviceStatus() {
+function LiveDeviceStatus({ bmsTemperature, voltage1, voltage2, soc1, soc2 }) {
   return (
     <div className="patient-device-detail-info w-full h-full bg-white p-3 rounded-lg shadow-box">
       <div className="top-box  h-1/4 py-4 px-6">
@@ -20,7 +20,7 @@ function LiveDeviceStatus() {
           </div>
           <div className="live-info-box pl-4">
             <div className="live-info text-xl font-bold text-main">
-              <span>50 ℃</span>
+              <span>{bmsTemperature} ℃</span>
             </div>
             <div className="live-info-name text-sm">
               <span>BMS 온도</span>
@@ -33,7 +33,9 @@ function LiveDeviceStatus() {
           </div>
           <div className="live-info-box pl-4">
             <div className="live-info text-xl font-bold text-main">
-              <span>5V | 7V</span>
+              <span>
+                {voltage1}V | {voltage2}V
+              </span>
             </div>
             <div className="live-info-name text-sm">
               <span>배터리 전압</span>
@@ -46,7 +48,9 @@ function LiveDeviceStatus() {
           </div>
           <div className="live-info-box pl-4">
             <div className="live-info text-xl font-bold text-main">
-              <span>50% | 70%</span>
+              <span>
+                {soc1}% | {soc2}%
+              </span>
             </div>
             <div className="live-info-name text-sm">
               <span>배터리 잔량</span>

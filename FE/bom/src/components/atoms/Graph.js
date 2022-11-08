@@ -71,7 +71,7 @@ function Graph({ part, isPC = true, data, filter }) {
                 <YAxis type="number" domain={[30, 45]} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -79,10 +79,10 @@ function Graph({ part, isPC = true, data, filter }) {
                     activeDot={{ r: 4 }}
                   />
                 )}
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {filter === 0 && (
+                {filter.period === "now" && (
                   <Line type="monotone" dataKey="체온" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -103,7 +103,7 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[20, 70]} />
                 <Tooltip />
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -112,10 +112,10 @@ function Graph({ part, isPC = true, data, filter }) {
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {filter === 0 && (
+                {filter.period === "now" && (
                   <Line type="monotone" dataKey="심박수" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -136,7 +136,7 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[80, 100]} />
                 <Tooltip />
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -145,10 +145,10 @@ function Graph({ part, isPC = true, data, filter }) {
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {filter !== 0 && (
+                {filter.period !== "now" && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {filter === 0 && (
+                {filter.period === "now" && (
                   <Line type="monotone" dataKey="산소포화도" stroke="#82ca9d" />
                 )}
               </LineChart>
