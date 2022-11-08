@@ -9,33 +9,19 @@ import ls from "helper/LocalStorage";
 function PC404({ userType = "guest" }) {
   const navigate = useNavigate();
   const [btnContent, setBtnContent] = useState("");
-  const [btnOnclick, setBtnOnClick] = useState();
-
-  const a = () => {
-    navigate(`/patient/${ls.get("number")}`);
-  };
 
   const toPatientDetail = () => {
     navigate(`/patient/${ls.get("number")}`);
   };
+  const toMain = () => {
+    navigate("/");
+  };
+  const toLogin = () => {
+    navigate("/login");
+  };
 
   useEffect(() => {
-    if (userType === "guest") {
-      setBtnContent("로그인");
-      setBtnOnClick(() => {
-        navigate("/login");
-      });
-    }
-    if (userType === "patient") {
-      setBtnContent("환자조회");
-      // setBtnOnClick(a);
-    }
-    if (userType === "ward") {
-      setBtnContent("홈으로");
-      setBtnOnClick(() => {
-        // navigate("/");
-      });
-    }
+    userType === "guest" && setBtnContent("로그인");
     userType === "patient" && setBtnContent("환자 조회");
     userType === "ward" && setBtnContent("홈으로");
   }, []);
@@ -56,7 +42,13 @@ function PC404({ userType = "guest" }) {
           <Btn
             className="bg-main text-white px-10 py-4 rounded-[20px]"
             content={btnContent}
-            onClick={userType === "patient" && toPatientDetail}
+            onClick={
+              userType === "patient"
+                ? toPatientDetail
+                : userType === "ward"
+                ? toMain
+                : toLogin
+            }
           />
         </div>
       </div>

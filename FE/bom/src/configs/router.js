@@ -50,14 +50,22 @@ function CheckAuth({ children }) {
 }
 
 export default function RouterConfiguration() {
-  const [isPC, setIsPC] = useState();
+  const [isPC, setIsPC] = useState(true);
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+    if (window.innerWidth > 1180 && !isPC) {
+      setIsPC(true);
+    } else if (window.innerWidth <= 1180 && isPC) {
+      setIsPC(false);
+    }
   }, []);
 
   setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+    if (window.innerWidth > 1180 && !isPC) {
+      setIsPC(true);
+    } else if (window.innerWidth <= 1180 && isPC) {
+      setIsPC(false);
+    }
   }, 1000);
 
   return (

@@ -14,13 +14,7 @@ function PageNotFound({ isPC }) {
 
   return (
     <>
-      {userType === "patient" && (
-        <>
-          {isPC && <PC404 userType={userType} />}
-          {!isPC && <Mobile404 userType={userType} />}
-        </>
-      )}
-      {userType === "ward" && (
+      {userType && (
         <>
           {isPC && <PC404 userType={userType} />}
           {!isPC && <Mobile404 userType={userType} />}
