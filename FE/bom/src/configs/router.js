@@ -17,6 +17,7 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
+import PageNotFound from "components/pages/PageNotFound";
 
 function checkAuth() {
   // 병동 로그인인지 환자 번호 로그인인지 구분할 것
@@ -49,14 +50,22 @@ function CheckAuth({ children }) {
 }
 
 export default function RouterConfiguration() {
-  const [isPC, setIsPC] = useState();
+  const [isPC, setIsPC] = useState(true);
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+    if (window.innerWidth > 1180 && !isPC) {
+      setIsPC(true);
+    } else if (window.innerWidth <= 1180 && isPC) {
+      setIsPC(false);
+    }
   }, []);
 
   setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
+    if (window.innerWidth > 1180 && !isPC) {
+      setIsPC(true);
+    } else if (window.innerWidth <= 1180 && isPC) {
+      setIsPC(false);
+    }
   }, 1000);
 
   return (
@@ -108,6 +117,7 @@ export default function RouterConfiguration() {
           path="/deviceNotSupported"
           element={<DeviceNotSupport isPC={isPC} />}
         />
+        <Route path="/404" element={<PageNotFound isPC={isPC} />} />
       </Routes>
     </Router>
   );

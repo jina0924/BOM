@@ -26,8 +26,6 @@ function Doctors() {
     requestDoctorList("", requestDoctorListSuccess, (err) => console.log(err));
   }, []);
 
-  useEffect(() => {}, []);
-
   const requestDoctorListSuccess = (res) => {
     setCount(res.data.count);
     setDoctors(res.data.results);
@@ -65,7 +63,7 @@ function Doctors() {
           <div className="pagination-box h-[8vh] flex items-center justify-center">
             <CustomPagination
               page={now}
-              itemsCount={8}
+              itemsCount={10}
               totalCount={count}
               pageRange={5}
               onChange={handlePageChange}
