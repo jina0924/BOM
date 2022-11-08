@@ -4,7 +4,6 @@ import ProfileImage from "components/atoms/ProfileImage";
 import ContactBtn from "components/atoms/ContactBtn";
 
 function ProfileCard({ person }) {
-  console.log(person);
   return (
     <div className="profile-card bg-white rounded-[20px] h-full">
       <div className="profile-img-box h-1/2 w-full flex justify-center items-center">
