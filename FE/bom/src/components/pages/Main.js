@@ -83,7 +83,7 @@ function Main() {
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
       <SideBar />
       <div className="info-zone col-span-5">
-        <HeadBar wardNum={wardName} />
+        <HeadBar />
         <div className="information-zone flex flex-col">
           {/* 병동 정보 카드 */}
           <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
