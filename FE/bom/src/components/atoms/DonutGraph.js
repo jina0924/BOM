@@ -18,8 +18,8 @@ function DonutGraph({ utilization }) {
           dataKey="value"
           cx="50%"
           cy="50%"
-          innerRadius={60}
-          outerRadius={90}
+          innerRadius={50}
+          outerRadius={80}
           fill="#82ca9d"
           label
         >
