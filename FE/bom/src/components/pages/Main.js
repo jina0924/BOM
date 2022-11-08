@@ -39,6 +39,7 @@ function Main() {
     setNurseCount(res.data.nurseCount);
     setPatientTendency(res.data.tendency);
     setUtilization(res.data.utilization);
+    setTimeout(requestWardInfo, 10000, wardInfoSuccess, wardInfoFail);
   }
 
   function wardInfoFail(err) {
@@ -56,6 +57,7 @@ function Main() {
     setPatientList(patientList);
     setCount(count);
     setPage(page);
+    setTimeout(requestPatientList, 10000, page, 8, patientListSuccess, patientListFail);
   }
 
   function patientListFail(err) {
@@ -130,9 +132,7 @@ function Main() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Main;
