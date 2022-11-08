@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // components
 import Title from "components/atoms/Title";
@@ -8,21 +9,9 @@ import CustomPagination from "components/atoms/CustomPagination";
 // api
 // import { requestPatientList } from "api/patients";
 
-import {
-  UilArrowResizeDiagonal,
-  UilArrowDownLeft,
-} from "@iconscout/react-unicons";
+import { UilArrowResizeDiagonal, UilArrowDownLeft } from "@iconscout/react-unicons";
 
-function PatientList({
-  patientList,
-  page,
-  count,
-  limit,
-  handlePageChange,
-  nowPage,
-  onZoom,
-  onOff,
-}) {
+function PatientList({ patientList, page, count, limit, handlePageChange, nowPage, onZoom, onOff }) {
   // console.log(patientList);
   // const [patientList, setPatientList] = useState([]);
   // const [page, setPage] = useState(1);
@@ -32,6 +21,7 @@ function PatientList({
   // const [component, setComponent] = useState(0);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.pathname === "/main") {
@@ -54,8 +44,8 @@ function PatientList({
   //   console.log(err);
   // }
 
-  function onClickPatientDetailInfo(event) {
-    event.preventDefault();
+  function onClickPatientDetailInfo(item) {
+    navigate(`/patient/${item.number}`);
   }
 
   // function handlePageChange(page) {
@@ -109,48 +99,28 @@ function PatientList({
           <table className="table w-[85%] border-collapse px-4 mx-auto">
             <thead>
               <tr>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  번호
-                </th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  환자 번호
-                </th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  이름
-                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">번호</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">환자 번호</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">이름</th>
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                    성별
-                  </th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">성별</th>
                 )}
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  체온
-                </th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  심박수
-                </th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  산소포화도
-                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">체온</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">심박수</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">산소포화도</th>
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                    보호자
-                  </th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">보호자</th>
                 )}
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                    보호자 연락처
-                  </th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">보호자 연락처</th>
                 )}
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
-                  주치의
-                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">주치의</th>
               </tr>
             </thead>
             {!!patientList && (
               <tbody>
                 {patientList.map((item, key) => (
-                  <tr key={key} className="" onClick={onClickPatientDetailInfo}>
+                  <tr key={key} className="hover:cursor-pointer" onClick={() => onClickPatientDetailInfo(item)}>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
@@ -172,9 +142,7 @@ function PatientList({
                     {pathname === "patients" && item.sex === "M" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
-                          ${
-                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
-                          }`}
+                          ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                       >
                         남
                       </td>
@@ -182,9 +150,7 @@ function PatientList({
                     {pathname === "patients" && item.sex === "F" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
-                          ${
-                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
-                          }`}
+                          ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                       >
                         여
                       </td>
@@ -222,9 +188,7 @@ function PatientList({
                     {pathname === "patients" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray
-                          ${
-                            onOff === true ? " text-sm py-4" : " text-xs py-2.5"
-                          }
+                          ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
                         `}
                       >
                         {item.nokName}
@@ -237,10 +201,7 @@ function PatientList({
                           (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
                         }
                       >
-                        {item.nokPhonenumber.replace(
-                          /^(\d{2,3})(\d{3,4})(\d{4})$/,
-                          `$1-$2-$3`
-                        )}
+                        {item.nokPhonenumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
                       </td>
                     )}
                     <td
