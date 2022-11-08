@@ -25,7 +25,6 @@ function PatientDetail({ isPC }) {
   const navigate = useNavigate();
   const params = useParams();
   const [component, setComponent] = useState(0);
-  const [ward, setWard] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
@@ -109,7 +108,6 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailSuccess = (res) => {
-    setWard(res.data.ward.number);
     setUsername(res.data.number);
     setName(res.data.name);
     setBirth(res.data.birth);
@@ -179,7 +177,7 @@ function PatientDetail({ isPC }) {
         <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
           <SideBar />
           <div className="right-box col-span-5 h-full">
-            <HeadBar wardNum={ward} />
+            <HeadBar />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
                 {component === 0 || component === 1 ? (
