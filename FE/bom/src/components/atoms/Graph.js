@@ -404,7 +404,7 @@ function Graph({
             </ResponsiveContainer>
           )}
           {part === "입원환자추이" && (
-            <ResponsiveContainer width="99%" height="80%">
+            <ResponsiveContainer width="99%" height="90%">
               <LineChart
                 data={data}
                 margin={{
@@ -441,6 +441,7 @@ function Graph({
                     dot={{ r: 2 }}
                   />
                 )}
+                <Legend verticalAlign="top" width="100%" />
               </LineChart>
             </ResponsiveContainer>
           )}
