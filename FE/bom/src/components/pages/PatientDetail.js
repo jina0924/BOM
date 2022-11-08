@@ -87,143 +87,68 @@ function PatientDetail({ isPC }) {
                           "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28 mr-3 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
                       }
                         `}
-                                            content="환자 정보"
-                                            onClickFunction={() => {
-                                                setComponent(0);
-                                            }}
-                                        />
-                                        <Btn
-                                            className={`${
-                                                component === 0 &&
-                                                "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28  focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
-                                            } 
+                      content="환자 정보"
+                      onClick={() => {
+                        setComponent(0);
+                      }}
+                    />
+                    <Btn
+                      className={`${
+                        component === 0 &&
+                        "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28  focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
+                      } 
                     ${
                         component === 1 &&
                         "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl  w-28 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
                     }
                       `}
-                                            content="디바이스 정보"
-                                            onClickFunction={() => {
-                                                setComponent(1);
-                                            }}
-                                        />
-                                    </div>
-                                ) : null}
-                            </div>
-                            <div className="filter-download-btn flex justify-end">
-                                <select
-                                    name="기간"
-                                    id="기간"
-                                    className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
-                                >
-                                    <option value="null">기간</option>
-                                    <option value="0">실시간</option>
-                                    <option value="1">1 일</option>
-                                    <option value="1">7 일</option>
-                                    <option value="2">30 일</option>
-                                </select>
-                                <DownloadBtn />
-                            </div>
-                        </div>
-                        {/* 전체 서머리 페이지 */}
-                        {component === 0 && (
-                            <div className="components grid grid-cols-2 px-10 h-[75vh]">
-                                <div className="components-left col-span-1">
-                                    <div className="left-first-component pr-8 pb-8 h-1/2">
-                                        <PatientDetailInfo
-                                            username={username}
-                                            name={name}
-                                            birth={birth}
-                                            sex={sex}
-                                            nokName={nokName}
-                                            nokPhonenumber={nokPhonenumber}
-                                            doctor={doctor}
-                                        />
-                                    </div>
-                                    <div className="left-second-component pr-8 pb-5 h-1/2">
-                                        <BodyInfo
-                                            isPC={isPC}
-                                            part="체온"
-                                            onZoom={() => {
-                                                setComponent(2);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="components-right col-span-1">
-                                    <div className="right-second-component pb-8 h-1/2">
-                                        <BodyInfo
-                                            isPC={isPC}
-                                            part="심박수"
-                                            onZoom={() => {
-                                                setComponent(3);
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="right-third-component pb-5 h-1/2">
-                                        <BodyInfo
-                                            isPC={isPC}
-                                            part="산소포화도"
-                                            onZoom={() => {
-                                                setComponent(4);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        {/* 디바이스 디테일 페이지 */}
-                        {component === 1 && (
-                            <div className="device-detail-full px-10 pb-5 h-[75vh]">
-                                <div className="live-device-status pb-5 h-[25vh]">
-                                    <LiveDeviceStatus />
-                                </div>
-                                <div className="device-detail-info pb-5 h-[50vh]">
-                                    <DeviceDetailInfo
-                                        onZoom={() => {
-                                            setComponent(0);
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                        {/* 체온 디테일 페이지 */}
-                        {component === 2 && (
-                            <div className="body-temperature-full px-10 pb-5 h-[75vh]">
-                                <BodyInfo
-                                    part="체온"
-                                    onZoom={() => {
-                                        setComponent(0);
-                                    }}
-                                    onOff={true}
-                                />
-                            </div>
-                        )}
-                        {/* 심박수 디테일 페이지 */}
-                        {component === 3 && (
-                            <div className="body-temperature-full px-10 pb-5 h-[75vh]">
-                                <BodyInfo
-                                    part="심박수"
-                                    onZoom={() => {
-                                        setComponent(0);
-                                    }}
-                                    onOff={true}
-                                />
-                            </div>
-                        )}
-                        {/* 산소포화도 디테일 페이지 */}
-                        {component === 4 && (
-                            <div className="body-temperature-full px-10 pb-5 h-[75vh]">
-                                <BodyInfo
-                                    part="산소포화도"
-                                    onZoom={() => {
-                                        setComponent(0);
-                                    }}
-                                    onOff={true}
-                                />
-                            </div>
-                        )}
-                    </div>
+                      content="디바이스 정보"
+                      onClick={() => {
+                        setComponent(1);
+                      }}
+                    />
+                  </div>
+                ) : null}
+              </div>
+              <div className="filter-download-btn flex justify-end">
+                <select
+                  name="기간"
+                  id="기간"
+                  className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
+                >
+                  <option value="null">기간</option>
+                  <option value="0">실시간</option>
+                  <option value="1">1 일</option>
+                  <option value="1">7 일</option>
+                  <option value="2">30 일</option>
+                </select>
+                <DownloadBtn />
+              </div>
+            </div>
+            {/* 전체 서머리 페이지 */}
+            {component === 0 && (
+              <div className="components grid grid-cols-2 px-10 h-[75vh]">
+                <div className="components-left col-span-1">
+                  <div className="left-first-component pr-8 pb-8 h-1/2">
+                    <PatientDetailInfo
+                      username={username}
+                      name={name}
+                      birth={birth}
+                      sex={sex}
+                      nokName={nokName}
+                      nokPhonenumber={nokPhonenumber}
+                      doctor={doctor}
+                    />
+                  </div>
+                  <div className="left-second-component pr-8 pb-5 h-1/2">
+                    <BodyInfo
+                      isPC={isPC}
+                      part="체온"
+                      onZoom={() => {
+                        setComponent(2);
+                      }}
+                    />
+                  </div>
                 </div>
             )}
             {!isPC && (
