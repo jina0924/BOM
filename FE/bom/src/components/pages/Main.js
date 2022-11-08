@@ -81,7 +81,7 @@ function Main() {
 
   function handlePageChange(page) {
     clearTimeout(patientListTimerID);
-    setPatientListTimerID("");
+    // setPatientListTimerID("");
     setPage(page);
   }
 
