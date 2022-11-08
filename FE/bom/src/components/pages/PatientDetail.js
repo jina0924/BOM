@@ -92,7 +92,7 @@ function PatientDetail({ isPC }) {
                       }
                         `}
                       content="환자 정보"
-                      onClickFunction={() => {
+                      onClick={() => {
                         setComponent(0);
                       }}
                     />
@@ -107,7 +107,7 @@ function PatientDetail({ isPC }) {
                     }
                       `}
                       content="디바이스 정보"
-                      onClickFunction={() => {
+                      onClick={() => {
                         setComponent(1);
                       }}
                     />

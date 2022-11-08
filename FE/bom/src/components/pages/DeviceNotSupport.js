@@ -16,7 +16,7 @@ function DeviceNotSupport({ isPC }) {
   const checkUserType = () => {
     const userType = ls.get("userType");
     if (userType === "ward" && isPC) {
-      navigate("/main");
+      navigate("/");
     } else if (userType === "patient" && !isPC) {
       navigate(`/patient/${ls.get("number")}`);
     }
