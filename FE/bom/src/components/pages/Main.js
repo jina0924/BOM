@@ -32,7 +32,7 @@ function Main() {
   const [utilization, setUtilization] = useState(1);
 
   function wardInfoSuccess(res) {
-    // console.log(res.data);
+    // console.log(res.data.utilization);
     setWardName(res.data.number);
     setPatientCount(res.data.patientCount);
     setDoctorCount(res.data.doctorCount);
@@ -119,13 +119,13 @@ function Main() {
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
               <div className="patient-progres h-[22vh]">
-                {/* <PatientProgress patientTendency={patientTendency} /> */}
-                <PatientProgress />
+                <PatientProgress patientTendency={patientTendency} />
+                {/* <PatientProgress /> */}
               </div>
               {/* 병상 가동률 */}
               <div className="active-bed h-[37vh]">
-                {/* <ActiveBed utilization={utilization} /> */}
-                <ActiveBed />
+                <ActiveBed utilization={utilization} />
+                {/* <ActiveBed /> */}
               </div>
             </div>
           </div>
