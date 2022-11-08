@@ -50,21 +50,26 @@ function Main() {
     requestWardInfo(wardInfoSuccess, wardInfoFail);
   }, []);
 
+  // Timer ID
+  const [patientListTimerID, setPatientListTimerID] = useState("");
+
   function patientListSuccess(res) {
     const patientList = res.data.results;
     const count = res.data.count;
-    const page = res.data.now;
+    const now = res.data.now;
     setPatientList(patientList);
     setCount(count);
-    setPage(page);
-    setTimeout(
+    setPage(now);
+    const timerID = setTimeout(
       requestPatientList,
       10000,
-      page,
+      now,
       8,
       patientListSuccess,
       patientListFail
     );
+    setPatientListTimerID(timerID);
+    console.log("setTimeout", page);
   }
 
   function patientListFail(err) {
@@ -76,6 +81,8 @@ function Main() {
   }, [page]);
 
   function handlePageChange(page) {
+    clearTimeout(patientListTimerID);
+    setPatientListTimerID("");
     setPage(page);
   }
 
