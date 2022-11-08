@@ -31,8 +31,6 @@ function checkAuth() {
 }
 
 function CheckAuth({ children }) {
-  console.log(children.type.name);
-  console.log(window.location.pathname.substring(9));
   if (checkAuth() === 0) {
     return children;
   } else if (checkAuth() === 1) {
@@ -46,7 +44,6 @@ function CheckAuth({ children }) {
     ls.clear();
     return <Navigate to="/login" />;
   }
-  // return <Navigate to="/login" />;
 }
 
 export default function RouterConfiguration() {
