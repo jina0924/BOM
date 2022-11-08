@@ -16,7 +16,10 @@ import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
 
 // API
-import { requestPatientDetail } from "api/patientDetail";
+import {
+  requestPatientDetail,
+  requestPatientDetailHealthInfo,
+} from "api/patientDetail";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
@@ -30,6 +33,13 @@ function PatientDetail({ isPC }) {
   const [nokName, setNokName] = useState("");
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
+  const [liveTemperature, setLiveTemperature] = useState(0);
+  const [liveBPM, setLiveBPM] = useState(0);
+  const [liveOxygen, setLiveOxyzen] = useState(0);
+  const [filer, setFilter] = useState(0);
+  const [temperatureData, setTemperatureData] = useState([]);
+  const [heartbeatData, setHeartbeatData] = useState([]);
+  const [oxyzenData, setOxyzenData] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
@@ -37,10 +47,22 @@ function PatientDetail({ isPC }) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
+      requestPatientDetailHealthInfo(
+        params.id,
+        null,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
     }
     if (userType === "patient") {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
         console.log(err)
+      );
+      requestPatientDetailHealthInfo(
+        null,
+        null,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
       );
     }
   }, [params]);
@@ -59,7 +81,6 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailSuccess = (res) => {
-    console.log(res);
     setWard(res.data.ward.number);
     setUsername(res.data.number);
     setName(res.data.name);
@@ -68,6 +89,16 @@ function PatientDetail({ isPC }) {
     setNokName(res.data.nokName);
     setNokPhonenumber(res.data.nokPhonenumber);
     setDoctor(res.data.doctor.name);
+  };
+
+  const requestPatientDetailHealthInfoSuccess = (res) => {
+    console.log(res);
+    setLiveTemperature(res.data.실시간.체온);
+    setLiveBPM(res.data.실시간.심박수);
+    setLiveOxyzen(res.data.실시간.산소포화도);
+    setTemperatureData(res.data.체온);
+    setHeartbeatData(res.data.심박수);
+    setOxyzenData(res.data.산소포화도);
   };
 
   return (

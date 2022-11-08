@@ -7,20 +7,11 @@ import CustomPagination from "components/atoms/CustomPagination";
 
 import { requestDoctorList } from "api/doctors";
 
-function Doctors() {
-  const [isPC, setIsPC] = useState(true);
+function Doctors({ isPC }) {
   const [count, setCount] = useState(0);
 
   const [doctors, setDoctors] = useState([]);
   const [now, setNow] = useState(1);
-
-  useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
 
   useEffect(() => {
     requestDoctorList("", requestDoctorListSuccess, (err) => console.log(err));
