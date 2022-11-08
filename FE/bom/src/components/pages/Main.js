@@ -10,17 +10,45 @@ import PatientProgress from "components/molecules/Main/PatientProgress";
 import ActiveBed from "components/molecules/Main/ActiveBed";
 
 // api
+import { requestWardInfo } from "api/main";
 import { requestPatientList } from "api/patients";
 
 function Main() {
-  // 데이터 받아오면 초기값 수정할 것
-  const [wardName, setWardName] = useState("5");
-  const [countPatients, setCountPatients] = useState(10);
-  const [countDoctors, setDoctors] = useState(10);
-  const [countNurses, setNurses] = useState(10);
+  // 병동 정보
+  const [wardName, setWardName] = useState("000");
+  const [patientCount, setPatientCount] = useState(1);
+  const [doctorCount, setDoctorCount] = useState(1);
+  const [nurseCount, setNurseCount] = useState(1);
+
+  // 환자 목록
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [page, setPage] = useState(1);
+
+  // 입원 환자 추이
+  const [patientTendency, setPatientTendency] = useState([]);
+
+  // 병상 가동률
+  const [utilization, setUtilization] = useState(1);
+
+  function wardInfoSuccess(res) {
+    // console.log(res.data);
+    setWardName(res.data.number);
+    setPatientCount(res.data.patientCount);
+    setDoctorCount(res.data.doctorCount);
+    setNurseCount(res.data.nurseCount);
+    setPatientTendency(res.data.tendency);
+    setUtilization(res.data.utilization);
+    setTimeout(requestWardInfo, 10000, wardInfoSuccess, wardInfoFail);
+  }
+
+  function wardInfoFail(err) {
+    console.lor("실패", err);
+  }
+
+  useEffect(() => {
+    requestWardInfo(wardInfoSuccess, wardInfoFail);
+  }, []);
 
   function patientListSuccess(res) {
     const patientList = res.data.results;
@@ -29,6 +57,7 @@ function Main() {
     setPatientList(patientList);
     setCount(count);
     setPage(page);
+    setTimeout(requestPatientList, 10000, page, 8, patientListSuccess, patientListFail);
   }
 
   function patientListFail(err) {
@@ -56,22 +85,22 @@ function Main() {
             {/* 입원 환자 수 */}
             <Link to="/patients">
               <WardInfo
-                wardInfoTitle="countPatients"
-                wardInfoDetail={countPatients}
+                wardInfoTitle="patientCount"
+                wardInfoDetail={patientCount}
               />
             </Link>
             {/* 의사 수 */}
             <Link to="/doctors">
               <WardInfo
-                wardInfoTitle="countDoctors"
-                wardInfoDetail={countDoctors}
+                wardInfoTitle="doctorCount"
+                wardInfoDetail={doctorCount}
               />
             </Link>
             {/* 간호사 수 */}
             <Link to="/nurses">
               <WardInfo
-                wardInfoTitle="countNurses"
-                wardInfoDetail={countNurses}
+                wardInfoTitle="nurseCount"
+                wardInfoDetail={nurseCount}
               />
             </Link>
           </div>
@@ -92,18 +121,18 @@ function Main() {
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
               <div className="patient-progres h-[22vh]">
+                {/* <PatientProgress patientTendency={patientTendency} /> */}
                 <PatientProgress />
               </div>
               {/* 병상 가동률 */}
               <div className="active-bed h-[37vh]">
+                {/* <ActiveBed utilization={utilization} /> */}
                 <ActiveBed />
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Main;
