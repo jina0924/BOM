@@ -36,7 +36,7 @@ function PatientDetail({ isPC }) {
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
   const [liveOxygen, setLiveOxyzen] = useState(0);
-  const [filer, setFilter] = useState(0);
+  const [filter, setFilter] = useState(0);
   const [temperatureData, setTemperatureData] = useState([]);
   const [heartbeatData, setHeartbeatData] = useState([]);
   const [oxyzenData, setOxyzenData] = useState([]);
@@ -66,6 +66,34 @@ function PatientDetail({ isPC }) {
       );
     }
   }, [params]);
+
+  setInterval(() => {
+    const userType = ls.get("userType");
+    const period =
+      filter === 0
+        ? { period: "now" }
+        : filter === 1
+        ? { period: "day" }
+        : filter === 2
+        ? { period: "week" }
+        : { period: "month" };
+    if (userType === "ward") {
+      requestPatientDetailHealthInfo(
+        params.id,
+        period,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
+    if (userType === "patient") {
+      requestPatientDetailHealthInfo(
+        null,
+        null,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
+  }, 10000);
 
   useEffect(() => {
     checkUserType();
@@ -99,6 +127,50 @@ function PatientDetail({ isPC }) {
     setTemperatureData(res.data.체온);
     setHeartbeatData(res.data.심박수);
     setOxyzenData(res.data.산소포화도);
+  };
+
+  const selectPeriod = (event) => {
+    console.log(event.target.value);
+    if (event.target.value === "0") {
+      setFilter(0);
+      const period = { period: "now" };
+      requestPatientDetailHealthInfo(
+        params.id,
+        period,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
+    if (event.target.value === "1") {
+      setFilter(1);
+      const period = { period: "day" };
+      requestPatientDetailHealthInfo(
+        params.id,
+        period,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
+    if (event.target.value === "2") {
+      setFilter(2);
+      const period = { period: "week" };
+      requestPatientDetailHealthInfo(
+        params.id,
+        period,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
+    if (event.target.value === "3") {
+      setFilter(3);
+      const period = { period: "month" };
+      requestPatientDetailHealthInfo(
+        params.id,
+        period,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+    }
   };
 
   return (
@@ -150,12 +222,13 @@ function PatientDetail({ isPC }) {
                   name="기간"
                   id="기간"
                   className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
+                  onChange={selectPeriod}
                 >
                   <option value="null">기간</option>
                   <option value="0">실시간</option>
                   <option value="1">1 일</option>
-                  <option value="1">7 일</option>
-                  <option value="2">30 일</option>
+                  <option value="2">7 일</option>
+                  <option value="3">30 일</option>
                 </select>
                 <DownloadBtn />
               </div>
@@ -182,6 +255,9 @@ function PatientDetail({ isPC }) {
                       onZoom={() => {
                         setComponent(2);
                       }}
+                      liveData={liveTemperature}
+                      data={temperatureData}
+                      filter={filter}
                     />
                   </div>
                 </div>
@@ -193,6 +269,9 @@ function PatientDetail({ isPC }) {
                       onZoom={() => {
                         setComponent(3);
                       }}
+                      liveData={liveBPM}
+                      data={heartbeatData}
+                      filter={filter}
                     />
                   </div>
                   <div className="right-third-component pb-5 h-1/2">
@@ -202,6 +281,9 @@ function PatientDetail({ isPC }) {
                       onZoom={() => {
                         setComponent(4);
                       }}
+                      liveData={liveOxygen}
+                      data={oxyzenData}
+                      filter={filter}
                     />
                   </div>
                 </div>
@@ -231,6 +313,9 @@ function PatientDetail({ isPC }) {
                     setComponent(0);
                   }}
                   onOff={true}
+                  liveData={liveTemperature}
+                  data={temperatureData}
+                  filter={filter}
                 />
               </div>
             )}
@@ -243,6 +328,9 @@ function PatientDetail({ isPC }) {
                     setComponent(0);
                   }}
                   onOff={true}
+                  liveData={liveBPM}
+                  data={heartbeatData}
+                  filter={filter}
                 />
               </div>
             )}
@@ -255,6 +343,9 @@ function PatientDetail({ isPC }) {
                     setComponent(0);
                   }}
                   onOff={true}
+                  liveData={liveOxygen}
+                  data={oxyzenData}
+                  filter={filter}
                 />
               </div>
             )}

@@ -50,189 +50,7 @@ import {
 //   },
 // ];
 
-function Graph({
-  part,
-  isPC = true,
-  data = [
-    {
-      시간: "2020-11-01",
-      최소: 35.2,
-      최대: 36.6,
-    },
-    {
-      시간: "2020-11-02",
-      최소: 36.6,
-      최대: 40.0,
-    },
-    {
-      시간: "2020-11-03",
-      최소: 36.5,
-      최대: 37.2,
-    },
-    {
-      시간: "2020-11-04",
-      최소: 37,
-      최대: 39,
-    },
-    {
-      시간: "2020-11-05",
-      최소: 38,
-      최대: 40.1,
-    },
-    {
-      시간: "2020-11-06",
-      최소: 35,
-      최대: 38,
-    },
-    {
-      시간: "2020-11-07",
-      최소: 34,
-      최대: 36,
-    },
-    {
-      시간: "2020-11-01",
-      최소: 35.2,
-      최대: 36.6,
-    },
-    {
-      시간: "2020-11-02",
-      최소: 36.6,
-      최대: 40.0,
-    },
-    {
-      시간: "2020-11-03",
-      최소: 36.5,
-      최대: 37.2,
-    },
-    {
-      시간: "2020-11-04",
-      최소: 37,
-      최대: 39,
-    },
-    {
-      시간: "2020-11-05",
-      최소: 38,
-      최대: 40.1,
-    },
-    {
-      시간: "2020-11-06",
-      최소: 35,
-      최대: 38,
-    },
-    {
-      시간: "2020-11-07",
-      최소: 34,
-      최대: 36,
-    },
-    {
-      시간: "2020-11-01",
-      최소: 35.2,
-      최대: 36.6,
-    },
-    {
-      시간: "2020-11-02",
-      최소: 36.6,
-      최대: 40.0,
-    },
-    {
-      시간: "2020-11-03",
-      최소: 36.5,
-      최대: 37.2,
-    },
-    {
-      시간: "2020-11-04",
-      최소: 37,
-      최대: 39,
-    },
-    {
-      시간: "2020-11-05",
-      최소: 38,
-      최대: 40.1,
-    },
-    {
-      시간: "2020-11-06",
-      최소: 35,
-      최대: 38,
-    },
-    {
-      시간: "2020-11-07",
-      최소: 34,
-      최대: 36,
-    },
-    {
-      시간: "2020-11-01",
-      최소: 35.2,
-      최대: 36.6,
-    },
-    {
-      시간: "2020-11-02",
-      최소: 36.6,
-      최대: 40.0,
-    },
-    {
-      시간: "2020-11-03",
-      최소: 36.5,
-      최대: 37.2,
-    },
-    {
-      시간: "2020-11-04",
-      최소: 37,
-      최대: 39,
-    },
-    {
-      시간: "2020-11-05",
-      최소: 38,
-      최대: 40.1,
-    },
-    {
-      시간: "2020-11-06",
-      최소: 35,
-      최대: 38,
-    },
-    {
-      시간: "2020-11-07",
-      최소: 34,
-      최대: 36,
-    },
-    {
-      시간: "2020-11-01",
-      최소: 35.2,
-      최대: 36.6,
-    },
-    {
-      시간: "2020-11-02",
-      최소: 36.6,
-      최대: 40.0,
-    },
-    {
-      시간: "2020-11-03",
-      최소: 36.5,
-      최대: 37.2,
-    },
-    {
-      시간: "2020-11-04",
-      최소: 37,
-      최대: 39,
-    },
-    {
-      시간: "2020-11-05",
-      최소: 38,
-      최대: 40.1,
-    },
-    {
-      시간: "2020-11-06",
-      최소: 35,
-      최대: 38,
-    },
-    {
-      시간: "2020-11-07",
-      최소: 34,
-      최대: 36,
-    },
-  ],
-  style,
-}) {
-  const patients = "환자 수";
+function Graph({ part, isPC = true, data, filter }) {
   return (
     <>
       {isPC && (
@@ -253,7 +71,7 @@ function Graph({
                 <YAxis type="number" domain={[30, 45]} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최대 && (
+                {filter !== 0 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -261,11 +79,11 @@ function Graph({
                     activeDot={{ r: 4 }}
                   />
                 )}
-                {!!data[0].최소 && (
+                {filter !== 0 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
+                {filter === 0 && (
+                  <Line type="monotone" dataKey="체온" stroke="#82ca9d" />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -285,7 +103,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[20, 70]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {filter !== 0 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -294,11 +112,11 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {filter !== 0 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
+                {filter === 0 && (
+                  <Line type="monotone" dataKey="심박수" stroke="#82ca9d" />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -318,7 +136,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[80, 100]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {filter !== 0 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -327,11 +145,11 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {filter !== 0 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
+                {filter === 0 && (
+                  <Line type="monotone" dataKey="산소포화도" stroke="#82ca9d" />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -352,7 +170,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[0, 4]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {!!data[0]?.최대 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -361,10 +179,10 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {!!data[0]?.최소 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
+                {!!data[0]?.실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -385,7 +203,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[-20, 80]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {!!data[0]?.최대 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -394,10 +212,10 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {!!data[0]?.최소 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
+                {!!data[0]?.실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -473,10 +291,10 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {!!data[0]?.최소 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
+                {!!data[0]?.실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -497,7 +315,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[20, 100]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {!!data[0]?.최대 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -506,10 +324,10 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {!!data[0]?.최소 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
+                {!!data[0]?.실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )}
               </LineChart>
@@ -530,7 +348,7 @@ function Graph({
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[80, 100]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {!!data[0]?.최대 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -539,10 +357,10 @@ function Graph({
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
+                {!!data[0]?.최소 && (
                   <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
                 )}
-                {!!data[0].실시간 && (
+                {!!data[0]?.실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
                 )}
               </LineChart>
