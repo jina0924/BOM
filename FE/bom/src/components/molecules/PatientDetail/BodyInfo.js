@@ -9,7 +9,15 @@ import Title from "components/atoms/Title.js";
 import LiveInfo from "components/atoms/LiveInfo";
 import Graph from "components/atoms/Graph";
 
-function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
+function BodyInfo({
+  part,
+  onZoom,
+  onOff = false,
+  isPC = true,
+  liveData,
+  data,
+  filter,
+}) {
   return (
     <>
       {isPC && (
@@ -37,7 +45,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
                   <LiveInfo isPC={isPC} value="36.5 ℃" />
                 </div>
                 <div className="graph-box col-span-3 flex items-center  text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  <Graph part={part} isPC={isPC} data={data} filter={filter} />
                 </div>
               </div>
             </>
@@ -65,7 +73,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
                   <LiveInfo isPC={isPC} value="150 bpm" />
                 </div>
                 <div className="graph-box col-span-3 flex items-center text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  <Graph part={part} isPC={isPC} data={data} filter={filter} />
                 </div>
               </div>
             </>
@@ -93,7 +101,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
                   <LiveInfo isPC={isPC} value="95%" />
                 </div>
                 <div className="graph-box col-span-3 flex items-center text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  <Graph part={part} isPC={isPC} data={data} filter={filter} />
                 </div>
               </div>
             </>
@@ -114,7 +122,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  {/* <Graph part={part} isPC={isPC} /> */}
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="36.5 ℃" />
@@ -134,7 +142,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  {/* <Graph part={part} isPC={isPC} /> */}
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="150 bpm" />
@@ -154,7 +162,7 @@ function BodyInfo({ part, onZoom, onOff = false, isPC = true }) {
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  <Graph part={part} isPC={isPC} />
+                  {/* <Graph part={part} isPC={isPC} /> */}
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="95 %" />
