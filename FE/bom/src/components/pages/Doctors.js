@@ -19,15 +19,7 @@ function Doctors() {
   const wardNum = ls.get("number");
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
-
-  useEffect(() => {
-    requestDoctorList("", requestDoctorListSuccess, err => console.log(err));
+    requestDoctorList("", requestDoctorListSuccess, (err) => console.log(err));
   }, []);
 
   const requestDoctorListSuccess = res => {
