@@ -51,3 +51,9 @@ https://cotak.tistory.com/112
 https://simigeum.tistory.com/18
 
 https://realfavicongenerator.net/
+
+
+
+## Recharts legend
+
+https://kiranvj.com/blog/blog/recharts-show-legend-on-top-of-chart/
