@@ -57,7 +57,14 @@ function Main() {
     setPatientList(patientList);
     setCount(count);
     setPage(page);
-    setTimeout(requestPatientList, 10000, page, 8, patientListSuccess, patientListFail);
+    setTimeout(
+      requestPatientList,
+      10000,
+      page,
+      8,
+      patientListSuccess,
+      patientListFail
+    );
   }
 
   function patientListFail(err) {
@@ -132,7 +139,9 @@ function Main() {
             </div>
           </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Main;
