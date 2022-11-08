@@ -18,15 +18,7 @@ function Nurses() {
   const wardNum = ls.get("number");
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
-
-  useEffect(() => {
-    requestNurseList("", requestNurseListSuccess, err => console.log(err));
+    requestNurseList("", requestNurseListSuccess, (err) => console.log(err));
   }, []);
 
   const requestNurseListSuccess = res => {
