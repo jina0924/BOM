@@ -6,12 +6,9 @@ function DonutGraph({ utilization }) {
 
   const restBed = 100 - utilization;
   const data = [
-    { name: "가동 중", value: 84 },
-    { name: "잔여 병상", value: 16 },
-    // { name: "가동 중", value: { utilization } },
-    // { name: "잔여 병상", value: { restBed } },
+    { name: "가동 중", value: utilization },
+    { name: "잔여 병상", value: restBed },
   ];
-  console.log(data);
 
   return (
     <ResponsiveContainer width="100%" height="100%">

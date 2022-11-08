@@ -418,7 +418,7 @@ function Graph({
                 <XAxis dataKey="month" />
                 <YAxis type="number" domain={[0, 100]} />
                 <Tooltip />
-                {!!data[0].최대 && (
+                {/* {!!data[0].최대 && (
                   <Line
                     type="monotone"
                     dataKey="최대"
@@ -432,10 +432,10 @@ function Graph({
                 )}
                 {!!data[0].실시간 && (
                   <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )}
-                {!!data[0].patients && (
+                )} */}
+                {/* {!!data[0].patients && (
                   <Line type="monotone" dataKey="환자 수" stroke="#82ca9d" />
-                )}
+                )} */}
               </LineChart>
             </ResponsiveContainer>
           )}
