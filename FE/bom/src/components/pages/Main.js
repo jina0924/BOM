@@ -127,12 +127,12 @@ function Main() {
             {/* 병동 데이터 그래프 카드 */}
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
-              <div className="patient-progres h-[22vh]">
+              <div className="patient-progres h-[24vh]">
                 <PatientProgress patientTendency={patientTendency} />
                 {/* <PatientProgress /> */}
               </div>
               {/* 병상 가동률 */}
-              <div className="active-bed h-[37vh]">
+              <div className="active-bed h-[35vh]">
                 <ActiveBed utilization={utilization} />
                 {/* <ActiveBed /> */}
               </div>
