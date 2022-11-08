@@ -14,14 +14,6 @@ function Nurses() {
   const [now, setNow] = useState(1);
 
   useEffect(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, []);
-
-  setInterval(() => {
-    window.innerWidth > 1180 ? setIsPC(true) : setIsPC(false);
-  }, 1000);
-
-  useEffect(() => {
     requestNurseList("", requestNurseListSuccess, (err) => console.log(err));
   }, []);
 
