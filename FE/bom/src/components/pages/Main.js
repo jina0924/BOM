@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Link, useParams, useLocation } from "react-router-dom";
 
@@ -12,6 +12,25 @@ import ActiveBed from "components/molecules/Main/ActiveBed";
 // api
 import { requestWardInfo } from "api/main";
 import { requestPatientList } from "api/patients";
+
+function useInterval(callback, delay, page = 1) {
+  const savedCallback = useRef(); // 최근에 들어온 callback을 저장할 ref를 하나 만든다.
+
+  useEffect(() => {
+    savedCallback.current = callback; // callback이 바뀔 때마다 ref를 업데이트 해준다.
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current(); // tick이 실행되면 callback 함수를 실행시킨다.
+    }
+    if (page !== null) {
+      // 만약 delay가 null이 아니라면
+      let id = setInterval(tick, delay); // delay에 맞추어 interval을 새로 실행시킨다.
+      return () => clearInterval(id); // unmount될 때 clearInterval을 해준다.
+    }
+  }, [page]); // delay가 바뀔 때마다 새로 실행된다.
+}
 
 function Main() {
   // 병동 정보
@@ -42,56 +61,69 @@ function Main() {
     setNurseCount(res.data.nurseCount);
     setPatientTendency(res.data.tendency);
     setUtilization(res.data.utilization);
-    const timerID = setTimeout(
-      requestWardInfo,
-      10000,
-      wardInfoSuccess,
-      wardInfoFail
-    );
-    setWardInfoTimerID(timerID);
+    // const timerID = setTimeout(
+    //   requestWardInfo,
+    //   10000,
+    //   wardInfoSuccess,
+    //   wardInfoFail
+    // );
+    // setWardInfoTimerID(timerID);
   }
 
   function wardInfoFail(err) {
     console.lor("실패", err);
   }
 
+  useInterval(() => {
+    requestWardInfo(wardInfoSuccess, wardInfoFail);
+  }, 10000);
+
   useEffect(() => {
     requestWardInfo(wardInfoSuccess, wardInfoFail);
+    requestPatientList(page, 8, patientListSuccess, patientListFail);
+    //   return () => {
+    //     console.log("병동정보 ID", wardInfoTimerID);
+    //     clearTimeout(wardInfoTimerID);
+    //   };
   }, []);
 
   // Timer ID
   const [patientListTimerID, setPatientListTimerID] = useState("");
 
   function patientListSuccess(res) {
-    console.log("환자 리스트", patientListTimerID, res);
+    console.log("환자 리스트", page, res);
     const patientList = res.data.results;
     const count = res.data.count;
     const now = res.data.now;
     setPatientList(patientList);
     setCount(count);
     setPage(now);
-    const timerID = setTimeout(
-      requestPatientList,
-      10000,
-      now,
-      8,
-      patientListSuccess,
-      patientListFail
-    );
-    setPatientListTimerID(timerID);
+    // const timerID = setTimeout(
+    //   requestPatientList,
+    //   10000,
+    //   now,
+    //   8,
+    //   patientListSuccess,
+    //   patientListFail
+    // );
+    // setPatientListTimerID(timerID);
   }
 
   function patientListFail(err) {
     console.log(err);
   }
 
-  useEffect(() => {
-    requestPatientList(page, 8, patientListSuccess, patientListFail);
-  }, [page]);
+  useInterval(
+    () => {
+      requestPatientList(page, 8, patientListSuccess, patientListFail);
+    },
+    10000,
+    page
+  );
 
   function handlePageChange(page) {
     clearTimeout(patientListTimerID);
-    // setPatientListTimerID("");
+    setPatientListTimerID("");
     setPage(page);
   }
 
