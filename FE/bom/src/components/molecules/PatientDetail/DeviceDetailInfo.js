@@ -2,7 +2,7 @@ import React from "react";
 import Title from "components/atoms/Title.js";
 import Graph from "components/atoms/Graph";
 
-function DeviceDetailInfo() {
+function DeviceDetailInfo({ bmsTemperatureData, filter }) {
   return (
     <div className="patient-device-detail-info w-full h-full bg-white rounded-lg shadow-box p-3">
       <div className="top-box flex justify-between pt-4 px-6 h-[20%]">
@@ -20,7 +20,12 @@ function DeviceDetailInfo() {
               <span>배터리 전압</span>
             </div>
             <div className="graph-box h-[80%] flex items-center">
-              <Graph part="전압" isPC={true} />
+              <Graph
+                part="전압"
+                isPC={true}
+                data={bmsTemperatureData}
+                filter={filter}
+              />
             </div>
           </div>
         </div>
@@ -30,7 +35,12 @@ function DeviceDetailInfo() {
               <span>BMS 온도</span>
             </div>
             <div className="graph-box h-[80%] flex items-center">
-              <Graph part="온도" isPC={true} />
+              <Graph
+                part="온도"
+                isPC={true}
+                data={bmsTemperatureData}
+                filter={filter}
+              />
             </div>
           </div>
         </div>

@@ -72,10 +72,14 @@ function PatientDetail({ isPC }) {
         );
       }
       if (component === 1) {
-        // 새로운 요청보내기
+        requestPatientDetailDeviceInfo(
+          params.id,
+          filter,
+          requestPatientDetailDeviceInfoSuccess,
+          (err) => console.log(err)
+        );
       }
     }
-    console.log("useEfffect");
     if (userType === "patient" && !isPC) {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
         console.log(err)
@@ -87,7 +91,11 @@ function PatientDetail({ isPC }) {
         (err) => console.log(err)
       );
     }
-  }, [params, filter]);
+    return () => {
+      // console.log(patientDetailTimerID);
+      clearTimeout(patientDetailTimerID);
+    };
+  }, [filter]);
 
   useEffect(() => {
     checkUserType();
@@ -113,7 +121,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    console.log(res);
+    console.log(res, filter);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
@@ -146,10 +154,29 @@ function PatientDetail({ isPC }) {
     }
   };
 
-  const requestPatientDetailDeviceInfoSuccess = (res) => {};
+  const requestPatientDetailDeviceInfoSuccess = (res) => {
+    console.log(res.data);
+    setBmsTemperature(res.data.실시간.온도);
+    setVoltage1(res.data.실시간.전압1);
+    setVoltage2(res.data.실시간.전압2);
+    setSoc1(res.data.실시간.잔량1);
+    setSoc2(res.data.실시간.잔량2);
+    setBmsTemperatureData(res.data.온도);
+    const timerID = setTimeout(
+      requestPatientDetailDeviceInfo,
+      10000,
+      params.id,
+      filter,
+      requestPatientDetailDeviceInfoSuccess,
+      (err) => console.log(err)
+    );
+    setPatientDetailTimerID(timerID);
+  };
 
   const selectPeriod = (event) => {
+    console.log(patientDetailTimerID);
     clearTimeout(patientDetailTimerID);
+    // setPatientDetailTimerID("");
     const period = { period: event.target.value };
     setFilter(period);
   };
@@ -157,7 +184,7 @@ function PatientDetail({ isPC }) {
   const clickComponent = (number) => {
     clearTimeout(patientDetailTimerID);
     setComponent(number);
-    if (number == 0) {
+    if (number === 0) {
       requestPatientDetailHealthInfo(
         params.id,
         filter,
@@ -166,7 +193,12 @@ function PatientDetail({ isPC }) {
       );
     } else {
       // 디바이스 정보 불러오기 API
-      requestPatientDetailDeviceInfo(params.id, filter);
+      requestPatientDetailDeviceInfo(
+        params.id,
+        filter,
+        requestPatientDetailDeviceInfoSuccess,
+        (err) => console.log(err)
+      );
     }
   };
 
@@ -219,7 +251,7 @@ function PatientDetail({ isPC }) {
                       `}
                       content="디바이스 정보"
                       onClick={() => {
-                        setComponent(1);
+                        clickComponent(1);
                       }}
                     />
                   </div>
@@ -314,6 +346,8 @@ function PatientDetail({ isPC }) {
                     onZoom={() => {
                       setComponent(0);
                     }}
+                    bmsTemperatureData={bmsTemperatureData}
+                    filter={filter}
                   />
                 </div>
               </div>

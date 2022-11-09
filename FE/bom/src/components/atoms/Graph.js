@@ -76,15 +76,31 @@ function Graph({ part, isPC = true, data, filter }) {
                   <Line
                     type="monotone"
                     dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    stroke="#EA5455"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
                 {filter.period !== "now" && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="최소"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
                 {filter.period === "now" && (
-                  <Line type="monotone" dataKey="체온" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="체온"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -108,16 +124,32 @@ function Graph({ part, isPC = true, data, filter }) {
                   <Line
                     type="monotone"
                     dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    stroke="#EA5455"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
                 {filter.period !== "now" && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="최소"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
                 {filter.period === "now" && (
-                  <Line type="monotone" dataKey="심박수" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="심박수"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -141,16 +173,32 @@ function Graph({ part, isPC = true, data, filter }) {
                   <Line
                     type="monotone"
                     dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    stroke="#EA5455"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
                 {filter.period !== "now" && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="최소"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
                 {filter.period === "now" && (
-                  <Line type="monotone" dataKey="산소포화도" stroke="#82ca9d" />
+                  <Line
+                    type="monotone"
+                    dataKey="산소포화도"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -171,20 +219,27 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[0, 4]} />
                 <Tooltip />
-                {!!data[0]?.최대 && (
+                <Legend verticalAlign="top" width="100%" />
+                {filter.period === "now" && (
                   <Line
                     type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    dataKey="전압1"
+                    stroke="#82ca9d"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0]?.최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0]?.실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
+                {filter.period === "now" && (
+                  <Line
+                    type="monotone"
+                    dataKey="전압2"
+                    stroke="#82ca9d"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
                 )}
               </LineChart>
             </ResponsiveContainer>
@@ -204,21 +259,28 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[-20, 80]} />
                 <Tooltip />
-                {!!data[0]?.최대 && (
+                {filter.period === "now" && (
                   <Line
                     type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
+                    dataKey="온도"
+                    stroke="#5C78B1"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
+                {filter.period !== "now" && (
+                  <Line
+                    type="monotone"
+                    dataKey="최고"
+                    stroke="#EA5455"
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
+                  />
+                )}
+
                 <Legend verticalAlign="top" width="100%" />
-                {!!data[0]?.최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0]?.실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )}
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -257,7 +319,9 @@ function Graph({ part, isPC = true, data, filter }) {
                     type="monotone"
                     dataKey="환자 수"
                     stroke="#5C78B1"
-                    dot={{ r: 2 }}
+                    dot={{ r: 0 }}
+                    activeDot={{ r: 2 }}
+                    isAnimationActive={false}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
@@ -284,7 +348,13 @@ function Graph({ part, isPC = true, data, filter }) {
                 <YAxis type="number" domain={[30, 45]} />
                 <Tooltip />
 
-                <Line type="monotone" dataKey="체온" stroke="#82ca9d" />
+                <Line
+                  type="monotone"
+                  dataKey="체온"
+                  stroke="#5C78B1"
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 2 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -304,7 +374,13 @@ function Graph({ part, isPC = true, data, filter }) {
                 <YAxis type="number" domain={[20, 100]} />
                 <Tooltip />
 
-                <Line type="monotone" dataKey="심박수" stroke="#82ca9d" />
+                <Line
+                  type="monotone"
+                  dataKey="심박수"
+                  stroke="#5C78B1"
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 2 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -324,7 +400,13 @@ function Graph({ part, isPC = true, data, filter }) {
                 <YAxis type="number" domain={[80, 100]} />
                 <Tooltip />
 
-                <Line type="monotone" dataKey="산소포화도" stroke="#82ca9d" />
+                <Line
+                  type="monotone"
+                  dataKey="산소포화도"
+                  stroke="#5C78B1"
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 2 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
