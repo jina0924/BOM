@@ -162,6 +162,9 @@ def getSensor():
         if(is_Finger == True):
             human_sensor = MLX90614()
             temp_human = round(human_sensor.get_object_1(),1)
+            
+            temp_fix = round((temp_human-36.5)*0.1,1)
+            temp_human = 36.5 + temp_fix
         else:
             temp_human = 0
         #heart
@@ -180,11 +183,11 @@ def getSensor():
 
         if (is_Finger == True):
             if(is_warn == False):
-                if(temp_human >= 38 or spo2 <= 94 or heart_rate <=30 or heart_rate >= 150):
+                if(temp_human >= 38 or spo2 <= 90 or heart_rate <=30 or heart_rate >= 180):
                     is_warn = True
                     db_pub(0)
             else:
-                if(temp_human < 37 and spo2 >= 95 and heart_rate > 40 and heart_rate <140 and is_fall == False):
+                if(temp_human < 37 and spo2 > 90 and heart_rate > 40 and heart_rate <175 and is_fall == False):
                     is_warn=False
                     print("Turn off warn")
         else:
@@ -257,11 +260,14 @@ def getHeart():
                 
             if(spb == True and sp != -999):
                 spo2 = int(sp)
+                if(sps[59] != 0 ):
+                    if(abs(sps[59]-spo2)>20):
+                        spo2 = sps[59]
                 sps.append(spo2)
-                if(0<spo2 and spo2 <= 95 and o2Warn == False):
+                if(0<spo2 and spo2 <= 90 and o2Warn == False):
                     o2Warn = True
                     warnchange = True
-                elif(spo2>95 and o2Warn == True):
+                elif(spo2>90 and o2Warn == True):
                     o2Warn = False
                     warnchange = True
             else:
