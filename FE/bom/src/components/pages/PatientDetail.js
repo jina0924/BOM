@@ -21,6 +21,7 @@ import {
   requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
 } from "api/patientDetail";
+import { requestLogout } from "api/account";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function PatientDetail({ isPC }) {
 
   useEffect(() => {
     const userType = ls.get("userType");
-    if (userType === "ward") {
+    if (userType === "ward" && isPC) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
@@ -75,7 +76,7 @@ function PatientDetail({ isPC }) {
       }
     }
     console.log("useEfffect");
-    if (userType === "patient") {
+    if (userType === "patient" && !isPC) {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
@@ -167,6 +168,17 @@ function PatientDetail({ isPC }) {
       // 디바이스 정보 불러오기 API
       requestPatientDetailDeviceInfo(params.id, filter);
     }
+  };
+
+  const clickLogout = () => {
+    requestLogout(requestLogoutSuccess, (err) => {
+      console.log(err);
+    });
+  };
+
+  const requestLogoutSuccess = () => {
+    ls.clear();
+    navigate("/login");
   };
 
   return (
@@ -399,7 +411,7 @@ function PatientDetail({ isPC }) {
             <Btn
               className="patient-body-info w-full h-full bg-white rounded-lg shadow-box p-3 text-main text-sm hover:bg-main hover:text-white focus:outline-none"
               content="로그아웃"
-              onClickFunction={() => {}}
+              onClick={clickLogout}
             />
           </div>
         </div>
