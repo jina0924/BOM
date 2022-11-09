@@ -51,6 +51,7 @@ import {
 // ];
 
 function Graph({ part, isPC = true, data, filter }) {
+  // console.log(data);
   return (
     <>
       {isPC && (
@@ -282,21 +283,8 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[30, 45]} />
                 <Tooltip />
-                {!!data[0].최대 && (
-                  <Line
-                    type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
-                  />
-                )}
-                <Legend verticalAlign="top" width="100%" />
-                {!!data[0]?.최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0]?.실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )}
+
+                <Line type="monotone" dataKey="체온" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -315,21 +303,8 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[20, 100]} />
                 <Tooltip />
-                {!!data[0]?.최대 && (
-                  <Line
-                    type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
-                  />
-                )}
-                <Legend verticalAlign="top" width="100%" />
-                {!!data[0]?.최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0]?.실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )}
+
+                <Line type="monotone" dataKey="심박수" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -348,21 +323,8 @@ function Graph({ part, isPC = true, data, filter }) {
                 <XAxis dataKey="시간" />
                 <YAxis type="number" domain={[80, 100]} />
                 <Tooltip />
-                {!!data[0]?.최대 && (
-                  <Line
-                    type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
-                  />
-                )}
-                <Legend verticalAlign="top" width="100%" />
-                {!!data[0]?.최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0]?.실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )}
+
+                <Line type="monotone" dataKey="산소포화도" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           )}

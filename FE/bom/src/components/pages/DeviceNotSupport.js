@@ -19,6 +19,9 @@ function DeviceNotSupport({ isPC }) {
       navigate("/");
     } else if (userType === "patient" && !isPC) {
       navigate(`/patient/${ls.get("number")}`);
+    } else {
+      ls.clear();
+      navigate("/login");
     }
   };
 

@@ -74,6 +74,7 @@ function PatientDetail({ isPC }) {
         // 새로운 요청보내기
       }
     }
+    console.log("useEfffect");
     if (userType === "patient") {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
         console.log(err)
@@ -118,15 +119,30 @@ function PatientDetail({ isPC }) {
     setTemperatureData(res.data.체온);
     setHeartbeatData(res.data.심박수);
     setOxyzenData(res.data.산소포화도);
-    const timerID = setTimeout(
-      requestPatientDetailHealthInfo,
-      3000,
-      params.id,
-      filter,
-      requestPatientDetailHealthInfoSuccess,
-      (err) => console.log(err)
-    );
-    setPatientDetailTimerID(timerID);
+    const userType = ls.get("userType");
+    if (userType === "ward") {
+      const timerID = setTimeout(
+        requestPatientDetailHealthInfo,
+        10000,
+        params.id,
+        filter,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+      setPatientDetailTimerID(timerID);
+    }
+    if (userType === "patient") {
+      // clearTimeout(patientDetailTimerID);
+      const timerID = setTimeout(
+        requestPatientDetailHealthInfo,
+        10000,
+        null,
+        null,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+      setPatientDetailTimerID(timerID);
+    }
   };
 
   const requestPatientDetailDeviceInfoSuccess = (res) => {};
@@ -344,16 +360,40 @@ function PatientDetail({ isPC }) {
             <Logo logoClassName="justify-center pb-5" />
           </div>
           <div className="patient-detail-info mx-4 mb-4">
-            <PatientDetailInfo isPC={isPC} />
+            <PatientDetailInfo
+              isPC={isPC}
+              username={username}
+              name={name}
+              birth={birth}
+              sex={sex}
+              nokName={nokName}
+              nokPhonenumber={nokPhonenumber}
+              doctor={doctor}
+            />
           </div>
           <div className="temperature mx-4 mb-4 ">
-            <BodyInfo part="체온" isPC={isPC} />
+            <BodyInfo
+              part="체온"
+              isPC={isPC}
+              liveData={liveTemperature}
+              data={temperatureData}
+            />
           </div>
           <div className="heartbeat mx-4 mb-4 ">
-            <BodyInfo part="심박수" isPC={isPC} />
+            <BodyInfo
+              part="심박수"
+              isPC={isPC}
+              liveData={liveBPM}
+              data={heartbeatData}
+            />
           </div>
           <div className="oxyzen-percentage mx-4 mb-4 ">
-            <BodyInfo part="산소포화도" isPC={isPC} />
+            <BodyInfo
+              part="산소포화도"
+              isPC={isPC}
+              liveData={liveOxygen}
+              data={oxyzenData}
+            />
           </div>
           <div className="logout-btn mx-4">
             <Btn
