@@ -5,7 +5,7 @@ import pyqtgraph as pg
 
 from mainUI import Ui_Form as mainUi
 from bmsUI import Ui_Form as bmsUi
-from logoUI import Ui_Dialog as logoUi
+#from logoUI import Ui_Dialog as logoUi
 
 from time import sleep
 import threading
@@ -57,8 +57,8 @@ xitem = list(range(60))
 
 
 #for DB
-bms_id = 333
-patient_id = 777
+bms_id = 1
+patient_id = -1
 connect_db = False
 bt_id=[]
 
