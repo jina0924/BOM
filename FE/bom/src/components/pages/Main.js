@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -12,6 +12,8 @@ import ActiveBed from "components/molecules/Main/ActiveBed";
 // api
 import { requestWardInfo } from "api/main";
 import { requestPatientList } from "api/patients";
+
+import ls from "helper/LocalStorage";
 
 function useInterval(callback, delay, page = 1) {
   const savedCallback = useRef(); // 최근에 들어온 callback을 저장할 ref를 하나 만든다.
@@ -32,7 +34,7 @@ function useInterval(callback, delay, page = 1) {
   }, [page]); // delay가 바뀔 때마다 새로 실행된다.
 }
 
-function Main() {
+function Main({ isPC }) {
   // 병동 정보
   const [wardName, setWardName] = useState("000");
   const [patientCount, setPatientCount] = useState(1);
@@ -52,6 +54,8 @@ function Main() {
 
   // 병동 정보 타이머 ID
   const [wardInfoTimerID, setWardInfoTimerID] = useState("");
+
+  const navigate = useNavigate();
 
   function wardInfoSuccess(res) {
     console.log("병동 정보", wardInfoTimerID, res);
@@ -139,6 +143,19 @@ function Main() {
   //     setWardInfoTimerID(null);
   //   };
   // }, []);
+
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
+  };
 
   return (
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
