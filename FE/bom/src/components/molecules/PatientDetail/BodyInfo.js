@@ -122,7 +122,7 @@ function BodyInfo({
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  {/* <Graph part={part} isPC={isPC} /> */}
+                  <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="36.5 ℃" />
@@ -142,7 +142,7 @@ function BodyInfo({
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  {/* <Graph part={part} isPC={isPC} /> */}
+                  <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="150 bpm" />
@@ -162,7 +162,7 @@ function BodyInfo({
               </div>
               <div className="content-box">
                 <div className="graph-box text-2xs">
-                  {/* <Graph part={part} isPC={isPC} /> */}
+                  <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
                   <LiveInfo isPC={isPC} value="95 %" />

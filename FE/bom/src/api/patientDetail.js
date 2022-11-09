@@ -14,4 +14,14 @@ function requestPatientDetailHealthInfo(patientNumber, params, success, fail) {
     : UserApi.get("wards/patient/health").then(success).catch(fail);
 }
 
-export { requestPatientDetail, requestPatientDetailHealthInfo };
+function requestPatientDetailDeviceInfo(patientNumber, params, success, fail) {
+  UserApi.get(`batteries/${patientNumber}/bms`, { params })
+    .then(success)
+    .catch(fail);
+}
+
+export {
+  requestPatientDetail,
+  requestPatientDetailHealthInfo,
+  requestPatientDetailDeviceInfo,
+};
