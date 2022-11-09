@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -31,15 +31,24 @@ function Main() {
   // 병상 가동률
   const [utilization, setUtilization] = useState(1);
 
+  // 병동 정보 타이머 ID
+  const [wardInfoTimerID, setWardInfoTimerID] = useState("");
+
   function wardInfoSuccess(res) {
-    // console.log(res.data.utilization);
+    console.log("병동 정보", wardInfoTimerID, res);
     setWardName(res.data.number);
     setPatientCount(res.data.patientCount);
     setDoctorCount(res.data.doctorCount);
     setNurseCount(res.data.nurseCount);
     setPatientTendency(res.data.tendency);
     setUtilization(res.data.utilization);
-    setTimeout(requestWardInfo, 10000, wardInfoSuccess, wardInfoFail);
+    const timerID = setTimeout(
+      requestWardInfo,
+      10000,
+      wardInfoSuccess,
+      wardInfoFail
+    );
+    setWardInfoTimerID(timerID);
   }
 
   function wardInfoFail(err) {
@@ -54,6 +63,7 @@ function Main() {
   const [patientListTimerID, setPatientListTimerID] = useState("");
 
   function patientListSuccess(res) {
+    console.log("환자 리스트", patientListTimerID, res);
     const patientList = res.data.results;
     const count = res.data.count;
     const now = res.data.now;
@@ -81,9 +91,22 @@ function Main() {
 
   function handlePageChange(page) {
     clearTimeout(patientListTimerID);
-    setPatientListTimerID("");
+    // setPatientListTimerID("");
     setPage(page);
   }
+
+  // // url 정보
+  // const location = useLocation();
+  // const temp = location.pathname;
+  // useEffect(() => {
+  //   console.log("타이머 아이디", wardInfoTimerID, patientListTimerID);
+  //   return () => {
+  //     clearTimeout(patientListTimerID);
+  //     setPatientListTimerID(null);
+  //     clearTimeout(wardInfoTimerID);
+  //     setWardInfoTimerID(null);
+  //   };
+  // }, []);
 
   return (
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">

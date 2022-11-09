@@ -43,6 +43,7 @@ function Patients() {
         patientListSuccess,
         patientListFail
       );
+      setPatientListTimerID(timerID);
       console.log("setTimeout", page, keyword);
     }
   }
@@ -57,7 +58,7 @@ function Patients() {
 
   function handlePageChange(page) {
     clearTimeout(patientListTimerID);
-    setPatientListTimerID("");
+    // setPatientListTimerID("");
     setPage(page);
   }
 
