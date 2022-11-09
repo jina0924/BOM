@@ -88,7 +88,7 @@ class Ui_Form(object):
 "")
         self.label_10 = QLabel(Form)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setGeometry(QRect(644, 290, 51, 99))
+        self.label_10.setGeometry(QRect(644, 300, 51, 99))
         font1 = QFont()
         font1.setPointSize(60)
         font1.setBold(True)
@@ -98,7 +98,7 @@ class Ui_Form(object):
         self.label_10.setAlignment(Qt.AlignCenter)
         self.label_11 = QLabel(Form)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setGeometry(QRect(644, 474, 51, 99))
+        self.label_11.setGeometry(QRect(644, 484, 51, 99))
         self.label_11.setFont(font1)
         self.label_11.setStyleSheet(u"background-color:rgb(255,255,255);\n"
 "color: rgb(26, 50, 99);")
