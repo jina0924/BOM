@@ -12,7 +12,7 @@ function ContactBtn({ iconTag, person }) {
             /^(\d{2,3})(\d{3,4})(\d{4})$/,
             `$1-$2-$3`
           )}
-          style={{ color: "#ffffff" }}
+          // style={{ color: "#ffffff" }}
         >
           <div className="contact-box rounded-full w-full h-full aspect-square text-main bg-white shadow-dark hover:text-white hover:bg-main flex justify-center items-center">
             <UilPhone size={20} />
