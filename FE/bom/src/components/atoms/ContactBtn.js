@@ -7,16 +7,22 @@ function ContactBtn({ iconTag, person }) {
     <>
       {iconTag === "UilPhone" && (
         <div
-          data-tip={person.phonenumber}
-          className="tooltip-bottom tooltip tooltip-primary contact-box rounded-full w-full h-full aspect-square text-main bg-white shadow-dark hover:text-white hover:bg-main flex justify-center items-center"
+          className="w-full h-full tooltip tooltip-bottom"
+          data-tip={person.phonenumber.replace(
+            /^(\d{2,3})(\d{3,4})(\d{4})$/,
+            `$1-$2-$3`
+          )}
+          // style={{ color: "#ffffff" }}
         >
-          <UilPhone size={20} />
+          <div className="contact-box rounded-full w-full h-full aspect-square text-main bg-white shadow-dark hover:text-white hover:bg-main flex justify-center items-center">
+            <UilPhone size={20} />
+          </div>
         </div>
       )}
       {iconTag === "UilEnvelope" && (
         <div
           data-tip={person.email}
-          className="tooltip-bottom tooltip tooltip-primary contact-box rounded-full w-full h-full aspect-square text-main bg-white shadow-dark hover:text-white hover:bg-main flex justify-center items-center"
+          className="contact-box rounded-full w-full h-full aspect-square text-main bg-white shadow-dark hover:text-white hover:bg-main flex justify-center items-center tooltip tooltip-bottom"
         >
           <UilEnvelope size={20} />
         </div>
