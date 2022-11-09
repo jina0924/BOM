@@ -18,14 +18,20 @@ import Btn from "components/atoms/Btn";
 // API
 import {
   requestPatientDetail,
+  requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
 } from "api/patientDetail";
+import { requestLogout } from "api/account";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
+  // url 상 환자번호
   const params = useParams();
+  // 컴포넌트 번호
   const [component, setComponent] = useState(0);
-  const [ward, setWard] = useState("");
+  // 타이머
+  const [patientDetailTimerID, setPatientDetailTimerID] = useState("");
+  // 환자정보
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [birth, setBirth] = useState("");
@@ -33,28 +39,44 @@ function PatientDetail({ isPC }) {
   const [nokName, setNokName] = useState("");
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
+  // 환자 건강 정보
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
   const [liveOxygen, setLiveOxyzen] = useState(0);
-  const [filter, setFilter] = useState(0);
+  const [filter, setFilter] = useState({ period: "now" });
   const [temperatureData, setTemperatureData] = useState([]);
   const [heartbeatData, setHeartbeatData] = useState([]);
   const [oxyzenData, setOxyzenData] = useState([]);
+  // 환자 디바이스 정보
+  const [bmsTemperature, setBmsTemperature] = useState(0);
+  const [voltage1, setVoltage1] = useState(0);
+  const [voltage2, setVoltage2] = useState(0);
+  const [soc1, setSoc1] = useState(0);
+  const [soc2, setSoc2] = useState(0);
+  const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
+  const [voltage1Data, setVoltage1Data] = useState([]);
+  const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
-    if (userType === "ward") {
+    if (userType === "ward" && isPC) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
-      requestPatientDetailHealthInfo(
-        params.id,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
+      if (component !== 1) {
+        requestPatientDetailHealthInfo(
+          params.id,
+          filter,
+          requestPatientDetailHealthInfoSuccess,
+          (err) => console.log(err)
+        );
+      }
+      if (component === 1) {
+        // 새로운 요청보내기
+      }
     }
-    if (userType === "patient") {
+    console.log("useEfffect");
+    if (userType === "patient" && !isPC) {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
@@ -65,35 +87,7 @@ function PatientDetail({ isPC }) {
         (err) => console.log(err)
       );
     }
-  }, [params]);
-
-  setInterval(() => {
-    const userType = ls.get("userType");
-    const period =
-      filter === 0
-        ? { period: "now" }
-        : filter === 1
-        ? { period: "day" }
-        : filter === 2
-        ? { period: "week" }
-        : { period: "month" };
-    if (userType === "ward") {
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (userType === "patient") {
-      requestPatientDetailHealthInfo(
-        null,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-  }, 10000);
+  }, [params, filter]);
 
   useEffect(() => {
     checkUserType();
@@ -109,7 +103,6 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailSuccess = (res) => {
-    setWard(res.data.ward.number);
     setUsername(res.data.number);
     setName(res.data.name);
     setBirth(res.data.birth);
@@ -127,50 +120,65 @@ function PatientDetail({ isPC }) {
     setTemperatureData(res.data.체온);
     setHeartbeatData(res.data.심박수);
     setOxyzenData(res.data.산소포화도);
+    const userType = ls.get("userType");
+    if (userType === "ward") {
+      const timerID = setTimeout(
+        requestPatientDetailHealthInfo,
+        10000,
+        params.id,
+        filter,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+      setPatientDetailTimerID(timerID);
+    }
+    if (userType === "patient") {
+      // clearTimeout(patientDetailTimerID);
+      const timerID = setTimeout(
+        requestPatientDetailHealthInfo,
+        10000,
+        null,
+        null,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+      setPatientDetailTimerID(timerID);
+    }
   };
 
+  const requestPatientDetailDeviceInfoSuccess = (res) => {};
+
   const selectPeriod = (event) => {
-    console.log(event.target.value);
-    if (event.target.value === "0") {
-      setFilter(0);
-      const period = { period: "now" };
+    clearTimeout(patientDetailTimerID);
+    const period = { period: event.target.value };
+    setFilter(period);
+  };
+
+  const clickComponent = (number) => {
+    clearTimeout(patientDetailTimerID);
+    setComponent(number);
+    if (number == 0) {
       requestPatientDetailHealthInfo(
         params.id,
-        period,
+        filter,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
+    } else {
+      // 디바이스 정보 불러오기 API
+      requestPatientDetailDeviceInfo(params.id, filter);
     }
-    if (event.target.value === "1") {
-      setFilter(1);
-      const period = { period: "day" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (event.target.value === "2") {
-      setFilter(2);
-      const period = { period: "week" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
-    if (event.target.value === "3") {
-      setFilter(3);
-      const period = { period: "month" };
-      requestPatientDetailHealthInfo(
-        params.id,
-        period,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-    }
+  };
+
+  const clickLogout = () => {
+    requestLogout(requestLogoutSuccess, (err) => {
+      console.log(err);
+    });
+  };
+
+  const requestLogoutSuccess = () => {
+    ls.clear();
+    navigate("/login");
   };
 
   return (
@@ -179,7 +187,7 @@ function PatientDetail({ isPC }) {
         <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
           <SideBar />
           <div className="right-box col-span-5 h-full">
-            <HeadBar wardNum={ward} />
+            <HeadBar />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
                 {component === 0 || component === 1 ? (
@@ -196,7 +204,7 @@ function PatientDetail({ isPC }) {
                         `}
                       content="환자 정보"
                       onClick={() => {
-                        setComponent(0);
+                        clickComponent(0);
                       }}
                     />
                     <Btn
@@ -225,10 +233,10 @@ function PatientDetail({ isPC }) {
                   onChange={selectPeriod}
                 >
                   <option value="null">기간</option>
-                  <option value="0">실시간</option>
-                  <option value="1">1 일</option>
-                  <option value="2">7 일</option>
-                  <option value="3">30 일</option>
+                  <option value="now">실시간</option>
+                  <option value="day">1 일</option>
+                  <option value="week">7 일</option>
+                  <option value="month">30 일</option>
                 </select>
                 <DownloadBtn />
               </div>
@@ -293,7 +301,13 @@ function PatientDetail({ isPC }) {
             {component === 1 && (
               <div className="device-detail-full px-10 pb-5 h-[75vh]">
                 <div className="live-device-status pb-5 h-[25vh]">
-                  <LiveDeviceStatus />
+                  <LiveDeviceStatus
+                    bmsTemperature={bmsTemperature}
+                    voltage1={voltage1}
+                    voltage2={voltage2}
+                    soc1={soc1}
+                    soc2={soc2}
+                  />
                 </div>
                 <div className="device-detail-info pb-5 h-[50vh]">
                   <DeviceDetailInfo
@@ -358,22 +372,46 @@ function PatientDetail({ isPC }) {
             <Logo logoClassName="justify-center pb-5" />
           </div>
           <div className="patient-detail-info mx-4 mb-4">
-            <PatientDetailInfo isPC={isPC} />
+            <PatientDetailInfo
+              isPC={isPC}
+              username={username}
+              name={name}
+              birth={birth}
+              sex={sex}
+              nokName={nokName}
+              nokPhonenumber={nokPhonenumber}
+              doctor={doctor}
+            />
           </div>
           <div className="temperature mx-4 mb-4 ">
-            <BodyInfo part="체온" isPC={isPC} />
+            <BodyInfo
+              part="체온"
+              isPC={isPC}
+              liveData={liveTemperature}
+              data={temperatureData}
+            />
           </div>
           <div className="heartbeat mx-4 mb-4 ">
-            <BodyInfo part="심박수" isPC={isPC} />
+            <BodyInfo
+              part="심박수"
+              isPC={isPC}
+              liveData={liveBPM}
+              data={heartbeatData}
+            />
           </div>
           <div className="oxyzen-percentage mx-4 mb-4 ">
-            <BodyInfo part="산소포화도" isPC={isPC} />
+            <BodyInfo
+              part="산소포화도"
+              isPC={isPC}
+              liveData={liveOxygen}
+              data={oxyzenData}
+            />
           </div>
           <div className="logout-btn mx-4">
             <Btn
               className="patient-body-info w-full h-full bg-white rounded-lg shadow-box p-3 text-main text-sm hover:bg-main hover:text-white focus:outline-none"
               content="로그아웃"
-              onClickFunction={() => {}}
+              onClick={clickLogout}
             />
           </div>
         </div>
