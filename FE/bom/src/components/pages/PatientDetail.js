@@ -80,21 +80,21 @@ function PatientDetail({ isPC }) {
         (err) => console.log(err)
       );
 
-      const IntervalID = setInterval(() => {
-        requestPatientDetailHealthInfo(
-          params.id,
-          filterRef.current,
-          requestPatientDetailHealthInfoSuccess,
-          (err) => console.log(err)
-        );
-        requestPatientDetailDeviceInfo(
-          params.id,
-          filterRef.current,
-          requestPatientDetailDeviceInfoSuccess,
-          (err) => console.log(err)
-        );
-      }, 1000);
-      TimerID.current = IntervalID;
+      // const IntervalID = setInterval(() => {
+      //   requestPatientDetailHealthInfo(
+      //     params.id,
+      //     filterRef.current,
+      //     requestPatientDetailHealthInfoSuccess,
+      //     (err) => console.log(err)
+      //   );
+      //   requestPatientDetailDeviceInfo(
+      //     params.id,
+      //     filterRef.current,
+      //     requestPatientDetailDeviceInfoSuccess,
+      //     (err) => console.log(err)
+      //   );
+      // }, 10000);
+      // TimerID.current = IntervalID;
 
       // if (!isHealth) {
       //   requestPatientDetailDeviceInfo(
@@ -228,7 +228,7 @@ function PatientDetail({ isPC }) {
       // 디바이스 정보 불러오기 API
       requestPatientDetailDeviceInfo(
         params.id,
-        filter,
+        null,
         requestPatientDetailDeviceInfoSuccess,
         (err) => console.log(err)
       );
@@ -297,7 +297,6 @@ function PatientDetail({ isPC }) {
                   className="flex justify-center items-center px-4 rounded-xl bg-white shadow-bg ml-5 focus:outline-none h-[2rem]"
                   onChange={selectPeriod}
                 >
-                  <option value="null">기간</option>
                   <option value="now">실시간</option>
                   <option value="day">1 일</option>
                   <option value="week">7 일</option>
