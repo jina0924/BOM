@@ -79,10 +79,10 @@ function Main({ isPC }) {
 
   // 병동 정보 타이머 ID
   // const [wardInfoTimerID, setWardInfoTimerID] = useState("");
-  const wardInfoTimerID = useRef("");
+  // const wardInfoTimerID = useRef("");
 
   // 순환 도는지 확인할 변수
-  const [wardInfoCycle, setWardInfoCycle] = useState(1);
+  // const [wardInfoCycle, setWardInfoCycle] = useState(1);
 
   const navigate = useNavigate();
 
@@ -136,13 +136,13 @@ function Main({ isPC }) {
 
   // Timer ID
   // const [patientListTimerID, setPatientListTimerID] = useState("");
-  const patientListTimerID = useRef("");
+  // const patientListTimerID = useRef("");
 
   // const [patientListCycle, setPatientListCycle] = useState(1);
   // const patientListCycle = useRef(1);
 
   // const [patientListCycle, setPatientListCycle] = useState(1);
-  const patientListCycle = useRef(1);
+  // const patientListCycle = useRef(1);
 
   function patientListSuccess(res) {
     console.log("환자 리스트", page, res);
@@ -155,17 +155,17 @@ function Main({ isPC }) {
     page.current = now;
     // patientListCycle.current = patientListCycle.current + 1;
     // console.log(patientListCycle.current);
-    clearTimeout(patientListTimerID.current);
-    const timerID = setTimeout(
-      requestPatientList,
-      1000,
-      now,
-      8,
-      patientListSuccess,
-      patientListFail
-    );
-    patientListTimerID.current = timerID;
-    console.log("환자 리스트 타이머 아이디", timerID);
+    // clearTimeout(patientListTimerID.current);
+    // const timerID = setTimeout(
+    //   requestPatientList,
+    //   1000,
+    //   now,
+    //   8,
+    //   patientListSuccess,
+    //   patientListFail
+    // );
+    // patientListTimerID.current = timerID;
+    // console.log("환자 리스트 타이머 아이디", timerID);
     // setPatientListTimerID(timerID);
   }
 
@@ -174,16 +174,26 @@ function Main({ isPC }) {
   }
 
   useEffect(() => {
+    console.log("환자 리스트 요청 보냄");
     requestPatientList(page.current, 8, patientListSuccess, patientListFail);
+    const patientListId = setInterval(() => {
+      requestPatientList(page.current, 8, patientListSuccess, patientListFail);
+      console.log("interval 요청 보냄");
+    }, 10000);
     return () => {
-      console.log(patientListTimerID.current);
-      clearTimeout(patientListTimerID.current);
+      console.log(patientListId);
+      clearInterval(patientListId);
     };
-  }, [page.current]);
+    // return () => {
+    //   console.log(patientListTimerID.current);
+    //   clearTimeout(patientListTimerID.current);
+    // };
+    // }, [page.current]);
+  }, []);
 
   // useInterval(
   //   () => {
-  //     requestPatientList(page, 8, patientListSuccess, patientListFail);
+  //     requestPatientList(page.current, 8, patientListSuccess, patientListFail);
   //   },
   //   10000,
   //   page
@@ -208,6 +218,7 @@ function Main({ isPC }) {
     // patientListCycle.current = 1;
     // setPage(page);
     page.current = clickedPage;
+    console.log("페이지 바뀜", page);
   }
 
   // // url 정보
