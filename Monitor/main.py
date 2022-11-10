@@ -28,7 +28,7 @@ import subprocess
 from conf import config
 
 before = [-1,-1]
-minV = [4.1, 4.1]
+minV = [4.2, 4.2]
 maxV = [2.5, 2.5]
 SOC = [0, 0]
 voltage = [0,0]
