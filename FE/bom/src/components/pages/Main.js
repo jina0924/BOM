@@ -141,6 +141,9 @@ function Main({ isPC }) {
   // const [patientListCycle, setPatientListCycle] = useState(1);
   // const patientListCycle = useRef(1);
 
+  // const [patientListCycle, setPatientListCycle] = useState(1);
+  const patientListCycle = useRef(1);
+
   function patientListSuccess(res) {
     console.log("환자 리스트", page, res);
     const patientList = res.data.results;
