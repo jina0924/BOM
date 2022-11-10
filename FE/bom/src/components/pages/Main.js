@@ -34,6 +34,30 @@ function useInterval(callback, delay, page = 1) {
   }, [page]); // delay가 바뀔 때마다 새로 실행된다.
 }
 
+// custom timeout
+function useCustomInterval(request, delay, page, cycle) {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = request;
+  }, [request]);
+
+  useEffect(() => {
+    function requestData() {
+      console.log("요청 보냄");
+      savedCallback.current();
+    }
+    if (page !== null && cycle) {
+      let id = setTimeout(requestData, delay);
+      console.log("요청보낸 타이머 아이디", id);
+      return () => {
+        console.log(id);
+        clearTimeout(id);
+      };
+    }
+  }, [page, cycle]);
+}
+
 function Main({ isPC }) {
   // 병동 정보
   const [wardName, setWardName] = useState("000");
@@ -55,6 +79,9 @@ function Main({ isPC }) {
   // 병동 정보 타이머 ID
   const [wardInfoTimerID, setWardInfoTimerID] = useState("");
 
+  // 순환 도는지 확인할 변수
+  const [wardInfoCycle, setWardInfoCycle] = useState(1);
+
   const navigate = useNavigate();
 
   function wardInfoSuccess(res) {
@@ -65,6 +92,8 @@ function Main({ isPC }) {
     setNurseCount(res.data.nurseCount);
     setPatientTendency(res.data.tendency);
     setUtilization(res.data.utilization);
+    setWardInfoCycle(wardInfoCycle + 1);
+    console.log(wardInfoCycle);
     // const timerID = setTimeout(
     //   requestWardInfo,
     //   10000,
@@ -78,13 +107,23 @@ function Main({ isPC }) {
     console.lor("실패", err);
   }
 
-  useInterval(() => {
-    requestWardInfo(wardInfoSuccess, wardInfoFail);
-  }, 10000);
+  // useInterval(() => {
+  //   requestWardInfo(wardInfoSuccess, wardInfoFail);
+  // }, 10000);
+
+  // useCustomInterval(
+  //   () => {
+  //     requestWardInfo(wardInfoSuccess, wardInfoFail);
+  //   },
+  //   3000,
+  //   1,
+  //   wardInfoCycle
+  // );
 
   useEffect(() => {
-    requestWardInfo(wardInfoSuccess, wardInfoFail);
-    requestPatientList(page, 8, patientListSuccess, patientListFail);
+    // requestWardInfo(wardInfoSuccess, wardInfoFail);
+    // console.log("최초 요청 보냄");
+    // requestPatientList(page, 8, patientListSuccess, patientListFail);
     //   return () => {
     //     console.log("병동정보 ID", wardInfoTimerID);
     //     clearTimeout(wardInfoTimerID);
@@ -94,6 +133,9 @@ function Main({ isPC }) {
   // Timer ID
   const [patientListTimerID, setPatientListTimerID] = useState("");
 
+  // const [patientListCycle, setPatientListCycle] = useState(1);
+  const patientListCycle = useRef(1);
+
   function patientListSuccess(res) {
     console.log("환자 리스트", page, res);
     const patientList = res.data.results;
@@ -102,6 +144,8 @@ function Main({ isPC }) {
     setPatientList(patientList);
     setCount(count);
     setPage(now);
+    patientListCycle.current = patientListCycle.current + 1;
+    console.log(patientListCycle.current);
     // const timerID = setTimeout(
     //   requestPatientList,
     //   10000,
@@ -117,17 +161,28 @@ function Main({ isPC }) {
     console.log(err);
   }
 
-  useInterval(
+  // useInterval(
+  //   () => {
+  //     requestPatientList(page, 8, patientListSuccess, patientListFail);
+  //   },
+  //   10000,
+  //   page
+  // );
+
+  useCustomInterval(
     () => {
       requestPatientList(page, 8, patientListSuccess, patientListFail);
     },
-    10000,
-    page
+    3000,
+    page,
+    patientListCycle.current
   );
 
   function handlePageChange(page) {
-    clearTimeout(patientListTimerID);
-    setPatientListTimerID("");
+    // clearTimeout(patientListTimerID);
+    // setPatientListTimerID("");
+    // setPatientListCycle(1);
+    patientListCycle.current = 1;
     setPage(page);
   }
 
