@@ -22,15 +22,18 @@ import {
   requestPatientDetailHealthInfo,
 } from "api/patientDetail";
 import { requestLogout } from "api/account";
+import { useRef } from "react";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
   // url 상 환자번호
   const params = useParams();
   // 컴포넌트 번호
+  const [isHealth, setIsHealth] = useState(true);
   const [component, setComponent] = useState(0);
   // 타이머
   const [patientDetailTimerID, setPatientDetailTimerID] = useState("");
+  const TimerID = useRef();
   // 환자정보
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -44,6 +47,7 @@ function PatientDetail({ isPC }) {
   const [liveBPM, setLiveBPM] = useState(0);
   const [liveOxygen, setLiveOxyzen] = useState(0);
   const [filter, setFilter] = useState({ period: "now" });
+  const filterRef = useRef({ period: "now" });
   const [temperatureData, setTemperatureData] = useState([]);
   const [heartbeatData, setHeartbeatData] = useState([]);
   const [oxyzenData, setOxyzenData] = useState([]);
@@ -63,22 +67,53 @@ function PatientDetail({ isPC }) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) =>
         console.log(err)
       );
-      if (component !== 1) {
+      requestPatientDetailDeviceInfo(
+        params.id,
+        filterRef.current,
+        requestPatientDetailDeviceInfoSuccess,
+        (err) => console.log(err)
+      );
+      requestPatientDetailHealthInfo(
+        params.id,
+        filterRef.current,
+        requestPatientDetailHealthInfoSuccess,
+        (err) => console.log(err)
+      );
+
+      const IntervalID = setInterval(() => {
         requestPatientDetailHealthInfo(
           params.id,
-          filter,
+          filterRef.current,
           requestPatientDetailHealthInfoSuccess,
           (err) => console.log(err)
         );
-      }
-      if (component === 1) {
         requestPatientDetailDeviceInfo(
           params.id,
-          filter,
+          filterRef.current,
           requestPatientDetailDeviceInfoSuccess,
           (err) => console.log(err)
         );
-      }
+      }, 1000);
+      TimerID.current = IntervalID;
+
+      // if (!isHealth) {
+      //   requestPatientDetailDeviceInfo(
+      //     params.id,
+      //     filterRef.current,
+      //     requestPatientDetailDeviceInfoSuccess,
+      //     (err) => console.log(err)
+      //   );
+
+      //   const IntervalID = setInterval(() => {
+      //     requestPatientDetailDeviceInfo(
+      //       params.id,
+      //       filterRef.current,
+      //       requestPatientDetailDeviceInfoSuccess,
+      //       (err) => console.log(err)
+      //     );
+      //   }, 1000);
+      //   deviceTimerID.current = IntervalID;
+      // }
     }
     if (userType === "patient" && !isPC) {
       requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
@@ -92,10 +127,9 @@ function PatientDetail({ isPC }) {
       );
     }
     return () => {
-      // console.log(patientDetailTimerID);
-      clearTimeout(patientDetailTimerID);
+      clearInterval(TimerID.current);
     };
-  }, [filter]);
+  }, []);
 
   useEffect(() => {
     checkUserType();
@@ -121,64 +155,63 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    console.log(res, filter);
+    console.log(res, filterRef.current);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
     setTemperatureData(res.data.체온);
     setHeartbeatData(res.data.심박수);
     setOxyzenData(res.data.산소포화도);
-    const userType = ls.get("userType");
-    if (userType === "ward") {
-      const timerID = setTimeout(
-        requestPatientDetailHealthInfo,
-        10000,
-        params.id,
-        filter,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-      setPatientDetailTimerID(timerID);
-    }
-    if (userType === "patient") {
-      // clearTimeout(patientDetailTimerID);
-      const timerID = setTimeout(
-        requestPatientDetailHealthInfo,
-        10000,
-        null,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
-      setPatientDetailTimerID(timerID);
-    }
+    // const userType = ls.get("userType");
+    // if (userType === "ward") {
+    //   const newTimerID = setTimeout(
+    //     requestPatientDetailHealthInfo,
+    //     3000,
+    //     params.id,
+    //     filter.current,
+    //     requestPatientDetailHealthInfoSuccess,
+    //     (err) => console.log(err)
+    //   );
+    //   timerID.current = newTimerID;
+    // }
+    // if (userType === "patient") {
+    //   // clearTimeout(patientDetailTimerID);
+    //   const timerID = setTimeout(
+    //     requestPatientDetailHealthInfo,
+    //     1000,
+    //     null,
+    //     null,
+    //     requestPatientDetailHealthInfoSuccess,
+    //     (err) => console.log(err)
+    //   );
+    //   setPatientDetailTimerID(timerID);
+    // }
   };
 
   const requestPatientDetailDeviceInfoSuccess = (res) => {
-    console.log(res.data);
+    console.log(res, filterRef.current);
     setBmsTemperature(res.data.실시간.온도);
     setVoltage1(res.data.실시간.전압1);
     setVoltage2(res.data.실시간.전압2);
     setSoc1(res.data.실시간.잔량1);
     setSoc2(res.data.실시간.잔량2);
     setBmsTemperatureData(res.data.온도);
-    const timerID = setTimeout(
-      requestPatientDetailDeviceInfo,
-      10000,
-      params.id,
-      filter,
-      requestPatientDetailDeviceInfoSuccess,
-      (err) => console.log(err)
-    );
-    setPatientDetailTimerID(timerID);
+    // const timerID = setTimeout(
+    //   requestPatientDetailDeviceInfo,
+    //   10000,
+    //   params.id,
+    //   filter,
+    //   requestPatientDetailDeviceInfoSuccess,
+    //   (err) => console.log(err)
+    // );
+    // setPatientDetailTimerID(timerID);
   };
 
   const selectPeriod = (event) => {
-    console.log(patientDetailTimerID);
-    clearTimeout(patientDetailTimerID);
+    console.log(TimerID);
     // setPatientDetailTimerID("");
     const period = { period: event.target.value };
-    setFilter(period);
+    filterRef.current = period;
   };
 
   const clickComponent = (number) => {
@@ -222,7 +255,7 @@ function PatientDetail({ isPC }) {
             <HeadBar />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
-                {component === 0 || component === 1 ? (
+                {(component === 0) | (component === 1) ? (
                   <div className="info-change-btns flex justify-start">
                     <Btn
                       className={`${
@@ -236,7 +269,7 @@ function PatientDetail({ isPC }) {
                         `}
                       content="환자 정보"
                       onClick={() => {
-                        clickComponent(0);
+                        setComponent(0);
                       }}
                     />
                     <Btn
@@ -251,7 +284,7 @@ function PatientDetail({ isPC }) {
                       `}
                       content="디바이스 정보"
                       onClick={() => {
-                        clickComponent(1);
+                        setComponent(1);
                       }}
                     />
                   </div>
@@ -297,7 +330,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveTemperature}
                       data={temperatureData}
-                      filter={filter}
+                      filter={filterRef.current}
                     />
                   </div>
                 </div>
@@ -311,7 +344,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveBPM}
                       data={heartbeatData}
-                      filter={filter}
+                      filter={filterRef.current}
                     />
                   </div>
                   <div className="right-third-component pb-5 h-1/2">
@@ -323,7 +356,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveOxygen}
                       data={oxyzenData}
-                      filter={filter}
+                      filter={filterRef.current}
                     />
                   </div>
                 </div>
@@ -347,7 +380,7 @@ function PatientDetail({ isPC }) {
                       setComponent(0);
                     }}
                     bmsTemperatureData={bmsTemperatureData}
-                    filter={filter}
+                    filter={filterRef.current}
                   />
                 </div>
               </div>
@@ -363,7 +396,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveTemperature}
                   data={temperatureData}
-                  filter={filter}
+                  filter={filterRef.current}
                 />
               </div>
             )}
@@ -378,7 +411,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveBPM}
                   data={heartbeatData}
-                  filter={filter}
+                  filter={filterRef.current}
                 />
               </div>
             )}
@@ -393,7 +426,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveOxygen}
                   data={oxyzenData}
-                  filter={filter}
+                  filter={filterRef.current}
                 />
               </div>
             )}
