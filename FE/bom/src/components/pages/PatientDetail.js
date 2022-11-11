@@ -93,7 +93,7 @@ function PatientDetail({ isPC }) {
       //     requestPatientDetailDeviceInfoSuccess,
       //     (err) => console.log(err)
       //   );
-      // }, 10000);
+      // }, 1000);
       // TimerID.current = IntervalID;
 
       // if (!isHealth) {
@@ -363,7 +363,7 @@ function PatientDetail({ isPC }) {
             )}
             {/* 디바이스 디테일 페이지 */}
             {component === 1 && (
-              <div className="device-detail-full px-10 pb-5 h-[75vh]">
+              <div className="device-detail-full px-10 pb-5 h-[75vh] animate-[ping_1s_ease-in-out_1]">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
                     bmsTemperature={bmsTemperature}
@@ -401,7 +401,7 @@ function PatientDetail({ isPC }) {
             )}
             {/* 심박수 디테일 페이지 */}
             {component === 3 && (
-              <div className="body-temperature-full px-10 pb-5 h-[75vh]">
+              <div className="body-temperature-full px-10 pb-5 h-[75vh] ">
                 <BodyInfo
                   part="심박수"
                   onZoom={() => {
