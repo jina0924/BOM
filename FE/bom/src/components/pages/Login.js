@@ -152,7 +152,7 @@ function Login() {
                   </div>
                   <div className="carousel-text p-3">
                     <span className="text-white text-sm font-light">
-                      로그인 캐러젤
+                      병동 상황을 한 눈에 파악할 수 있습니다.
                     </span>
                   </div>
                 </div>
@@ -165,7 +165,7 @@ function Login() {
                   </div>
                   <div className="carousel-text p-3">
                     <span className="text-white text-sm font-light">
-                      로그인 캐러젤
+                      환자의 상태 이상을 파악할 수 있습니다.
                     </span>
                   </div>
                 </div>
@@ -178,7 +178,7 @@ function Login() {
                   </div>
                   <div className="carousel-text p-3">
                     <span className="text-white text-sm font-light">
-                      로그인 캐러젤
+                      환자의 상태를 그래프로 확인할 수 있습니다.
                     </span>
                   </div>
                 </div>
@@ -191,7 +191,7 @@ function Login() {
                   </div>
                   <div className="carousel-text p-3">
                     <span className="text-white text-sm font-light">
-                      로그인 캐러젤
+                      병동 내의 의료진 연락처를 조회할 수 있습니다.
                     </span>
                   </div>
                 </div>
