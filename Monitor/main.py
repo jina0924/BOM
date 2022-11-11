@@ -28,7 +28,7 @@ import subprocess
 from conf import config
 
 before = [-1,-1]
-minV = [4.2, 4.2]
+minV = [4.1, 4.1]
 maxV = [2.5, 2.5]
 SOC = [0, 0]
 voltage = [0,0]
@@ -104,10 +104,10 @@ def read_voltage(adcChannel):
         if(minV[adcChannel] > V):
             minV[adcChannel] = V
         
-        if (minV[adcChannel] > 4.18):
+        if (minV[adcChannel] > 4.1):
             SOC[adcChannel] = 100
         elif (minV[adcChannel] >= 2.5):
-            SOC[adcChannel] = round((minV[adcChannel]-2.5)/1.7 * 100)
+            SOC[adcChannel] = round((minV[adcChannel]-2.5)/1.6 * 100)
         else:
             SOC[adcChannel] = 0
         
@@ -115,15 +115,15 @@ def read_voltage(adcChannel):
         
             
     else:
-        minV[adcChannel] = 4.2
+        minV[adcChannel] = 4.1
         
         if(maxV[adcChannel] < V):
             maxV[adcChannel] = V
             
-        if (maxV[adcChannel] > 4.18):
+        if (maxV[adcChannel] > 4.1):
             SOC[adcChannel] = 100
         elif (maxV[adcChannel] >= 2.5):
-            SOC[adcChannel] = round((maxV[adcChannel]-2.5)/1.7 * 100)
+            SOC[adcChannel] = round((maxV[adcChannel]-2.5)/1.6 * 100)
         else:
             SOC[adcChannel] = 0
             
@@ -200,7 +200,8 @@ def getSensor():
             #db_battery
             if(is_Finger==True):
                 db_pub(1)
-            
+            else:
+                db_pub(2)
             
 
         sleep(1)
@@ -290,13 +291,22 @@ def db_pub(mode):
 
 
     #5sec mode
-    else:
+    elif(mode == 1):
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
         c.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
         c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+
+        db.commit()
+    
+    else:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
+        c.execute(f'insert into bms_status(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[1]});')
 
         db.commit()
 
