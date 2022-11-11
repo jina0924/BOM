@@ -104,7 +104,7 @@ def read_voltage(adcChannel):
         if(minV[adcChannel] > V):
             minV[adcChannel] = V
         
-        if (minV[adcChannel] > 4.1):
+        if (minV[adcChannel] >= 4.1):
             SOC[adcChannel] = 100
         elif (minV[adcChannel] >= 2.5):
             SOC[adcChannel] = round((minV[adcChannel]-2.5)/1.6 * 100)
@@ -120,7 +120,7 @@ def read_voltage(adcChannel):
         if(maxV[adcChannel] < V):
             maxV[adcChannel] = V
             
-        if (maxV[adcChannel] > 4.1):
+        if (maxV[adcChannel] >= 4.1):
             SOC[adcChannel] = 100
         elif (maxV[adcChannel] >= 2.5):
             SOC[adcChannel] = round((maxV[adcChannel]-2.5)/1.6 * 100)
