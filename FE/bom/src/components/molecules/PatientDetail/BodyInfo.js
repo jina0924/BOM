@@ -33,10 +33,10 @@ function BodyInfo({
                 />
                 <div className="arrow-box" onClick={onZoom}>
                   {!onOff && (
-                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer transition ease-in-out delay-150 hover:scale-125 duration-300" />
                   )}
                   {onOff && (
-                    <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
+                    <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer transition ease-in-out delay-150 hover:scale-125 duration-300" />
                   )}
                 </div>
               </div>
@@ -61,10 +61,10 @@ function BodyInfo({
                 />
                 <div className="arrow-box" onClick={onZoom}>
                   {!onOff && (
-                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] transition ease-in-out delay-150 hover:cursor-pointer hover:scale-125 duration-300" />
                   )}
                   {onOff && (
-                    <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
+                    <UilArrowDownLeft className="transition ease-in-out delay-150 text-font2 inline h-[20px] hover:cursor-pointer hover:scale-125 duration-300" />
                   )}
                 </div>
               </div>
@@ -89,10 +89,10 @@ function BodyInfo({
                 />
                 <div className="arrow-box" onClick={onZoom}>
                   {!onOff && (
-                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer" />
+                    <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer transition ease-in-out delay-150 hover:scale-125 duration-300" />
                   )}
                   {onOff && (
-                    <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer" />
+                    <UilArrowDownLeft className="text-font2 inline h-[20px] hover:cursor-pointer transition ease-in-out delay-150 hover:scale-125 duration-300" />
                   )}
                 </div>
               </div>
