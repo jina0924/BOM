@@ -9,9 +9,21 @@ import CustomPagination from "components/atoms/CustomPagination";
 // api
 // import { requestPatientList } from "api/patients";
 
-import { UilArrowResizeDiagonal, UilArrowDownLeft } from "@iconscout/react-unicons";
+import {
+  UilArrowResizeDiagonal,
+  UilArrowDownLeft,
+} from "@iconscout/react-unicons";
 
-function PatientList({ patientList, page, count, limit, handlePageChange, nowPage, onZoom, onOff }) {
+function PatientList({
+  patientList,
+  page,
+  count,
+  limit,
+  handlePageChange,
+  nowPage,
+  onZoom,
+  onOff,
+}) {
   // console.log(patientList);
   // const [patientList, setPatientList] = useState([]);
   // const [page, setPage] = useState(1);
@@ -84,12 +96,12 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
           )}
           {nowPage === "patients" && onOff === false && (
             <div onClick={onZoom}>
-              <UilArrowResizeDiagonal className="text-font2 inline h-[16px] hover:cursor-pointer hover:h-[20px]" />
+              <UilArrowResizeDiagonal className="text-font2 inline h-[16px] transition delay-150 ease-in-out  hover:cursor-pointer hover:scale-125 duration-300" />
             </div>
           )}
           {nowPage === "patients" && onOff === true && (
             <div onClick={onZoom}>
-              <UilArrowDownLeft className="text-font2 inline h-[16px] hover:cursor-pointer hover:h-[20px]" />
+              <UilArrowDownLeft className="text-font2 inline h-[16px] transition delay-150 ease-in-out hover:cursor-pointer hover:scale-125 duration-300" />
             </div>
           )}
         </div>
@@ -99,28 +111,52 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
           <table className="table w-[85%] border-collapse px-4 mx-auto">
             <thead>
               <tr>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">번호</th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">환자 번호</th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">이름</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  번호
+                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  환자 번호
+                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  이름
+                </th>
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">성별</th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                    성별
+                  </th>
                 )}
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">체온</th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">심박수</th>
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">산소포화도</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  체온
+                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  심박수
+                </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  산소포화도
+                </th>
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">보호자</th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                    보호자
+                  </th>
                 )}
                 {pathname === "patients" && (
-                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">보호자 연락처</th>
+                  <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                    보호자 연락처
+                  </th>
                 )}
-                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">주치의</th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  주치의
+                </th>
               </tr>
             </thead>
             {!!patientList && (
               <tbody>
                 {patientList.map((item, key) => (
-                  <tr key={key} className="hover:cursor-pointer" onClick={() => onClickPatientDetailInfo(item)}>
+                  <tr
+                    key={key}
+                    className="hover:cursor-pointer"
+                    onClick={() => onClickPatientDetailInfo(item)}
+                  >
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
@@ -142,7 +178,9 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
                     {pathname === "patients" && item.sex === "M" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
-                          ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                          ${
+                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
+                          }`}
                       >
                         남
                       </td>
@@ -150,7 +188,9 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
                     {pathname === "patients" && item.sex === "F" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray 
-                          ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                          ${
+                            onOff === true ? "text-sm py-4" : "text-xs py-2.5"
+                          }`}
                       >
                         여
                       </td>
@@ -188,7 +228,9 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
                     {pathname === "patients" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray
-                          ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
+                          ${
+                            onOff === true ? " text-sm py-4" : " text-xs py-2.5"
+                          }
                         `}
                       >
                         {item.nokName}
@@ -201,7 +243,10 @@ function PatientList({ patientList, page, count, limit, handlePageChange, nowPag
                           (onOff === true ? " text-sm py-4" : " text-xs py-2.5")
                         }
                       >
-                        {item.nokPhonenumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)}
+                        {item.nokPhonenumber.replace(
+                          /^(\d{2,3})(\d{3,4})(\d{4})$/,
+                          `$1-$2-$3`
+                        )}
                       </td>
                     )}
                     <td
