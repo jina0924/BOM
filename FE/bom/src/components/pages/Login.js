@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// api
 import { requestLogin, requestUserInfo } from "api/account";
+
+import ls from "helper/LocalStorage";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
 
-import ls from "helper/LocalStorage";
+// Carousel
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import "./Login.css";
-import { useEffect } from "react";
 
 function Login() {
   const navigate = useNavigate();
@@ -87,7 +91,7 @@ function Login() {
       {isPC && (
         <div className="bg-back h-[100vh] w-[100vw] flex justify-center items-center">
           <div className="login-frame shadow-login w-[60vw] h-[70vh] rounded-[20px] flex">
-            <div className="bg-white rounded-l-[20px] w-1/2 h-full login-box flex flex-col items-center">
+            <div className="login-box bg-white rounded-l-[20px] w-1/2 h-full flex flex-col items-center">
               <div className="login-frame h-full">
                 <Logo size="s" logoClassName="h-[20%]" />
                 <h2 className="font-extrabold text-3xl text-main h-[15%]">
@@ -129,7 +133,70 @@ function Login() {
                 보호자는 모바일로 접속해주세요.
               </span>
             </div>
-            <div className="tutorial bg-gradient-to-tr from-main to-blue rounded-r-[20px] w-1/2 h-full"></div>
+            <div className="tutorial bg-gradient-to-tr from-main to-blue rounded-r-[20px] w-1/2 h-full flex justify-center items-center">
+              <Carousel
+                autoPlay
+                infiniteLoop
+                // dynamicHeight
+                // showArrows={false}
+                showStatus={false}
+                showThumbs={false}
+                interval={5000}
+              >
+                <div className="carousel-item flex flex-col pb-6">
+                  <div className="service-info-image">
+                    <img
+                      src="https://placeimg.com/150/100/animals"
+                      alt="더미이미지"
+                    />
+                  </div>
+                  <div className="carousel-text p-3">
+                    <span className="text-white text-sm font-light">
+                      병동 상황을 한 눈에 파악할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div className="carousel-item flex flex-col pb-6">
+                  <div className="service-info-image">
+                    <img
+                      src="https://placeimg.com/150/100/animals"
+                      alt="더미이미지"
+                    />
+                  </div>
+                  <div className="carousel-text p-3">
+                    <span className="text-white text-sm font-light">
+                      환자의 상태 이상을 파악할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div className="carousel-item flex flex-col pb-6">
+                  <div className="service-info-image">
+                    <img
+                      src="https://placeimg.com/150/100/animals"
+                      alt="더미이미지"
+                    />
+                  </div>
+                  <div className="carousel-text p-3">
+                    <span className="text-white text-sm font-light">
+                      환자의 상태를 그래프로 확인할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+                <div className="carousel-item flex flex-col pb-6">
+                  <div className="service-info-image">
+                    <img
+                      src="https://placeimg.com/150/100/animals"
+                      alt="더미이미지"
+                    />
+                  </div>
+                  <div className="carousel-text p-3">
+                    <span className="text-white text-sm font-light">
+                      병동 내의 의료진 연락처를 조회할 수 있습니다.
+                    </span>
+                  </div>
+                </div>
+              </Carousel>
+            </div>
           </div>
         </div>
       )}
