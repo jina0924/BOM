@@ -24,7 +24,6 @@ function PatientList({
   onZoom,
   onOff,
 }) {
-  // console.log(patientList);
   // const [patientList, setPatientList] = useState([]);
   // const [page, setPage] = useState(1);
   // const [count, setCount] = useState(1);
@@ -45,6 +44,9 @@ function PatientList({
     }
   }, [location]);
 
+  useEffect(() => {
+    console.log("patientList", page);
+  }, []);
   // async function patientListSuccess(res) {
   //   console.log(res);
   //   setPatientList(res.data.results);
