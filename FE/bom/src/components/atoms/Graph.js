@@ -297,7 +297,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
-                <YAxis type="number" domain={[0, 100]} />
+                <YAxis type="number" domain={[0, 300]} />
                 <Tooltip />
                 {/* {!!data[0].최대 && (
                   <Line
@@ -319,8 +319,8 @@ function Graph({ part, isPC = true, data, filter }) {
                     type="monotone"
                     dataKey="환자 수"
                     stroke="#5C78B1"
-                    dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
+                    dot={{ r: 2 }}
+                    activeDot={{ r: 4 }}
                     isAnimationActive={false}
                   />
                 )}

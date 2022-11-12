@@ -86,6 +86,14 @@ function Main({ isPC }) {
     setDoctorCount(res.data.doctorCount);
     setNurseCount(res.data.nurseCount);
     setPatientTendency(res.data.tendency);
+    // setPatientTendency([
+    //   { month: "2022-04", "환자 수": 129 },
+    //   { month: "2022-05", "환자 수": 98 },
+    //   { month: "2022-06", "환자 수": 177 },
+    //   { month: "2022-07", "환자 수": 83 },
+    //   { month: "2022-08", "환자 수": 75 },
+    //   { month: "2022-09", "환자 수": 101 },
+    // ]);
     setUtilization(res.data.utilization);
   }
 
