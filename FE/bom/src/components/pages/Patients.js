@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -10,7 +10,10 @@ import PatientList from "components/molecules/common/PatientList";
 // api
 import { requestPatientList, requestSearchPatient } from "api/patients";
 
-function Patients() {
+import ls from "helper/LocalStorage";
+
+function Patients({ isPC }) {
+  const navigate = useNavigate();
   const [component, setComponent] = useState(0);
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
@@ -77,6 +80,7 @@ function Patients() {
     requestPatientList(now.current, 9, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID);
+      now.current = 0;
       for (let timer of patientListTimerID.current) {
         clearTimeout(timer);
       }
@@ -128,6 +132,20 @@ function Patients() {
       );
     }
   }
+
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
+  };
+
   return (
     <>
       {component === 0 && (
