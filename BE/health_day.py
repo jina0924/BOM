@@ -5,34 +5,16 @@ from dateutil.relativedelta import relativedelta
 from my_settings import DATABASES
 
 
-conn = pymysql.connect(host=DATABASES['HOST'], port=DATABASES['PORT'], user=DATABASES['USER'], password=DATABASES['PASSWORD'], db=DATABASES['NAME'], charset='utf8')
+conn = pymysql.connect(host=DATABASES['default']['HOST'], port=3306, user=DATABASES['default']['USER'], password=DATABASES['default']['PASSWORD'], db=DATABASES['default']['NAME'], charset='utf8')
 cur = conn.cursor()
 
 now = datetime.datetime.now()
 now = now + relativedelta(seconds=-(now.second % 5))
 
-period = 'month'
-
-if period == 'month':
-    start = 2592000  # 60 * 60 * 24 * 30
-    delta = 86400  # 60 * 60 * 24
-    data_count = 30
-    period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0) + relativedelta(seconds=-1)
-
-elif period == 'week':
-    start = 604800  # 60 * 60 * 24 * 7
-    delta = 43200  # 60 * 60 * 12
-    data_count = 14
-    if now.hour >= 12:
-        period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
-    elif now.hour < 12:
-        period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
-
-elif period == 'day':
-    start = 86400  # 60 * 60 * 24
-    delta = 3600  # 60 * 60
-    data_count = 24
-    period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+start = 86400  # 60 * 60 * 24
+delta = 3600  # 60 * 60
+data_count = 24
+period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
 
 sql = "select id, number from patient"
 cur.execute(sql)
@@ -52,7 +34,7 @@ for data in result:
 
         period_end = period_start + relativedelta(seconds=delta)
 
-        sql = "select max(temperature), min(temperature), max(bpm), min(bpm), max(oxygen_saturation), min(oxygen_saturation) from patient_status where patient_id=%s and now > %s and now <= %s and temperature > 0"
+        sql = "select max(temperature), min(temperature), max(bpm), min(bpm), max(oxygen_saturation), min(oxygen_saturation) from patient_status where patient_id=%s and now > %s and now <= %s and temperature > 0 and bpm > 0 and oxygen_saturation > 0"
         vals = (patient_id, period_start, period_end)
         cur.execute(sql, vals)
         period_health = cur.fetchall()
@@ -68,10 +50,8 @@ for data in result:
 
         if max_temperature:
             
-            if period == 'month':
-                period_value = period_end.strftime('%Y-%m-%d')
-            else:
-                period_value = period_start.strftime('%Y-%m-%d %H:%M:%S')
+            
+            period_value = period_start.strftime('%Y-%m-%d %H:%M:%S')
 
             temperature = {
                 '시간': period_value,
@@ -106,14 +86,8 @@ for data in result:
         
         for i in range(1, data_count - len(period_temperature) + 1):
             now_datetime = period_now + relativedelta(seconds=-start) + relativedelta(seconds=(i * delta))
-            if period == 'month':
-                tmp_now = now_datetime.strftime('%Y-%m-%d')
 
-            elif period == 'week':
-                tmp_now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H:%M:%S')
-
-            elif period == 'day':
-                tmp_now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H:%M:%S')
+            tmp_now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H:%M:%S')
 
             temperature = {
                 '시간': tmp_now,
@@ -141,12 +115,18 @@ for data in result:
     result_oxygen_saturation = tmp_oxygen_saturation + period_oxygen_saturation
 
     # print(result_temperature)
-    connect = redis.StrictRedis(host=DATABASES['HOST'], port=6379, db=1, charset='utf-8', decode_responses=True, password=DATABASES['PASSWORD'])
-
+    connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=1, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
+    
+    time = period_now.strftime('%Y-%m-%d %H')
+    
     for i in range(data_count):
 
-        connect.hmset(f'{patient_number}_temperature_month_{i+1}', result_temperature[i])
-        connect.hmset(f'{patient_number}_bpm_month_{i+1}', result_bpm[i])
-        connect.hmset(f'{patient_number}_oxygen_saturation_month_{i+1}', result_oxygen_saturation[i])
+        connect.hmset(f'{time}_{patient_number}_temperature_day_{i+1}', result_temperature[i])
+        connect.hmset(f'{time}_{patient_number}_bpm_day_{i+1}', result_bpm[i])
+        connect.hmset(f'{time}_{patient_number}_oxygen_saturation_day_{i+1}', result_oxygen_saturation[i])
+
+        connect.expire(f'{time}_{patient_number}_temperature_day_{i+1}', 86400)
+        connect.expire(f'{time}_{patient_number}_bpm_day_{i+1}', 86400)
+        connect.expire(f'{time}_{patient_number}_oxygen_saturation_day_{i+1}', 86400)
 
 conn.close()
