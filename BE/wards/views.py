@@ -65,8 +65,8 @@ def ward(request):
 
         serializer = WardDetailSerializer(ward)
 
-        now = datetime.datetime(2022, 10, 2, 22, 31, 25)
-        # now = datetime.datetime.now()
+        # now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+        now = datetime.datetime.now()
         now_year = now.year
         now_month = now.month
         
