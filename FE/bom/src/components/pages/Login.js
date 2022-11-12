@@ -8,7 +8,10 @@ import ls from "helper/LocalStorage";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
-import CustomCarousel from "components/molecules/common/CustomCarousel";
+import LoginCarousel from "components/molecules/Login/LoginCarousel";
+
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import "./Login.css";
 
@@ -131,7 +134,15 @@ function Login() {
               </span>
             </div>
             <div className="tutorial bg-gradient-to-tr from-main to-blue rounded-r-[20px] w-1/2 h-full flex justify-center items-center">
-              <CustomCarousel page="login" />
+              <Carousel
+                autoPlay
+                infiniteLoop
+                showStatus={false}
+                showThumbs={false}
+                interval={5000}
+              >
+                <LoginCarousel />
+              </Carousel>
             </div>
           </div>
         </div>
