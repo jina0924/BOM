@@ -95,6 +95,16 @@ function Main({ isPC }) {
 
   useEffect(() => {
     requestWardInfo(wardInfoSuccess, wardInfoFail);
+    console.log("환자 리스트 요청 보냄");
+    requestPatientList(now.current, 8, patientListSuccess, patientListFail);
+    return () => {
+      console.log("타이머 kill", patientListTimerID.current);
+      now.current = 0;
+      for (let timer of patientListTimerID.current) {
+        clearTimeout(timer);
+      }
+      patientListTimerID.current = [];
+    };
   }, []);
 
   const patientListTimerID = useRef([]);
@@ -135,30 +145,30 @@ function Main({ isPC }) {
     console.log(err);
   }
 
-  useEffect(() => {
-    console.log("환자 리스트 요청 보냄");
-    requestPatientList(now.current, 8, patientListSuccess, patientListFail);
-    return () => {
-      console.log("타이머 kill", patientListTimerID.current);
-      for (let timer of patientListTimerID.current) {
-        clearTimeout(timer);
-      }
-      patientListTimerID.current = [];
-    };
-    // const patientListId = setInterval(() => {
-    //   requestPatientList(page.current, 8, patientListSuccess, patientListFail);
-    //   console.log("interval 요청 보냄");
-    // }, 10000);
-    // return () => {
-    //   console.log(patientListId);
-    //   clearInterval(patientListId);
-    // };
-    // return () => {
-    //   console.log(patientListTimerID.current);
-    //   clearTimeout(patientListTimerID.current);
-    // };
-    // }, [page.current]);
-  }, []);
+  // useEffect(() => {
+  //   console.log("환자 리스트 요청 보냄");
+  //   requestPatientList(now.current, 8, patientListSuccess, patientListFail);
+  //   return () => {
+  //     console.log("타이머 kill", patientListTimerID.current);
+  //     for (let timer of patientListTimerID.current) {
+  //       clearTimeout(timer);
+  //     }
+  //     patientListTimerID.current = [];
+  //   };
+  // const patientListId = setInterval(() => {
+  //   requestPatientList(page.current, 8, patientListSuccess, patientListFail);
+  //   console.log("interval 요청 보냄");
+  // }, 10000);
+  // return () => {
+  //   console.log(patientListId);
+  //   clearInterval(patientListId);
+  // };
+  // return () => {
+  //   console.log(patientListTimerID.current);
+  //   clearTimeout(patientListTimerID.current);
+  // };
+  // }, [page.current]);
+  // }, []);
 
   // useInterval(
   //   () => {

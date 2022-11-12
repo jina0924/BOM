@@ -80,6 +80,7 @@ function Patients({ isPC }) {
     requestPatientList(now.current, 9, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID);
+      now.current = 0;
       for (let timer of patientListTimerID.current) {
         clearTimeout(timer);
       }
