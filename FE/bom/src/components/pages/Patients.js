@@ -15,38 +15,46 @@ function Patients() {
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   // const [page, setPage] = useState(1);
-  const page = useRef(1);
+  const now = useRef(1);
   const [keyword, setKeyword] = useState("");
   // const [patientListTimerID, setPatientListTimerID] = useState("");
   const patientListTimerID = useRef([]);
 
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
+  // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
-    console.log("응답 받음", res.data.now, patientListTimerID.current);
-    setPatientList(res.data.results);
-    setCount(res.data.count);
-    page.current = res.data.now;
+    console.log(
+      "응답 받음",
+      res.data.now,
+      patientListTimerID.current,
+      res.data
+    );
+    if (res.data.now === now.current) {
+      setPatientList(res.data.results);
+      setCount(res.data.count);
+    }
+    // page.current = res.data.now;
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    console.log("재요청 보냄", page.current);
-    if (keyword === "") {
+    console.log("재요청 보냄", now.current);
+    if (keyword === "" && now.current === res.data.now) {
       const timerID = setTimeout(
         requestPatientList,
         10000,
-        page.current,
+        now.current,
         9,
         patientListSuccess,
         patientListFail
       );
       patientListTimerID.current = [...patientListTimerID.current, timerID];
       console.log("타이머 아이디 바뀜", patientListTimerID.current);
-    } else {
+    } else if (now.current === res.data.now) {
       const timerID = setTimeout(
         requestSearchPatient,
         10000,
-        page.current,
+        now.current,
         9,
         keyword,
         patientListSuccess,
@@ -65,8 +73,8 @@ function Patients() {
   }
 
   useEffect(() => {
-    console.log("환자 리스트 요청 보냄", page.current);
-    requestPatientList(page.current, 9, patientListSuccess, patientListFail);
+    console.log("환자 리스트 요청 보냄", now.current);
+    requestPatientList(now.current, 9, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID);
       for (let timer of patientListTimerID.current) {
@@ -76,14 +84,14 @@ function Patients() {
     };
   }, []);
 
-  function handlePageChange(clickedPage) {
-    console.log(clickedPage);
+  function handlePageChange(page) {
+    console.log(page);
     // console.log("타이머 kill", patientListTimerID);
     // clearTimeout(patientListTimerID.current);
     // setPatientListTimerID("");
-    page.current = clickedPage;
+    now.current = page;
     requestSearchPatient(
-      page.current,
+      now.current,
       9,
       keyword,
       patientListSuccess,
@@ -95,7 +103,14 @@ function Patients() {
     // console.log("타이머 kill", patientListTimerID);
     // clearTimeout(patientListTimerID.current);
     console.log("검색해서 요청 보냄", keyword);
-    requestSearchPatient(1, 9, keyword, patientListSuccess, patientListFail);
+    now.current = 1;
+    requestSearchPatient(
+      now.current,
+      9,
+      keyword,
+      patientListSuccess,
+      patientListFail
+    );
   }
 
   function onKeyPressSearch(event) {
@@ -103,7 +118,14 @@ function Patients() {
       // console.log("타이머 kill", patientListTimerID);
       // clearTimeout(patientListTimerID.current);
       console.log("엔터 눌러서 검색한다", keyword);
-      requestSearchPatient(1, 9, keyword, patientListSuccess, patientListFail);
+      now.current = 1;
+      requestSearchPatient(
+        now.current,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
     }
   }
   return (
@@ -125,7 +147,7 @@ function Patients() {
               <div className="px-8 h-[72vh] pb-4 w-full">
                 <PatientList
                   patientList={patientList}
-                  page={page.current}
+                  page={now.current}
                   count={count}
                   limit={9}
                   handlePageChange={handlePageChange}
@@ -142,7 +164,7 @@ function Patients() {
         <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
           <PatientList
             patientList={patientList}
-            page={page.current}
+            page={now.current}
             count={count}
             limit={9}
             handlePageChange={handlePageChange}
