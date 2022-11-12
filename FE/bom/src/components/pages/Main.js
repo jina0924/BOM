@@ -121,7 +121,89 @@ function Main({ isPC }) {
     console.log("환자 리스트", now.current, res);
     // const now = res.data.now;
     if (res.data.now === now.current) {
-      setPatientList(res.data.results);
+      // setPatientList(res.data.results);
+      setPatientList([
+        {
+          id: 1,
+          number: "225070001",
+          name: "이지수",
+          sex: "F",
+          temperature: 36.4,
+          bpm: 99,
+          oxygenSaturation: 98,
+          doctor: { id: 1, name: "임진경" },
+        },
+        {
+          id: 2,
+          number: "225070002",
+          name: "권경민",
+          sex: "M",
+          temperature: 38.2,
+          bpm: 80,
+          oxygenSaturation: 99,
+          doctor: { id: 1, name: "임진경" },
+        },
+        {
+          id: 3,
+          number: "225070003",
+          name: "김유민",
+          sex: "F",
+          temperature: 37.1,
+          bpm: 115,
+          oxygenSaturation: 97,
+          doctor: { id: 2, name: "이대현" },
+        },
+        {
+          id: 4,
+          number: "225070004",
+          name: "문요성",
+          sex: "M",
+          temperature: 36.2,
+          bpm: 54,
+          oxygenSaturation: 98,
+          doctor: { id: 2, name: "이대현" },
+        },
+        {
+          id: 5,
+          number: "225070005",
+          name: "정진아",
+          sex: "F",
+          temperature: 35.9,
+          bpm: 98,
+          oxygenSaturation: 94,
+          doctor: { id: 1, name: "임진경" },
+        },
+        {
+          id: 6,
+          number: "225070006",
+          name: "이지수",
+          sex: "F",
+          temperature: 34.9,
+          bpm: 77,
+          oxygenSaturation: 98,
+          doctor: { id: 2, name: "이대현" },
+        },
+        {
+          id: 7,
+          number: "225070007",
+          name: "권경민",
+          sex: "M",
+          temperature: 35.8,
+          bpm: 86,
+          oxygenSaturation: 97,
+          doctor: { id: 1, name: "임진경" },
+        },
+        {
+          id: 8,
+          number: "225070008",
+          name: "김유민",
+          sex: "F",
+          temperature: 36.7,
+          bpm: 95,
+          oxygenSaturation: 99,
+          doctor: { id: 1, name: "임진경" },
+        },
+      ]);
       setCount(res.data.count);
     }
     for (let timer of patientListTimerID.current) {
