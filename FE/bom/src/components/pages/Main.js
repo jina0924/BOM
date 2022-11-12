@@ -176,14 +176,14 @@ function Main({ isPC }) {
   useEffect(() => {
     console.log("환자 리스트 요청 보냄");
     requestPatientList(page.current, 8, patientListSuccess, patientListFail);
-    const patientListId = setInterval(() => {
-      requestPatientList(page.current, 8, patientListSuccess, patientListFail);
-      console.log("interval 요청 보냄");
-    }, 10000);
-    return () => {
-      console.log(patientListId);
-      clearInterval(patientListId);
-    };
+    // const patientListId = setInterval(() => {
+    //   requestPatientList(page.current, 8, patientListSuccess, patientListFail);
+    //   console.log("interval 요청 보냄");
+    // }, 10000);
+    // return () => {
+    //   console.log(patientListId);
+    //   clearInterval(patientListId);
+    // };
     // return () => {
     //   console.log(patientListTimerID.current);
     //   clearTimeout(patientListTimerID.current);

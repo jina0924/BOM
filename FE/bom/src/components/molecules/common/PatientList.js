@@ -108,7 +108,7 @@ function PatientList({
       </div>
       <div className="h-[90%] overflow-x-auto">
         <div className="h-full flex flex-col justify-evenly items-center">
-          <table className="table w-[85%] border-collapse px-4 mx-auto">
+          <table className="w-[85%] border-collapse px-4 mx-auto">
             <thead>
               <tr>
                 <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
@@ -154,7 +154,7 @@ function PatientList({
                 {patientList.map((item, key) => (
                   <tr
                     key={key}
-                    className="hover:cursor-pointer"
+                    className="hover:cursor-pointer hover:bg-back"
                     onClick={() => onClickPatientDetailInfo(item)}
                   >
                     <td
