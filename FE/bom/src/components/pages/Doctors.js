@@ -1,4 +1,5 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -10,9 +11,11 @@ import { requestDoctorList } from "api/doctors";
 import ls from "helper/LocalStorage";
 
 function Doctors({ isPC }) {
+  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [doctors, setDoctors] = useState([]);
-  const [now, setNow] = useState(1);
+  // const [now, setNow] = useState(1);
+  const now = useRef(1);
 
   const wardNum = ls.get("number");
 
@@ -23,16 +26,31 @@ function Doctors({ isPC }) {
   const requestDoctorListSuccess = (res) => {
     setCount(res.data.count);
     setDoctors(res.data.results);
-    setNow(res.data.now);
+    // setNow(res.data.now);
   };
 
   const handlePageChange = (page) => {
-    setNow(page);
+    // setNow(page);
+    now.current = page;
     const params = { page: page };
     requestDoctorList(params, requestDoctorListSuccess, (err) =>
       console.log(err)
     );
   };
+
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
+  };
+
   return (
     <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
       <SideBar />
@@ -56,7 +74,7 @@ function Doctors({ isPC }) {
           </div>
           <div className="pagination-box h-[8vh] flex items-center justify-center">
             <CustomPagination
-              page={now}
+              page={now.current}
               itemsCount={10}
               totalCount={count}
               pageRange={5}
