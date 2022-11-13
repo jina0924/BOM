@@ -56,7 +56,7 @@ function PatientDetail({ isPC }) {
   const [soc1, setSoc1] = useState(0);
   const [soc2, setSoc2] = useState(0);
   const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
-  const [voltage1Data, setVoltage1Data] = useState([]);
+  const [voltageData, setVoltageData] = useState([]);
   const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
@@ -158,6 +158,7 @@ function PatientDetail({ isPC }) {
     setSoc1(res.data.실시간.잔량1);
     setSoc2(res.data.실시간.잔량2);
     setBmsTemperatureData(res.data.온도);
+    // setVoltageData(res.data.전압);
     for (let timer of timerID.current) {
       clearTimeout(timer);
     }
@@ -194,6 +195,7 @@ function PatientDetail({ isPC }) {
 
   const clickComponent = (number) => {
     component.current = number;
+    console.log(component.current);
     if (number === 0) {
       requestPatientDetailHealthInfo(
         params.id,
@@ -355,6 +357,7 @@ function PatientDetail({ isPC }) {
                       component.current = 0;
                     }}
                     bmsTemperatureData={bmsTemperatureData}
+                    voltageData={voltageData}
                     filter={filterRef.current}
                   />
                 </div>

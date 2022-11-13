@@ -224,7 +224,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   <Line
                     type="monotone"
                     dataKey="전압1"
-                    stroke="#82ca9d"
+                    stroke="#EA5455"
                     dot={{ r: 0 }}
                     activeDot={{ r: 2 }}
                     isAnimationActive={false}
@@ -235,7 +235,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   <Line
                     type="monotone"
                     dataKey="전압2"
-                    stroke="#82ca9d"
+                    stroke="#5C78B1"
                     dot={{ r: 0 }}
                     activeDot={{ r: 2 }}
                     isAnimationActive={false}
