@@ -1,4 +1,5 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
@@ -9,11 +10,12 @@ import { requestNurseList } from "api/nurses";
 
 import ls from "helper/LocalStorage";
 
-function Nurses() {
-  const [isPC, setIsPC] = useState(true);
+function Nurses({ isPC }) {
+  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [nurses, setNurses] = useState([]);
-  const [now, setNow] = useState(1);
+  // const [now, setNow] = useState(1);
+  const now = useRef(1);
 
   const wardNum = ls.get("number");
 
@@ -21,16 +23,32 @@ function Nurses() {
     requestNurseList("", requestNurseListSuccess, (err) => console.log(err));
   }, []);
 
-  const requestNurseListSuccess = res => {
+  const requestNurseListSuccess = (res) => {
     setCount(res.data.count);
     setNurses(res.data.results);
-    setNow(res.data.now);
+    // setNow(res.data.now);
   };
 
-  const handlePageChange = page => {
-    setNow(page);
+  const handlePageChange = (page) => {
+    // setNow(page);
+    now.current = page;
     const params = { page: page };
-    requestNurseList(params, requestNurseListSuccess, err => console.log(err));
+    requestNurseList(params, requestNurseListSuccess, (err) =>
+      console.log(err)
+    );
+  };
+
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
   };
 
   return (
@@ -45,14 +63,23 @@ function Nurses() {
           <div className="profiles-box h-[68vh] grid grid-cols-5">
             {nurses.map((nurse, id, array) => {
               return (
-                <div key={id} className="profile-box col-span-1 px-2 pb-2 h-[34vh]">
+                <div
+                  key={id}
+                  className="profile-box col-span-1 px-2 pb-2 h-[34vh]"
+                >
                   <ProfileCard person={nurse} />
                 </div>
               );
             })}
           </div>
           <div className="pagination-box h-[8vh] flex items-center justify-center">
-            <CustomPagination page={now} itemsCount={10} totalCount={count} pageRange={5} onChange={handlePageChange} />
+            <CustomPagination
+              page={now.current}
+              itemsCount={10}
+              totalCount={count}
+              pageRange={5}
+              onChange={handlePageChange}
+            />
           </div>
         </div>
       </div>
