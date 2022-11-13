@@ -2,7 +2,7 @@ import React from "react";
 import Title from "components/atoms/Title.js";
 import Graph from "components/atoms/Graph";
 
-function DeviceDetailInfo({ bmsTemperatureData, filter }) {
+function DeviceDetailInfo({ voltageData, bmsTemperatureData, filter }) {
   return (
     <div className="patient-device-detail-info w-full h-full bg-white rounded-lg shadow-box p-3">
       <div className="top-box flex justify-between pt-4 px-6 h-[20%]">
@@ -23,7 +23,7 @@ function DeviceDetailInfo({ bmsTemperatureData, filter }) {
               <Graph
                 part="전압"
                 isPC={true}
-                data={bmsTemperatureData}
+                data={voltageData}
                 filter={filter}
               />
             </div>
