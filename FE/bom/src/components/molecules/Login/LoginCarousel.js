@@ -1,11 +1,20 @@
 import React from "react";
 
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
 import loginCarousel1 from "assets/login_carousel_1.png";
 import loginCarousel2 from "assets/login_carousel_2.png";
 
 function LoginCarousel() {
   return (
-    <>
+    <Carousel
+      autoPlay
+      infiniteLoop
+      showStatus={false}
+      showThumbs={false}
+      interval={5000}
+    >
       <div className="carousel-item flex flex-col pb-6">
         <div className="service-info-image">
           <img
@@ -54,7 +63,7 @@ function LoginCarousel() {
           </span>
         </div>
       </div>
-    </>
+    </Carousel>
   );
 }
 
