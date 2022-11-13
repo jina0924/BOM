@@ -5,6 +5,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import loginCarousel1 from "assets/login_carousel_1.png";
 import loginCarousel2 from "assets/login_carousel_2.png";
+import loginCarousel3 from "assets/login_carousel_3.png";
+import loginCarousel4 from "assets/login_carousel_4.png";
 
 function LoginCarousel() {
   return (
@@ -45,7 +47,11 @@ function LoginCarousel() {
       </div>
       <div className="carousel-item flex flex-col pb-6">
         <div className="service-info-image">
-          <img src="https://placeimg.com/150/100/animals" alt="더미이미지" />
+          <img
+            src={loginCarousel3}
+            alt="환자 상태 그래프 소개 이미지"
+            className="px-7"
+          />
         </div>
         <div className="carousel-text p-3">
           <span className="text-white text-sm font-light">
@@ -55,7 +61,11 @@ function LoginCarousel() {
       </div>
       <div className="carousel-item flex flex-col pb-6">
         <div className="service-info-image">
-          <img src="https://placeimg.com/150/100/animals" alt="더미이미지" />
+          <img
+            src={loginCarousel4}
+            alt="배터리 상태 화면 소개 이미지"
+            className="px-7"
+          />
         </div>
         <div className="carousel-text p-3">
           <span className="text-white text-sm font-light">
