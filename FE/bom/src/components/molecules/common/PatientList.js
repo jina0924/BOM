@@ -44,20 +44,6 @@ function PatientList({
     }
   }, [location]);
 
-  useEffect(() => {
-    console.log("patientList", page);
-  }, []);
-  // async function patientListSuccess(res) {
-  //   console.log(res);
-  //   setPatientList(res.data.results);
-  //   setCount(res.data.count);
-  //   setPage(res.data.now);
-  // }
-
-  // function patientListFail(err) {
-  //   console.log(err);
-  // }
-
   function onClickPatientDetailInfo(item) {
     navigate(`/patient/${item.number}`);
   }
@@ -73,11 +59,6 @@ function PatientList({
   //     requestPatientList(page, 9, patientListSuccess, patientListFail);
   //   }
   // }, []);
-
-  // useEffect(() => {
-  // console.log(patientList)
-  // console.log(patientList.count)
-  // }, [patientList]);
 
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
