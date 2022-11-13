@@ -301,7 +301,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="체온"
                       onZoom={() => {
-                        setComponent(2);
+                        component.current = 2;
                       }}
                       liveData={liveTemperature}
                       data={temperatureData}
@@ -315,7 +315,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="심박수"
                       onZoom={() => {
-                        setComponent(3);
+                        component.current = 3;
                       }}
                       liveData={liveBPM}
                       data={heartbeatData}
@@ -327,7 +327,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="산소포화도"
                       onZoom={() => {
-                        setComponent(4);
+                        component.current = 4;
                       }}
                       liveData={liveOxygen}
                       data={oxyzenData}
@@ -339,7 +339,7 @@ function PatientDetail({ isPC }) {
             )}
             {/* 디바이스 디테일 페이지 */}
             {component.current === 1 && (
-              <div className="device-detail-full px-10 pb-5 h-[75vh] animate-[ping_1s_ease-in-out_1]">
+              <div className="device-detail-full px-10 pb-5 h-[75vh] ">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
                     bmsTemperature={bmsTemperature}
@@ -352,7 +352,7 @@ function PatientDetail({ isPC }) {
                 <div className="device-detail-info pb-5 h-[50vh]">
                   <DeviceDetailInfo
                     onZoom={() => {
-                      setComponent(0);
+                      component.current = 0;
                     }}
                     bmsTemperatureData={bmsTemperatureData}
                     filter={filterRef.current}
@@ -366,7 +366,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="체온"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveTemperature}
@@ -381,7 +381,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="심박수"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveBPM}
@@ -396,7 +396,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="산소포화도"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveOxygen}
