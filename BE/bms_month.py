@@ -141,7 +141,7 @@ for data in result:
 
     connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=5, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
     
-    time = period_now.strftime('%Y-%m-%d')
+    time = now.strftime('%Y-%m-%d')
     
     for i in range(data_count):
 
