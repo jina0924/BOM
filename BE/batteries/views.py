@@ -11,6 +11,8 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Max, OuterRef, Subquery, FloatField, IntegerField
 from django.db.models.functions import Coalesce
+import redis
+from my_settings import DATABASES
 
 
 # 병동: 실시간 bms 상태, 배터리 상태 조회
@@ -44,8 +46,8 @@ def bms(request, patient_number):
     else:
         return Response({'result': '해당 환자의 bms 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
-    now = datetime.datetime(2022, 11, 4, 1, 20, 22)
-    # now = datetime.datetime.now()
+    # now = datetime.datetime(2022, 11, 4, 1, 20, 22)
+    now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
     now_bms = BmsStatus.objects.filter(bms=bms, now__lte=now).last()  # 실시간
     now_serializer = BmsStatusSerializer(now_bms)
