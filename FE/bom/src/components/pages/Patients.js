@@ -17,8 +17,8 @@ function Patients({ isPC }) {
   const [component, setComponent] = useState(0);
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
-  // const [page, setPage] = useState(1);
-  const now = useRef(1);
+  const [now, setNow] = useState(1);
+  // const now = useRef(1);
   const [keyword, setKeyword] = useState("");
   // const [patientListTimerID, setPatientListTimerID] = useState("");
   const patientListTimerID = useRef([]);
@@ -26,13 +26,8 @@ function Patients({ isPC }) {
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
   // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
-    console.log(
-      "응답 받음",
-      res.data.now,
-      patientListTimerID.current,
-      res.data
-    );
-    if (res.data.now === now.current) {
+    console.log("응답 받음", res.data, `component: ${component}`);
+    if (res.data.now === now) {
       setPatientList(res.data.results);
       setCount(res.data.count);
     }
@@ -41,33 +36,59 @@ function Patients({ isPC }) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    console.log("재요청 보냄", now.current);
-    if (keyword === "" && now.current === res.data.now) {
-      const timerID = setTimeout(
-        requestPatientList,
-        10000,
-        now.current,
-        9,
-        patientListSuccess,
-        patientListFail
-      );
-      patientListTimerID.current = [...patientListTimerID.current, timerID];
-      console.log("타이머 아이디 바뀜", patientListTimerID.current);
-    } else if (now.current === res.data.now) {
-      const timerID = setTimeout(
-        requestSearchPatient,
-        10000,
-        now.current,
-        9,
-        keyword,
-        patientListSuccess,
-        patientListFail
-      );
-      // setPatientListTimerID(timerID);
-      // console.log("setTimeout", page, keyword);
-      // patientListTimerID.current.push(timerID);
-      patientListTimerID.current = [...patientListTimerID.current, timerID];
-      console.log("타이머 아이디 바뀜", patientListTimerID.current);
+    console.log("재요청 보냄", `now: ${now}`, `component: ${component}`);
+    if (component === 0) {
+      if (keyword === "" && now === res.data.now) {
+        const timerID = setTimeout(
+          requestPatientList,
+          10000,
+          now,
+          9,
+          patientListSuccess,
+          patientListFail
+        );
+        patientListTimerID.current = [...patientListTimerID.current, timerID];
+        console.log("타이머 아이디 바뀜", patientListTimerID.current);
+      } else if (now === res.data.now) {
+        const timerID = setTimeout(
+          requestSearchPatient,
+          10000,
+          now,
+          9,
+          keyword,
+          patientListSuccess,
+          patientListFail
+        );
+        // setPatientListTimerID(timerID);
+        // console.log("setTimeout", page, keyword);
+        // patientListTimerID.current.push(timerID);
+        patientListTimerID.current = [...patientListTimerID.current, timerID];
+        console.log("타이머 아이디 바뀜", patientListTimerID.current);
+      }
+    } else if (component === 1) {
+      if (!res.data.next) {
+        setNow(() => 1);
+        const timerID = setTimeout(
+          requestPatientList,
+          10000,
+          now,
+          9,
+          patientListSuccess,
+          patientListFail
+        );
+        patientListTimerID.current = [...patientListTimerID.current, timerID];
+      } else if (!!res.data.next) {
+        setNow(() => now + 1);
+        const timerID = setTimeout(
+          requestPatientList,
+          10000,
+          now,
+          9,
+          patientListSuccess,
+          patientListFail
+        );
+        patientListTimerID.current = [...patientListTimerID.current, timerID];
+      }
     }
   }
 
@@ -76,11 +97,11 @@ function Patients({ isPC }) {
   }
 
   useEffect(() => {
-    console.log("환자 리스트 요청 보냄", now.current);
-    requestPatientList(now.current, 9, patientListSuccess, patientListFail);
+    console.log("환자 리스트 요청 보냄", now, component);
+    requestPatientList(now, 9, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID);
-      now.current = 0;
+      setNow(() => 0);
       for (let timer of patientListTimerID.current) {
         clearTimeout(timer);
       }
@@ -89,32 +110,30 @@ function Patients({ isPC }) {
   }, []);
 
   function handlePageChange(page) {
-    console.log(page);
     // console.log("타이머 kill", patientListTimerID);
     // clearTimeout(patientListTimerID.current);
     // setPatientListTimerID("");
-    now.current = page;
-    requestSearchPatient(
-      now.current,
-      9,
-      keyword,
-      patientListSuccess,
-      patientListFail
-    );
+    setNow(() => page);
+    console.log(`page: ${page}`);
+    if (keyword) {
+      requestSearchPatient(
+        now,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
+    } else {
+      requestPatientList(page, 9, patientListSuccess, patientListFail);
+    }
   }
 
   function onSearch() {
     // console.log("타이머 kill", patientListTimerID);
     // clearTimeout(patientListTimerID.current);
     console.log("검색해서 요청 보냄", keyword);
-    now.current = 1;
-    requestSearchPatient(
-      now.current,
-      9,
-      keyword,
-      patientListSuccess,
-      patientListFail
-    );
+    setNow(() => 1);
+    requestSearchPatient(now, 9, keyword, patientListSuccess, patientListFail);
   }
 
   function onKeyPressSearch(event) {
@@ -122,14 +141,30 @@ function Patients({ isPC }) {
       // console.log("타이머 kill", patientListTimerID);
       // clearTimeout(patientListTimerID.current);
       console.log("엔터 눌러서 검색한다", keyword);
-      now.current = 1;
+      setNow(() => 1);
       requestSearchPatient(
-        now.current,
+        now,
         9,
         keyword,
         patientListSuccess,
         patientListFail
       );
+    }
+  }
+
+  function onZoom() {
+    if (component === 0) {
+      setComponent(() => 1);
+      // for (let timer of patientListTimerID.current) {
+      //   clearTimeout(timer);
+      // }
+      // patientListTimerID.current = [];
+    } else if (component === 1) {
+      setComponent(() => 0);
+      // for (let timer of patientListTimerID.current) {
+      //   clearTimeout(timer);
+      // }
+      // patientListTimerID.current = [];
     }
   }
 
@@ -165,12 +200,12 @@ function Patients({ isPC }) {
               <div className="px-8 h-[72vh] pb-4 w-full">
                 <PatientList
                   patientList={patientList}
-                  page={now.current}
+                  page={now}
                   count={count}
                   limit={9}
                   handlePageChange={handlePageChange}
                   nowPage="patients"
-                  onZoom={() => setComponent(1)}
+                  onZoom={onZoom}
                   onOff={false}
                 />
               </div>
@@ -182,12 +217,12 @@ function Patients({ isPC }) {
         <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
           <PatientList
             patientList={patientList}
-            page={now.current}
+            page={now}
             count={count}
             limit={9}
             handlePageChange={handlePageChange}
             nowPage="patients"
-            onZoom={() => setComponent(0)}
+            onZoom={onZoom}
             onOff={true}
           />
         </div>

@@ -8,7 +8,7 @@ import ls from "helper/LocalStorage";
 
 import Logo from "components/atoms/Logo";
 import Btn from "components/atoms/Btn";
-import CustomCarousel from "components/molecules/common/CustomCarousel";
+import LoginCarousel from "components/molecules/Login/LoginCarousel";
 
 import "./Login.css";
 
@@ -131,7 +131,7 @@ function Login() {
               </span>
             </div>
             <div className="tutorial bg-gradient-to-tr from-main to-blue rounded-r-[20px] w-1/2 h-full flex justify-center items-center">
-              <CustomCarousel page="login" />
+              <LoginCarousel />
             </div>
           </div>
         </div>
