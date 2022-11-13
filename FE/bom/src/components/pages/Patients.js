@@ -101,13 +101,13 @@ function Patients({ isPC }) {
     requestPatientList(now, 9, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID);
-      setNow(1);
+      setNow(() => 0);
       for (let timer of patientListTimerID.current) {
         clearTimeout(timer);
       }
       patientListTimerID.current = [];
     };
-  }, [component]);
+  }, []);
 
   function handlePageChange(page) {
     // console.log("타이머 kill", patientListTimerID);
