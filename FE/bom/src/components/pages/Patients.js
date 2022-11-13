@@ -26,7 +26,7 @@ function Patients({ isPC }) {
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
   // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
-    console.log("응답 받음", res.data.now, res.data, component);
+    console.log("응답 받음", res.data, `component: ${component}`);
     if (res.data.now === now) {
       setPatientList(res.data.results);
       setCount(res.data.count);
@@ -36,7 +36,7 @@ function Patients({ isPC }) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    console.log("재요청 보냄", now, component);
+    console.log("재요청 보냄", `now: ${now}`, `component: ${component}`);
     if (component === 0) {
       if (keyword === "" && now === res.data.now) {
         const timerID = setTimeout(
@@ -110,12 +110,22 @@ function Patients({ isPC }) {
   }, [component]);
 
   function handlePageChange(page) {
-    console.log(page);
     // console.log("타이머 kill", patientListTimerID);
     // clearTimeout(patientListTimerID.current);
     // setPatientListTimerID("");
-    setNow((page) => page);
-    requestSearchPatient(now, 9, keyword, patientListSuccess, patientListFail);
+    setNow(() => page);
+    console.log(`page: ${page}`);
+    if (keyword) {
+      requestSearchPatient(
+        now,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
+    } else {
+      requestPatientList(page, 9, patientListSuccess, patientListFail);
+    }
   }
 
   function onSearch() {
