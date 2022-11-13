@@ -69,7 +69,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[30, 45]} />
+                <YAxis type="number" domain={[0, 45]} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
                 {filter.period !== "now" && (
@@ -118,7 +118,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[20, 70]} />
+                <YAxis type="number" domain={[0, 250]} />
                 <Tooltip />
                 {filter.period !== "now" && (
                   <Line
@@ -167,7 +167,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[80, 100]} />
+                <YAxis type="number" domain={[0, 100]} />
                 <Tooltip />
                 {filter.period !== "now" && (
                   <Line
