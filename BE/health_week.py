@@ -19,7 +19,6 @@ if now.hour >= 12:
 elif now.hour < 12:
     period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
 
-
 sql = "select id, number from patient"
 cur.execute(sql)
 result = cur.fetchall()
@@ -54,7 +53,7 @@ for data in result:
 
         if max_temperature:
             
-            period_value = period_start.strftime('%Y-%m-%d %H:%M:%S')
+            period_value = period_start.strftime('%Y-%m-%d %H')
 
             temperature = {
                 '시간': period_value,
@@ -90,7 +89,7 @@ for data in result:
         for i in range(1, data_count - len(period_temperature) + 1):
             now_datetime = period_now + relativedelta(seconds=-start) + relativedelta(seconds=(i * delta))
             
-            tmp_now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H:%M:%S')
+            tmp_now = (now_datetime + relativedelta(seconds=-delta)).strftime('%Y-%m-%d %H')
 
             temperature = {
                 '시간': tmp_now,
