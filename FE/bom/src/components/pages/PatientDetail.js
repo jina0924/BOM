@@ -56,7 +56,7 @@ function PatientDetail({ isPC }) {
   const [soc1, setSoc1] = useState(0);
   const [soc2, setSoc2] = useState(0);
   const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
-  const [voltage1Data, setVoltage1Data] = useState([]);
+  const [voltageData, setVoltageData] = useState([]);
   const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
@@ -158,6 +158,7 @@ function PatientDetail({ isPC }) {
     setSoc1(res.data.실시간.잔량1);
     setSoc2(res.data.실시간.잔량2);
     setBmsTemperatureData(res.data.온도);
+    // setVoltageData(res.data.전압);
     for (let timer of timerID.current) {
       clearTimeout(timer);
     }
@@ -194,6 +195,7 @@ function PatientDetail({ isPC }) {
 
   const clickComponent = (number) => {
     component.current = number;
+    console.log(component.current);
     if (number === 0) {
       requestPatientDetailHealthInfo(
         params.id,
@@ -301,7 +303,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="체온"
                       onZoom={() => {
-                        setComponent(2);
+                        component.current = 2;
                       }}
                       liveData={liveTemperature}
                       data={temperatureData}
@@ -315,7 +317,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="심박수"
                       onZoom={() => {
-                        setComponent(3);
+                        component.current = 3;
                       }}
                       liveData={liveBPM}
                       data={heartbeatData}
@@ -327,7 +329,7 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="산소포화도"
                       onZoom={() => {
-                        setComponent(4);
+                        component.current = 4;
                       }}
                       liveData={liveOxygen}
                       data={oxyzenData}
@@ -339,7 +341,7 @@ function PatientDetail({ isPC }) {
             )}
             {/* 디바이스 디테일 페이지 */}
             {component.current === 1 && (
-              <div className="device-detail-full px-10 pb-5 h-[75vh] animate-[ping_1s_ease-in-out_1]">
+              <div className="device-detail-full px-10 pb-5 h-[75vh] ">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
                     bmsTemperature={bmsTemperature}
@@ -352,9 +354,10 @@ function PatientDetail({ isPC }) {
                 <div className="device-detail-info pb-5 h-[50vh]">
                   <DeviceDetailInfo
                     onZoom={() => {
-                      setComponent(0);
+                      component.current = 0;
                     }}
                     bmsTemperatureData={bmsTemperatureData}
+                    voltageData={voltageData}
                     filter={filterRef.current}
                   />
                 </div>
@@ -366,7 +369,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="체온"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveTemperature}
@@ -381,7 +384,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="심박수"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveBPM}
@@ -396,7 +399,7 @@ function PatientDetail({ isPC }) {
                 <BodyInfo
                   part="산소포화도"
                   onZoom={() => {
-                    setComponent(0);
+                    component.current = 0;
                   }}
                   onOff={true}
                   liveData={liveOxygen}
