@@ -89,8 +89,8 @@ class Gyro():
             zGyro -= 65536
         '''
         
-        yGyro = -1
-        zGyro = -1
+        # yGyro = -1
+        # zGyro = -1
         # Output data to screen
         #print ("Rotation in X-Axis : %d" %xGyro)
         #print ("Rotation in Y-Axis : %d" %yGyro)
@@ -98,7 +98,7 @@ class Gyro():
         
         #if(isFall == True):
          #   print("warning")
-        print(f'X : {xGyro}, Y : {yGyro}, Z : {zGyro}')
+        #print(f'X : {xGyro}, Y : {yGyro}, Z : {zGyro}')
         if(abs(xGyro) > 4000 or abs(yGyro) >4000 or abs(zGyro)>4000):
             isFall = True
         elif(abs(xGyro) < 3000 and abs(yGyro) < 3000 and abs(zGyro) < 3000):
