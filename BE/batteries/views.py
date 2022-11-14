@@ -43,7 +43,7 @@ def bms(request, patient_number):
 
     bms = Bms.objects.filter(patient=patient)
 
-    if bms != None:
+    if len(bms) == True:
         bms = Bms.objects.get(patient=patient)
 
         now_bms = BmsStatus.objects.filter(bms=bms, now__lte=now).last()  # 실시간

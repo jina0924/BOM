@@ -776,7 +776,18 @@ def health(request, patient_number):
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
     now_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now).last()  # 실시간
-    now_serializer = HealthSerializer(now_health)
+
+    if now_health != None:
+        now_serializer = HealthSerializer(now_health)
+
+    else:
+        now_health_data = {
+            'temperature': 0.0,
+            'bpm': 0,
+            'oxygen_saturation': 0,
+            'now': now
+        }
+        now_serializer = HealthSerializer(now_health_data)
 
     period = request.GET.get('period')
 
@@ -874,8 +885,19 @@ def patient_health(request):
     # now = datetime.datetime(2022, 10, 2, 22, 31, 25)
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
-    health = PatientStatus.objects.filter(patient=patient, now__lte=now).last()
-    serializer = HealthSerializer(health)
+    now_health = PatientStatus.objects.filter(patient=patient, now__lte=now).last()
+
+    if now_health != None:
+        serializer = HealthSerializer(now_health)
+
+    else:
+        now_health_data = {
+            'temperature': 0.0,
+            'bpm': 0,
+            'oxygen_saturation': 0,
+            'now': now
+        }
+        serializer = HealthSerializer(now_health_data)
 
     patient_number = patient.number
 
