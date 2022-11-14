@@ -658,21 +658,64 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
         else:
             return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-        temperature = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('temperature')[:1], output_field=FloatField())
-        bpm = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('bpm')[:1], output_field=IntegerField())
-        oxygen_saturation = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('oxygen_saturation')[:1], output_field=IntegerField())
+        # temperature = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('temperature')[:1], output_field=FloatField())
+        # bpm = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('bpm')[:1], output_field=IntegerField())
+        # oxygen_saturation = Subquery(PatientStatus.objects.filter(patient=OuterRef('pk')).order_by('-pk').values('oxygen_saturation')[:1], output_field=IntegerField())
 
-        patient = request.GET.get('patient', None)
+        patient_name_number = request.GET.get('patient', None)
 
-        if patient is not None:
-            if patient.isdecimal():
-                patients = Patient.objects.filter(ward=ward, discharged_date=None, number__contains=patient).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+        # if patient_name_number is not None:
+        #     if patient_name_number.isdecimal():
+        #         patients = Patient.objects.filter(ward=ward, discharged_date=None, number__contains=patient_name_number).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+        #     else:
+        #         patients = Patient.objects.filter(ward=ward, discharged_date=None, name__contains=patient_name_number).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+        # else:
+        #     patients = Patient.objects.filter(ward=ward, discharged_date=None).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+        
+        patitent_not_warning_lst = []
+        patient_warning_lst = []
+
+        if patient_name_number is not None:
+            if patient_name_number.isdecimal():
+                patients = Patient.objects.filter(ward=ward, discharged_date=None, number__contains=patient_name_number)  # 입원한 해당 병동의 filter 번호를 포함하는 환자
             else:
-                patients = Patient.objects.filter(ward=ward, discharged_date=None, name__contains=patient).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+                patients = Patient.objects.filter(ward=ward, discharged_date=None, name__contains=patient_name_number)  # 입원한 해당 병동의 filter 이름을 포함하는 환자
         else:
-            patients = Patient.objects.filter(ward=ward, discharged_date=None).annotate(temperature=Coalesce(temperature,0.0), bpm=Coalesce(bpm,0), oxygenSaturation=Coalesce(oxygen_saturation,0)).order_by('-is_warning', '-pk')
+            patients = Patient.objects.filter(ward=ward, discharged_date=None)  # 입원한 해당 병동의 모든 환자
+        for i in range(len(patients)-1, -1, -1):
 
-        page = self.paginate_queryset(patients)
+            patient = patients[i]
+            health = PatientStatus.objects.filter(patient=patient).last()
+
+            patient_data = {
+                'id': patient.id,
+                'number': patient.number,
+                'name': patient.name,
+                'sex': patient.sex,
+                'nok_name': patient.nok_name,
+                'nok_phonenumber': patient.nok_phonenumber,
+                'doctor': patient.doctor,
+                'is_warning': patient.is_warning
+            }
+
+            if health != None:
+                patient_data['temperature'] = health.temperature
+                patient_data['bpm'] = health.bpm
+                patient_data['oxygenSaturation'] = health.oxygen_saturation
+                
+            else:
+                patient_data['temperature'] = 0.0
+                patient_data['bpm'] = 0
+                patient_data['oxygenSaturation'] = 0
+            if patient.is_warning == True:
+                patient_warning_lst.append(patient_data)
+
+            else:
+                patitent_not_warning_lst.append(patient_data)
+
+        patient_lst = patient_warning_lst + patitent_not_warning_lst
+
+        page = self.paginate_queryset(patient_lst)
 
         if page is not None:
             serializer = self.get_paginated_response(self.serializer_class(page, many=True).data)
@@ -680,28 +723,31 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
             serializer = self.serializer_class(patients, many=True)
 
         previous = serializer.data.get('previous')
-        if previous != None:
-            if 'page=' in previous:
-                previous = int(previous.split('page=')[1])
+
+        if previous != None:  # 이전 페이지가 있을 때 = 현재 2페이지 이상
+            if 'page=' in previous:  # 이전 페이지가 있는데 page= 이 있을 때 = 현재 3페이지 이상
+                previous = previous.split('page=')[1]
                 if '&' in previous:
-                    previous = int(previous.split('&')[0])
-            else:
+                    previous = previous.split('&')[0]
+                previous = int(previous)
+            else:  # 이전 페이지가 있는데 page= 이 없을 때 = 현재 페이지가 2페이지
                 serializer.data['now'] = 2
                 return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
+        else:  # 이전 페이지가 없을 때 = 현재 페이지가 1일 때
             serializer.data['now'] = 1
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         next = serializer.data.get('next')
-        if next != None:
-            next = int(next.split('page=')[1])
+        print(next)
+        if next != None:  # 다음 페이지가 있을 때
+            next = next.split('page=')[1]
             if '&' in next:
-                    next = int(next.split('&')[0])
-        else:
-            next = int(previous) + 2
+                    next = next.split('&')[0]
+            next = int(next)
+        else:  # 다음 페이지가 없을 때 = 현재 페이지가 마지막 페이지
+            next = previous + 2
 
         now = (previous + next) // 2
-
         serializer.data['now'] = now
 
         return Response(serializer.data, status=status.HTTP_200_OK)
