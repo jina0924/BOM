@@ -83,8 +83,6 @@ for data in result:
 
     connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=3, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
     
-    time = now.strftime('%Y-%m-%d %H:%M:%S')
-    
     for i in range(12):
 
         connect.hmset(f'{patient_number}_temperature_now_{i+1}', result_temperature[i])
