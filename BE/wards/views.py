@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert
-from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer, PatientStatusSerializer
+from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer
 import jwt
 from thundervolt.settings import SECRET_KEY
 import datetime
@@ -920,15 +920,61 @@ def patient_health(request):
 
 
 # 엑셀 다운로드
-# from rest_framework.viewsets import ReadOnlyModelViewSet
-# from drf_excel.mixins import XLSXFileMixin
-# from drf_excel.renderers import XLSXRenderer
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from drf_excel.mixins import XLSXFileMixin
+from drf_excel.renderers import XLSXRenderer
 
-# from .models import MyExampleModel
-# from .serializers import MyExampleSerializer
+class TestViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
-# class MyExampleViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
-#     queryset = MyExampleModel.objects.all()
-#     serializer_class = MyExampleSerializer
-#     renderer_classes = (XLSXRenderer,)
-#     filename = 'my_export.xlsx'
+    queryset = PatientStatus.objects.all()
+    serializer_class =HealthSerializer
+    renderer_classes = (XLSXRenderer,)
+    filename = 'my_export.xlsx'
+
+    def get_queryset(self):
+
+        now = datetime.datetime(2022, 11, 10, 4, 32, 2)
+        # now = datetime.datetime.now()
+        now = now + relativedelta(seconds=-(now.second % 5))
+
+        period = self.request.GET.get('period')
+        if period == 'month' or period == 'week' or period == 'day':
+            now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+
+        if period == 'month':
+            start = now + relativedelta(days=-30)
+            data_count = 24 * 30
+
+        elif period == 'week':
+            start = now + relativedelta(days=-7)
+            data_count = 24 * 7
+
+        elif period == 'day':
+            start = now + relativedelta(days=-1)
+            data_count = 24
+
+        elif period == 'now' or period == None:
+            start = now + relativedelta(seconds=-60)
+            data_count = 12
+
+        number = self.request.GET.get('number')
+
+        queryset = []
+
+        # queryset = queryset.filter(user=self.request.user.id)
+        # queryset = PatientStatus.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+
+        for i in range(1, data_count+1):
+            if period == 'month' or period == 'week' or period == 'day':
+
+                data = PatientStatus.objects.filter(patient__number=number, now=start + relativedelta(hours=1*i))
+
+            elif period == 'now' or period == None:
+
+                data = PatientStatus.objects.filter(patient__number=number, now=start + relativedelta(seconds=5*i))
+
+            if len(data) == True:
+                data = data[0]
+                queryset.append(data)
+
+        return queryset
