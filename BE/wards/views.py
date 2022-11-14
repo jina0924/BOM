@@ -917,3 +917,18 @@ def patient_health(request):
         result_oxygen_saturation.append(oxygen_saturation)
 
     return Response({'실시간': serializer.data, '체온': result_temperature, '심박수': result_bpm , '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
+
+
+# 엑셀 다운로드
+# from rest_framework.viewsets import ReadOnlyModelViewSet
+# from drf_excel.mixins import XLSXFileMixin
+# from drf_excel.renderers import XLSXRenderer
+
+# from .models import MyExampleModel
+# from .serializers import MyExampleSerializer
+
+# class MyExampleViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
+#     queryset = MyExampleModel.objects.all()
+#     serializer_class = MyExampleSerializer
+#     renderer_classes = (XLSXRenderer,)
+#     filename = 'my_export.xlsx'
