@@ -69,7 +69,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[30, 45]} />
+                <YAxis type="number" domain={[0, 45]} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
                 {filter.period !== "now" && (
@@ -118,7 +118,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[20, 70]} />
+                <YAxis type="number" domain={[0, 250]} />
                 <Tooltip />
                 {filter.period !== "now" && (
                   <Line
@@ -167,7 +167,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[80, 100]} />
+                <YAxis type="number" domain={[0, 100]} />
                 <Tooltip />
                 {filter.period !== "now" && (
                   <Line
@@ -220,27 +220,26 @@ function Graph({ part, isPC = true, data, filter }) {
                 <YAxis type="number" domain={[0, 4]} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
-                {filter.period === "now" && (
-                  <Line
-                    type="monotone"
-                    dataKey="전압1"
-                    stroke="#EA5455"
-                    dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
-                  />
-                )}
+
+                <Line
+                  type="monotone"
+                  dataKey="전압1"
+                  stroke="#EA5455"
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 2 }}
+                  isAnimationActive={false}
+                />
+
                 <Legend verticalAlign="top" width="100%" />
-                {filter.period === "now" && (
-                  <Line
-                    type="monotone"
-                    dataKey="전압2"
-                    stroke="#5C78B1"
-                    dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
-                  />
-                )}
+
+                <Line
+                  type="monotone"
+                  dataKey="전압2"
+                  stroke="#5C78B1"
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 2 }}
+                  isAnimationActive={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
