@@ -27,65 +27,64 @@ function Patients({ isPC }) {
     console.log("응답 받음", res.data, `component: ${component}`);
     setPatientList(res.data.results);
     setCount(res.data.count);
-    // page.current = res.data.now;
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
     console.log("재요청 보냄", `now: ${now}`, `component: ${component}`);
-    if (component === 0) {
-      if (keyword === "" && now === res.data.now) {
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-        console.log("타이머 아이디 바뀜", patientListTimerID.current);
-      } else if (now === res.data.now) {
-        const timerID = setTimeout(
-          requestSearchPatient,
-          10000,
-          now,
-          9,
-          keyword,
-          patientListSuccess,
-          patientListFail
-        );
-        // setPatientListTimerID(timerID);
-        // console.log("setTimeout", page, keyword);
-        // patientListTimerID.current.push(timerID);
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-        console.log("타이머 아이디 바뀜", patientListTimerID.current);
-      }
-    } else if (component === 1) {
-      if (!res.data.next) {
-        setNow(() => 1);
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-      } else if (!!res.data.next) {
-        setNow(() => now + 1);
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-      }
+    // if (component === 0) {
+    if (keyword === "" && now === res.data.now) {
+      const timerID = setTimeout(
+        requestPatientList,
+        10000,
+        now,
+        9,
+        patientListSuccess,
+        patientListFail
+      );
+      patientListTimerID.current = [...patientListTimerID.current, timerID];
+      console.log("타이머 아이디 바뀜", patientListTimerID.current);
+    } else if (now === res.data.now) {
+      const timerID = setTimeout(
+        requestSearchPatient,
+        10000,
+        now,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
+      // setPatientListTimerID(timerID);
+      // console.log("setTimeout", page, keyword);
+      // patientListTimerID.current.push(timerID);
+      patientListTimerID.current = [...patientListTimerID.current, timerID];
+      console.log("타이머 아이디 바뀜", patientListTimerID.current);
     }
+    // } else if (component === 1) {
+    // if (!res.data.next) {
+    //   setNow(() => 1);
+    //   const timerID = setTimeout(
+    //     requestPatientList,
+    //     10000,
+    //     now,
+    //     9,
+    //     patientListSuccess,
+    //     patientListFail
+    //   );
+    //   patientListTimerID.current = [...patientListTimerID.current, timerID];
+    // } else if (!!res.data.next) {
+    //   setNow(() => now + 1);
+    //   const timerID = setTimeout(
+    //     requestPatientList,
+    //     10000,
+    //     now,
+    //     9,
+    //     patientListSuccess,
+    //     patientListFail
+    //   );
+    //   patientListTimerID.current = [...patientListTimerID.current, timerID];
+    // }
+    // }
   }
 
   function patientListFail(err) {
@@ -140,13 +139,13 @@ function Patients({ isPC }) {
 
   function onZoom() {
     if (component === 0) {
-      setComponent(() => 1);
+      setComponent(1);
       // for (let timer of patientListTimerID.current) {
       //   clearTimeout(timer);
       // }
       // patientListTimerID.current = [];
     } else if (component === 1) {
-      setComponent(() => 0);
+      setComponent(0);
       // for (let timer of patientListTimerID.current) {
       //   clearTimeout(timer);
       // }
