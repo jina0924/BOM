@@ -18,19 +18,15 @@ function Patients({ isPC }) {
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [now, setNow] = useState(1);
-  // const now = useRef(1);
   const [keyword, setKeyword] = useState("");
-  // const [patientListTimerID, setPatientListTimerID] = useState("");
   const patientListTimerID = useRef([]);
 
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
   // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
     console.log("응답 받음", res.data, `component: ${component}`);
-    if (res.data.now === now) {
-      setPatientList(res.data.results);
-      setCount(res.data.count);
-    }
+    setPatientList(res.data.results);
+    setCount(res.data.count);
     // page.current = res.data.now;
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
@@ -98,23 +94,6 @@ function Patients({ isPC }) {
 
   useEffect(() => {
     console.log("환자 리스트 요청 보냄", now, component);
-    requestPatientList(now, 9, patientListSuccess, patientListFail);
-    return () => {
-      console.log("타이머 kill", patientListTimerID);
-      setNow(() => 0);
-      for (let timer of patientListTimerID.current) {
-        clearTimeout(timer);
-      }
-      patientListTimerID.current = [];
-    };
-  }, []);
-
-  function handlePageChange(page) {
-    // console.log("타이머 kill", patientListTimerID);
-    // clearTimeout(patientListTimerID.current);
-    // setPatientListTimerID("");
-    setNow(() => page);
-    console.log(`page: ${page}`);
     if (keyword) {
       requestSearchPatient(
         now,
@@ -124,13 +103,34 @@ function Patients({ isPC }) {
         patientListFail
       );
     } else {
-      requestPatientList(page, 9, patientListSuccess, patientListFail);
+      requestPatientList(now, 9, patientListSuccess, patientListFail);
     }
+    return () => {
+      console.log("타이머 kill", patientListTimerID);
+      for (let timer of patientListTimerID.current) {
+        clearTimeout(timer);
+      }
+      patientListTimerID.current = [];
+    };
+  }, [now]);
+
+  function handlePageChange(page) {
+    setNow(page);
+    // console.log(`page: ${now}`);
+    // if (keyword) {
+    //   requestSearchPatient(
+    //     page,
+    //     9,
+    //     keyword,
+    //     patientListSuccess,
+    //     patientListFail
+    //   );
+    // } else {
+    //   requestPatientList(page, 9, patientListSuccess, patientListFail);
+    // }
   }
 
   function onSearch() {
-    // console.log("타이머 kill", patientListTimerID);
-    // clearTimeout(patientListTimerID.current);
     console.log("검색해서 요청 보냄", keyword);
     setNow(() => 1);
     requestSearchPatient(now, 9, keyword, patientListSuccess, patientListFail);
@@ -138,8 +138,6 @@ function Patients({ isPC }) {
 
   function onKeyPressSearch(event) {
     if (event.key === "Enter") {
-      // console.log("타이머 kill", patientListTimerID);
-      // clearTimeout(patientListTimerID.current);
       console.log("엔터 눌러서 검색한다", keyword);
       setNow(() => 1);
       requestSearchPatient(
