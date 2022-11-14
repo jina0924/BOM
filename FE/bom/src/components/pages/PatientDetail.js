@@ -7,7 +7,6 @@ import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import PatientDetailInfo from "components/molecules/PatientDetail/PatientDetailInfo";
 import DownloadBtn from "components/atoms/DownloadBtn";
-import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
 import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
 import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
