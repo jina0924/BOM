@@ -33,13 +33,37 @@ class Gyro():
         try:
             data0 = bus.read_byte_data(0x69, 0x28)
             data1 = bus.read_byte_data(0x69, 0x29)
+            data2 = bus.read_byte_data(0x69, 0x2A)
+            data3 = bus.read_byte_data(0x69, 0x2B)
+            data4 = bus.read_byte_data(0x69, 0x2C)
+            data5 = bus.read_byte_data(0x69, 0x2D)
          
          # Convert the data
             xGyro = data1 * 256 + data0
             if xGyro > 32767 :
                 xGyro -= 65536
+            
+
+            
+            # Convert the data
+            yGyro = data3 * 256 + data2
+            if yGyro > 32767 :
+                yGyro -= 65536
+             
+            # L3G4200D address, 0x69(104)
+            # Read data back from 0x2C(44), 2 bytes, Z-Axis LSB first
+             
+            # Convert the data
+            
+            zGyro = data5 * 256 + data4
+            if zGyro > 32767 :
+                zGyro -= 65536
+
+
         except:
             xGyro = -1
+            yGyro = -1
+            zGyro = -1
             print("Connection Err : Please confirm your pin")
         '''         
         # L3G4200D address, 0x69(104)
@@ -74,10 +98,10 @@ class Gyro():
         
         #if(isFall == True):
          #   print("warning")
-        
-        if(abs(xGyro) > 4500):
+        print(f'X : {xGyro}, Y : {yGyro}, Z : {zGyro}')
+        if(abs(xGyro) > 4000 or abs(yGyro) >4000 or abs(zGyro)>4000):
             isFall = True
-        elif(abs(xGyro) < 3000):
+        elif(abs(xGyro) < 3000 and abs(yGyro) < 3000 and abs(zGyro) < 3000):
             isFall = False
         
         return xGyro, yGyro,zGyro,isFall
