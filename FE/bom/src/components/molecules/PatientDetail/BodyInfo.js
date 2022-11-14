@@ -125,7 +125,7 @@ function BodyInfo({
                   <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
-                  <LiveInfo isPC={isPC} value="36.5 ℃" />
+                  <LiveInfo isPC={isPC} value={`${liveData} ℃`} />
                 </div>
               </div>
             </>
@@ -145,7 +145,7 @@ function BodyInfo({
                   <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
-                  <LiveInfo isPC={isPC} value="150 bpm" />
+                  <LiveInfo isPC={isPC} value={`${liveData} bpm`} />
                 </div>
               </div>
             </>
@@ -165,7 +165,7 @@ function BodyInfo({
                   <Graph part={part} isPC={isPC} data={data} />
                 </div>
                 <div className="live-info-box px-6">
-                  <LiveInfo isPC={isPC} value="95 %" />
+                  <LiveInfo isPC={isPC} value={`${liveData} %`} />
                 </div>
               </div>
             </>
