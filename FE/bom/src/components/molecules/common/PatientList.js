@@ -144,7 +144,7 @@ function PatientList({
                       className={`text-center font-semibold border-b-[.5px] border-gray 
                         ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
-                      {key + 1 + 8 * (page - 1)}
+                      {key + 1 + limit * (page - 1)}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 

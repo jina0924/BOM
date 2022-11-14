@@ -13,7 +13,10 @@ function SideBar() {
   useEffect(() => {
     if (location.pathname === "/") {
       setMenuIndex(0);
-    } else if (location.pathname === `/patients`) {
+    } else if (
+      (location.pathname === "/patients") |
+      (location.pathname.substring(0, 9) === "/patient/")
+    ) {
       setMenuIndex(1);
     } else if (location.pathname === "/doctors") {
       setMenuIndex(2);
