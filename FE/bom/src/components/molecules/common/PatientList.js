@@ -6,9 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
-// api
-// import { requestPatientList } from "api/patients";
-
 import {
   UilArrowResizeDiagonal,
   UilArrowDownLeft,
@@ -24,41 +21,22 @@ function PatientList({
   onZoom,
   onOff,
 }) {
-  // const [patientList, setPatientList] = useState([]);
-  // const [page, setPage] = useState(1);
-  // const [count, setCount] = useState(1);
-  // const [limit, setLimit] = useState(8);
-  const [pathname, setPathname] = useState("");
-  // const [component, setComponent] = useState(0);
-
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [pathname, setPathname] = useState("");
 
   useEffect(() => {
     if (location.pathname === "/main") {
       setPathname("main");
-      // 환자리스트 limit=8로 요청보내기
     } else if (location.pathname === "/patients") {
       setPathname("patients");
-      // 환자리스트 limit=9로 요청보내기
     }
   }, [location]);
 
   function onClickPatientDetailInfo(item) {
     navigate(`/patient/${item.number}`);
   }
-
-  // function handlePageChange(page) {
-  //   setPage(page);
-  // }
-
-  // useEffect(() => {
-  //   if (nowPage === "main") {
-  //     requestPatientList(page, 8, patientListSuccess, patientListFail);
-  //   } else if (nowPage === "patients") {
-  //     requestPatientList(page, 9, patientListSuccess, patientListFail);
-  //   }
-  // }, []);
 
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
