@@ -20,7 +20,7 @@ function HeadBar() {
   function logoutFail(err) {
     if (err.response?.status === 401) {
       alert("로그인 페이지로 이동합니다.");
-      console.log(err.response.status);
+      // console.log(err.response.status);
       ls.clear();
       navigate("/login");
     }
