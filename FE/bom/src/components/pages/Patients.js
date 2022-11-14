@@ -18,78 +18,75 @@ function Patients({ isPC }) {
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [now, setNow] = useState(1);
-  // const now = useRef(1);
+  const [next, setNext] = useState("");
   const [keyword, setKeyword] = useState("");
-  // const [patientListTimerID, setPatientListTimerID] = useState("");
   const patientListTimerID = useRef([]);
 
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
   // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
     console.log("응답 받음", res.data, `component: ${component}`);
-    if (res.data.now === now) {
-      setPatientList(res.data.results);
-      setCount(res.data.count);
-    }
-    // page.current = res.data.now;
+    setPatientList(res.data.results);
+    setCount(res.data.count);
+    setNext(res.data.next);
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
     console.log("재요청 보냄", `now: ${now}`, `component: ${component}`);
-    if (component === 0) {
-      if (keyword === "" && now === res.data.now) {
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-        console.log("타이머 아이디 바뀜", patientListTimerID.current);
-      } else if (now === res.data.now) {
-        const timerID = setTimeout(
-          requestSearchPatient,
-          10000,
-          now,
-          9,
-          keyword,
-          patientListSuccess,
-          patientListFail
-        );
-        // setPatientListTimerID(timerID);
-        // console.log("setTimeout", page, keyword);
-        // patientListTimerID.current.push(timerID);
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-        console.log("타이머 아이디 바뀜", patientListTimerID.current);
-      }
-    } else if (component === 1) {
-      if (!res.data.next) {
-        setNow(() => 1);
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-      } else if (!!res.data.next) {
-        setNow(() => now + 1);
-        const timerID = setTimeout(
-          requestPatientList,
-          10000,
-          now,
-          9,
-          patientListSuccess,
-          patientListFail
-        );
-        patientListTimerID.current = [...patientListTimerID.current, timerID];
-      }
+    // if (component === 0) {
+    if (keyword === "" && now === res.data.now) {
+      const timerID = setTimeout(
+        requestPatientList,
+        10000,
+        now,
+        9,
+        patientListSuccess,
+        patientListFail
+      );
+      patientListTimerID.current = [...patientListTimerID.current, timerID];
+      console.log("타이머 아이디 바뀜", patientListTimerID.current);
+    } else if (now === res.data.now) {
+      const timerID = setTimeout(
+        requestSearchPatient,
+        10000,
+        now,
+        9,
+        keyword,
+        patientListSuccess,
+        patientListFail
+      );
+      // setPatientListTimerID(timerID);
+      // console.log("setTimeout", page, keyword);
+      // patientListTimerID.current.push(timerID);
+      patientListTimerID.current = [...patientListTimerID.current, timerID];
+      console.log("타이머 아이디 바뀜", patientListTimerID.current);
     }
+    // } else if (component === 1) {
+    // if (!res.data.next) {
+    //   setNow(() => 1);
+    //   const timerID = setTimeout(
+    //     requestPatientList,
+    //     10000,
+    //     now,
+    //     9,
+    //     patientListSuccess,
+    //     patientListFail
+    //   );
+    //   patientListTimerID.current = [...patientListTimerID.current, timerID];
+    // } else if (!!res.data.next) {
+    //   setNow(() => now + 1);
+    //   const timerID = setTimeout(
+    //     requestPatientList,
+    //     10000,
+    //     now,
+    //     9,
+    //     patientListSuccess,
+    //     patientListFail
+    //   );
+    //   patientListTimerID.current = [...patientListTimerID.current, timerID];
+    // }
+    // }
   }
 
   function patientListFail(err) {
@@ -98,23 +95,6 @@ function Patients({ isPC }) {
 
   useEffect(() => {
     console.log("환자 리스트 요청 보냄", now, component);
-    requestPatientList(now, 9, patientListSuccess, patientListFail);
-    return () => {
-      console.log("타이머 kill", patientListTimerID);
-      setNow(() => 0);
-      for (let timer of patientListTimerID.current) {
-        clearTimeout(timer);
-      }
-      patientListTimerID.current = [];
-    };
-  }, []);
-
-  function handlePageChange(page) {
-    // console.log("타이머 kill", patientListTimerID);
-    // clearTimeout(patientListTimerID.current);
-    // setPatientListTimerID("");
-    setNow(() => page);
-    console.log(`page: ${page}`);
     if (keyword) {
       requestSearchPatient(
         now,
@@ -124,13 +104,22 @@ function Patients({ isPC }) {
         patientListFail
       );
     } else {
-      requestPatientList(page, 9, patientListSuccess, patientListFail);
+      requestPatientList(now, 9, patientListSuccess, patientListFail);
     }
+    return () => {
+      console.log("타이머 kill", patientListTimerID);
+      for (let timer of patientListTimerID.current) {
+        clearTimeout(timer);
+      }
+      patientListTimerID.current = [];
+    };
+  }, [now]);
+
+  function handlePageChange(page) {
+    setNow(page);
   }
 
   function onSearch() {
-    // console.log("타이머 kill", patientListTimerID);
-    // clearTimeout(patientListTimerID.current);
     console.log("검색해서 요청 보냄", keyword);
     setNow(() => 1);
     requestSearchPatient(now, 9, keyword, patientListSuccess, patientListFail);
@@ -138,8 +127,6 @@ function Patients({ isPC }) {
 
   function onKeyPressSearch(event) {
     if (event.key === "Enter") {
-      // console.log("타이머 kill", patientListTimerID);
-      // clearTimeout(patientListTimerID.current);
       console.log("엔터 눌러서 검색한다", keyword);
       setNow(() => 1);
       requestSearchPatient(
@@ -154,19 +141,35 @@ function Patients({ isPC }) {
 
   function onZoom() {
     if (component === 0) {
-      setComponent(() => 1);
-      // for (let timer of patientListTimerID.current) {
-      //   clearTimeout(timer);
-      // }
-      // patientListTimerID.current = [];
+      setComponent(1);
     } else if (component === 1) {
-      setComponent(() => 0);
-      // for (let timer of patientListTimerID.current) {
-      //   clearTimeout(timer);
-      // }
-      // patientListTimerID.current = [];
+      setComponent(0);
     }
   }
+
+  // useEffect(() => {
+  //   let timerID = "";
+  //   if (component === 1) {
+  //     for (let timer of patientListTimerID.current) {
+  //       clearTimeout(timer);
+  //     }
+  //     patientListTimerID.current = [];
+  //     timerID = setInterval(() => {
+  //       if (!next) {
+  //         console.log("맨 처음으로 돌아감");
+  //         setNow(1);
+  //       } else {
+  //         console.log("다음 페이지로 넘어감");
+  //         setNow(now + 1);
+  //       }
+  //     }, 10000);
+  //     patientListTimerID.current = [...patientListTimerID.current, timerID];
+  //   }
+  //   return () => {
+  //     setNow(1);
+  //     clearInterval(timerID);
+  //   };
+  // }, [component]);
 
   useEffect(() => {
     checkUserType();

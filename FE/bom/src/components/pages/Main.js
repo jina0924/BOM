@@ -15,48 +15,48 @@ import { requestPatientList } from "api/patients";
 
 import ls from "helper/LocalStorage";
 
-function useInterval(callback, delay, page = 1) {
-  const savedCallback = useRef(); // 최근에 들어온 callback을 저장할 ref를 하나 만든다.
+// function useInterval(callback, delay, page = 1) {
+//   const savedCallback = useRef(); // 최근에 들어온 callback을 저장할 ref를 하나 만든다.
 
-  useEffect(() => {
-    savedCallback.current = callback; // callback이 바뀔 때마다 ref를 업데이트 해준다.
-  }, [callback]);
+//   useEffect(() => {
+//     savedCallback.current = callback; // callback이 바뀔 때마다 ref를 업데이트 해준다.
+//   }, [callback]);
 
-  useEffect(() => {
-    function tick() {
-      savedCallback.current(); // tick이 실행되면 callback 함수를 실행시킨다.
-    }
-    if (page !== null) {
-      // 만약 delay가 null이 아니라면
-      let id = setInterval(tick, delay); // delay에 맞추어 interval을 새로 실행시킨다.
-      return () => clearInterval(id); // unmount될 때 clearInterval을 해준다.
-    }
-  }, [page]); // delay가 바뀔 때마다 새로 실행된다.
-}
+//   useEffect(() => {
+//     function tick() {
+//       savedCallback.current(); // tick이 실행되면 callback 함수를 실행시킨다.
+//     }
+//     if (page !== null) {
+//       // 만약 delay가 null이 아니라면
+//       let id = setInterval(tick, delay); // delay에 맞추어 interval을 새로 실행시킨다.
+//       return () => clearInterval(id); // unmount될 때 clearInterval을 해준다.
+//     }
+//   }, [page]); // delay가 바뀔 때마다 새로 실행된다.
+// }
 
-// custom timeout
-function useCustomInterval(request, delay, page, cycle) {
-  const savedCallback = useRef();
+// // custom timeout
+// function useCustomInterval(request, delay, page, cycle) {
+//   const savedCallback = useRef();
 
-  useEffect(() => {
-    savedCallback.current = request;
-  }, [request]);
+//   useEffect(() => {
+//     savedCallback.current = request;
+//   }, [request]);
 
-  useEffect(() => {
-    function requestData() {
-      console.log("요청 보냄");
-      savedCallback.current();
-    }
-    if (page !== null && cycle) {
-      let id = setTimeout(requestData, delay);
-      console.log("요청보낸 타이머 아이디", id);
-      return () => {
-        console.log(id);
-        clearTimeout(id);
-      };
-    }
-  }, [page, cycle]);
-}
+//   useEffect(() => {
+//     function requestData() {
+//       console.log("요청 보냄");
+//       savedCallback.current();
+//     }
+//     if (page !== null && cycle) {
+//       let id = setTimeout(requestData, delay);
+//       console.log("요청보낸 타이머 아이디", id);
+//       return () => {
+//         console.log(id);
+//         clearTimeout(id);
+//       };
+//     }
+//   }, [page, cycle]);
+// }
 
 function Main({ isPC }) {
   // 병동 정보
@@ -68,8 +68,7 @@ function Main({ isPC }) {
   // 환자 목록
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
-  // const [page, setPage] = useState(1);
-  const now = useRef(1);
+  const [now, setNow] = useState(1);
 
   // 입원 환자 추이
   const [patientTendency, setPatientTendency] = useState([]);
@@ -101,134 +100,128 @@ function Main({ isPC }) {
     console.log("실패", err);
   }
 
+  // 병동 정보 요청
   useEffect(() => {
     requestWardInfo(wardInfoSuccess, wardInfoFail);
+  }, []);
+
+  // 환자 리스트 요청
+  useEffect(() => {
     console.log("환자 리스트 요청 보냄");
-    requestPatientList(now.current, 8, patientListSuccess, patientListFail);
+    requestPatientList(now, 8, patientListSuccess, patientListFail);
     return () => {
       console.log("타이머 kill", patientListTimerID.current);
-      now.current = 0;
       for (let timer of patientListTimerID.current) {
         clearTimeout(timer);
       }
       patientListTimerID.current = [];
     };
-  }, []);
+  }, [now]);
 
   const patientListTimerID = useRef([]);
 
   function patientListSuccess(res) {
-    console.log("환자 리스트", now.current, res);
-    // const now = res.data.now;
-    if (res.data.now === now.current) {
-      setPatientList(res.data.results);
-      // setPatientList([
-      //   {
-      //     id: 1,
-      //     number: "225070001",
-      //     name: "이지수",
-      //     sex: "F",
-      //     temperature: 36.4,
-      //     bpm: 99,
-      //     oxygenSaturation: 98,
-      //     doctor: { id: 1, name: "임진경" },
-      //   },
-      //   {
-      //     id: 2,
-      //     number: "225070002",
-      //     name: "권경민",
-      //     sex: "M",
-      //     temperature: 38.2,
-      //     bpm: 80,
-      //     oxygenSaturation: 99,
-      //     doctor: { id: 1, name: "임진경" },
-      //   },
-      //   {
-      //     id: 3,
-      //     number: "225070003",
-      //     name: "김유민",
-      //     sex: "F",
-      //     temperature: 37.1,
-      //     bpm: 115,
-      //     oxygenSaturation: 97,
-      //     doctor: { id: 2, name: "이대현" },
-      //   },
-      //   {
-      //     id: 4,
-      //     number: "225070004",
-      //     name: "문요성",
-      //     sex: "M",
-      //     temperature: 36.2,
-      //     bpm: 54,
-      //     oxygenSaturation: 98,
-      //     doctor: { id: 2, name: "이대현" },
-      //   },
-      //   {
-      //     id: 5,
-      //     number: "225070005",
-      //     name: "정진아",
-      //     sex: "F",
-      //     temperature: 35.9,
-      //     bpm: 98,
-      //     oxygenSaturation: 94,
-      //     doctor: { id: 1, name: "임진경" },
-      //   },
-      //   {
-      //     id: 6,
-      //     number: "225070006",
-      //     name: "이지수",
-      //     sex: "F",
-      //     temperature: 34.9,
-      //     bpm: 77,
-      //     oxygenSaturation: 98,
-      //     doctor: { id: 2, name: "이대현" },
-      //   },
-      //   {
-      //     id: 7,
-      //     number: "225070007",
-      //     name: "권경민",
-      //     sex: "M",
-      //     temperature: 35.8,
-      //     bpm: 86,
-      //     oxygenSaturation: 97,
-      //     doctor: { id: 1, name: "임진경" },
-      //   },
-      //   {
-      //     id: 8,
-      //     number: "225070008",
-      //     name: "김유민",
-      //     sex: "F",
-      //     temperature: 36.7,
-      //     bpm: 95,
-      //     oxygenSaturation: 99,
-      //     doctor: { id: 1, name: "임진경" },
-      //   },
-      // ]);
-      setCount(res.data.count);
-    }
+    console.log("환자 리스트", now, res);
+    setPatientList(res.data.results);
+    // setPatientList([
+    //   {
+    //     id: 1,
+    //     number: "225070001",
+    //     name: "이지수",
+    //     sex: "F",
+    //     temperature: 36.4,
+    //     bpm: 99,
+    //     oxygenSaturation: 98,
+    //     doctor: { id: 1, name: "임진경" },
+    //   },
+    //   {
+    //     id: 2,
+    //     number: "225070002",
+    //     name: "권경민",
+    //     sex: "M",
+    //     temperature: 38.2,
+    //     bpm: 80,
+    //     oxygenSaturation: 99,
+    //     doctor: { id: 1, name: "임진경" },
+    //   },
+    //   {
+    //     id: 3,
+    //     number: "225070003",
+    //     name: "김유민",
+    //     sex: "F",
+    //     temperature: 37.1,
+    //     bpm: 115,
+    //     oxygenSaturation: 97,
+    //     doctor: { id: 2, name: "이대현" },
+    //   },
+    //   {
+    //     id: 4,
+    //     number: "225070004",
+    //     name: "문요성",
+    //     sex: "M",
+    //     temperature: 36.2,
+    //     bpm: 54,
+    //     oxygenSaturation: 98,
+    //     doctor: { id: 2, name: "이대현" },
+    //   },
+    //   {
+    //     id: 5,
+    //     number: "225070005",
+    //     name: "정진아",
+    //     sex: "F",
+    //     temperature: 35.9,
+    //     bpm: 98,
+    //     oxygenSaturation: 94,
+    //     doctor: { id: 1, name: "임진경" },
+    //   },
+    //   {
+    //     id: 6,
+    //     number: "225070006",
+    //     name: "이지수",
+    //     sex: "F",
+    //     temperature: 34.9,
+    //     bpm: 77,
+    //     oxygenSaturation: 98,
+    //     doctor: { id: 2, name: "이대현" },
+    //   },
+    //   {
+    //     id: 7,
+    //     number: "225070007",
+    //     name: "권경민",
+    //     sex: "M",
+    //     temperature: 35.8,
+    //     bpm: 86,
+    //     oxygenSaturation: 97,
+    //     doctor: { id: 1, name: "임진경" },
+    //   },
+    //   {
+    //     id: 8,
+    //     number: "225070008",
+    //     name: "김유민",
+    //     sex: "F",
+    //     temperature: 36.7,
+    //     bpm: 95,
+    //     oxygenSaturation: 99,
+    //     doctor: { id: 1, name: "임진경" },
+    //   },
+    // ]);
+    setCount(res.data.count);
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    // setPage(now);
-    // patientListCycle.current = patientListCycle.current + 1;
-    // console.log(patientListCycle.current);
-    // clearTimeout(patientListTimerID.current);
-    console.log(`now: ${now.current} / 요청 받은 페이지: ${res.data.now}`);
-    if (now.current === res.data.now) {
-      console.log("재요청 보냄", now.current);
+    if (now === res.data.now) {
+      console.log("재요청 보냄", now);
       const timerID = setTimeout(
         requestPatientList,
         10000,
-        now.current,
+        now,
         8,
         patientListSuccess,
         patientListFail
       );
       patientListTimerID.current = [...patientListTimerID.current, timerID];
     }
-    // console.log("환자 리스트 타이머 아이디", timerID);
-    // setPatientListTimerID(timerID);
   }
 
   function patientListFail(err) {
@@ -279,16 +272,7 @@ function Main({ isPC }) {
 
   function handlePageChange(page) {
     console.log("페이지 바꾼다", page);
-    // console.log(patientListTimerID.current);
-    // clearTimeout(patientListTimerID.current);
-    // patientListTimerID.current = "";
-    // setPatientListTimerID("");
-    // setPatientListCycle(1);
-    // patientListCycle.current = 1;
-    // setPage(page);
-    now.current = page;
-    console.log(`${now.current}번 환자리스트 요청 보냄`);
-    requestPatientList(now.current, 8, patientListSuccess, patientListFail);
+    setNow(page);
   }
 
   // // url 정보
@@ -356,7 +340,7 @@ function Main({ isPC }) {
               <PatientList
                 nowPage="main"
                 patientList={patientList}
-                page={now.current}
+                page={now}
                 count={count}
                 limit={8}
                 handlePageChange={handlePageChange}
