@@ -115,7 +115,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    console.log(res, filter.current, timerID.current);
+    // console.log(res, filter.current, timerID.current);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
@@ -152,7 +152,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailDeviceInfoSuccess = (res) => {
-    console.log(res, filter, timerID.current);
+    // console.log(res, filter, timerID.current);
     setBmsTemperature(res.data.실시간.온도);
     setVoltage1(res.data.실시간.전압1);
     setVoltage2(res.data.실시간.전압2);
@@ -183,7 +183,7 @@ function PatientDetail({ isPC }) {
     const period = { period: event.target.value };
     // changeFilter(period);
     filter.current = period;
-    console.log(timerID, period);
+    // console.log(timerID, period);
     component !== 1 &&
       requestPatientDetailHealthInfo(
         params.id,
@@ -206,7 +206,7 @@ function PatientDetail({ isPC }) {
 
   const clickComponent = (number) => {
     changeComponent(number);
-    console.log(component);
+    // console.log(component);
     if (number === 1) {
       requestPatientDetailDeviceInfo(
         params.id,

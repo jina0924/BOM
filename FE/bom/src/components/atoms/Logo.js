@@ -14,7 +14,7 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
               <img
                 src={symbol}
                 alt="BOM 심볼"
-                className="inline mr-2 w-[30px]"
+                className="inline mr-2 w-[30px] h-[30px]"
               />
               <span className="font-righteous text-main text-xl tracking-wider">
                 BOM
@@ -28,7 +28,7 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
               <img
                 src={symbol}
                 alt="BOM 심볼"
-                className="inline mr-2 w-[35px]"
+                className="inline mr-2 w-[35px] h-[35px]"
               />
               <span className="font-righteous text-main text-2xl tracking-wider">
                 BOM
@@ -41,7 +41,7 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
               <img
                 src={symbol}
                 alt="BOM 심볼"
-                className="inline mr-4 w-[60px]"
+                className="inline mr-4 w-[60px] h-[60px]"
               />
               <span className="font-righteous text-main text-4xl tracking-wider">
                 BOM
@@ -58,7 +58,7 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
                 <img
                   src={symbol}
                   alt="BOM 심볼"
-                  className="inline mr-2 w-[30px]"
+                  className="inline mr-2 w-[30px] h-[30px]"
                 />
                 <span className="font-righteous text-main text-xl tracking-wider">
                   BOM
@@ -72,7 +72,7 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
                 <img
                   src={symbol}
                   alt="BOM 심볼"
-                  className="inline mr-2 w-[35px]"
+                  className="inline mr-2 w-[35px] h-[35px]"
                 />
                 <span className="font-righteous text-main text-2xl tracking-wider">
                   BOM
