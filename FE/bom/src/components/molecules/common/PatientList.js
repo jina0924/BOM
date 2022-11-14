@@ -24,10 +24,6 @@ function PatientList({
   onZoom,
   onOff,
 }) {
-  // const [patientList, setPatientList] = useState([]);
-  // const [page, setPage] = useState(1);
-  // const [count, setCount] = useState(1);
-  // const [limit, setLimit] = useState(8);
   const [pathname, setPathname] = useState("");
   // const [component, setComponent] = useState(0);
 
