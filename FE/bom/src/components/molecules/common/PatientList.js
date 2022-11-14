@@ -48,18 +48,6 @@ function PatientList({
     navigate(`/patient/${item.number}`);
   }
 
-  // function handlePageChange(page) {
-  //   setPage(page);
-  // }
-
-  // useEffect(() => {
-  //   if (nowPage === "main") {
-  //     requestPatientList(page, 8, patientListSuccess, patientListFail);
-  //   } else if (nowPage === "patients") {
-  //     requestPatientList(page, 9, patientListSuccess, patientListFail);
-  //   }
-  // }, []);
-
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
       <div className="h-[10%] pt-6 px-8 flex justify-between">
