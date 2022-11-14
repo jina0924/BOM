@@ -18,6 +18,7 @@ function Patients({ isPC }) {
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [now, setNow] = useState(1);
+  const [next, setNext] = useState("");
   const [keyword, setKeyword] = useState("");
   const patientListTimerID = useRef([]);
 
@@ -27,6 +28,7 @@ function Patients({ isPC }) {
     console.log("응답 받음", res.data, `component: ${component}`);
     setPatientList(res.data.results);
     setCount(res.data.count);
+    setNext(res.data.next);
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
@@ -140,18 +142,34 @@ function Patients({ isPC }) {
   function onZoom() {
     if (component === 0) {
       setComponent(1);
-      // for (let timer of patientListTimerID.current) {
-      //   clearTimeout(timer);
-      // }
-      // patientListTimerID.current = [];
     } else if (component === 1) {
       setComponent(0);
-      // for (let timer of patientListTimerID.current) {
-      //   clearTimeout(timer);
-      // }
-      // patientListTimerID.current = [];
     }
   }
+
+  // useEffect(() => {
+  //   let timerID = "";
+  //   if (component === 1) {
+  //     for (let timer of patientListTimerID.current) {
+  //       clearTimeout(timer);
+  //     }
+  //     patientListTimerID.current = [];
+  //     timerID = setInterval(() => {
+  //       if (!next) {
+  //         console.log("맨 처음으로 돌아감");
+  //         setNow(1);
+  //       } else {
+  //         console.log("다음 페이지로 넘어감");
+  //         setNow(now + 1);
+  //       }
+  //     }, 10000);
+  //     patientListTimerID.current = [...patientListTimerID.current, timerID];
+  //   }
+  //   return () => {
+  //     setNow(1);
+  //     clearInterval(timerID);
+  //   };
+  // }, [component]);
 
   useEffect(() => {
     checkUserType();
