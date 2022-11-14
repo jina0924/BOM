@@ -41,8 +41,8 @@ function PatientDetail({ isPC }) {
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
   // 필터 정보
-  // const filterRef = useRef({ period: "now" });
-  const [filter, setFilter] = useState({ period: "now" });
+  const filter = useRef({ period: "now" });
+  // const [filter, setFilter] = useState({ period: "now" });
   // 환자 건강 정보
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
@@ -58,7 +58,7 @@ function PatientDetail({ isPC }) {
   const [soc2, setSoc2] = useState(0);
   const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
   const [voltageData, setVoltageData] = useState([]);
-  const [voltage2Data, setVoltage2Data] = useState([]);
+  // const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
@@ -115,7 +115,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    console.log(res, filter, timerID.current);
+    console.log(res, filter.current, timerID.current);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
@@ -130,9 +130,9 @@ function PatientDetail({ isPC }) {
     if (userType === "ward") {
       const newTimerID = setTimeout(
         requestPatientDetailHealthInfo,
-        3000,
+        10000,
         params.id,
-        filter,
+        filter.current,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
@@ -159,7 +159,7 @@ function PatientDetail({ isPC }) {
     setSoc1(res.data.실시간.잔량1);
     setSoc2(res.data.실시간.잔량2);
     setBmsTemperatureData(res.data.온도);
-    // setVoltageData(res.data.전압);
+    setVoltageData(res.data.전압);
     for (let timer of timerID.current) {
       clearTimeout(timer);
     }
@@ -168,20 +168,21 @@ function PatientDetail({ isPC }) {
       requestPatientDetailDeviceInfo,
       10000,
       params.id,
-      filter,
+      filter.current,
       requestPatientDetailDeviceInfoSuccess,
       (err) => console.log(err)
     );
     timerID.current = [...timerID.current, newTimerID];
   };
 
-  const changeFilter = (event) => {
-    setFilter(event);
-  };
+  // const changeFilter = (event) => {
+  //   setFilter(event);
+  // };
 
   const selectPeriod = (event) => {
     const period = { period: event.target.value };
-    changeFilter(period);
+    // changeFilter(period);
+    filter.current = period;
     console.log(timerID, period);
     component !== 1 &&
       requestPatientDetailHealthInfo(
@@ -209,14 +210,14 @@ function PatientDetail({ isPC }) {
     if (number === 1) {
       requestPatientDetailDeviceInfo(
         params.id,
-        filter,
+        filter.current,
         requestPatientDetailDeviceInfoSuccess,
         (err) => console.log(err)
       );
     } else {
       requestPatientDetailHealthInfo(
         params.id,
-        filter,
+        filter.current,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
@@ -317,7 +318,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveTemperature}
                       data={temperatureData}
-                      filter={filter}
+                      filter={filter.current}
                     />
                   </div>
                 </div>
@@ -331,7 +332,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveBPM}
                       data={heartbeatData}
-                      filter={filter}
+                      filter={filter.current}
                     />
                   </div>
                   <div className="right-third-component pb-5 h-1/2">
@@ -343,7 +344,7 @@ function PatientDetail({ isPC }) {
                       }}
                       liveData={liveOxygen}
                       data={oxyzenData}
-                      filter={filter}
+                      filter={filter.current}
                     />
                   </div>
                 </div>
@@ -368,7 +369,7 @@ function PatientDetail({ isPC }) {
                     }}
                     bmsTemperatureData={bmsTemperatureData}
                     voltageData={voltageData}
-                    filter={filter}
+                    filter={filter.current}
                   />
                 </div>
               </div>
@@ -384,7 +385,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveTemperature}
                   data={temperatureData}
-                  filter={filter}
+                  filter={filter.current}
                 />
               </div>
             )}
@@ -399,7 +400,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveBPM}
                   data={heartbeatData}
-                  filter={filter}
+                  filter={filter.current}
                 />
               </div>
             )}
@@ -414,7 +415,7 @@ function PatientDetail({ isPC }) {
                   onOff={true}
                   liveData={liveOxygen}
                   data={oxyzenData}
-                  filter={filter}
+                  filter={filter.current}
                 />
               </div>
             )}
