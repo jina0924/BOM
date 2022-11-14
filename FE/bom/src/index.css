@@ -19,18 +19,16 @@ code {
 
 @font-face {
   font-family: "SUIT";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
-    format("woff2");
-  font-weight: normal;
+  src: url("assets/fonts/SUIT-Variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Righteous";
-  src: url("//db.onlinewebfonts.com/t/490cb0e45f39580c7ba1b856f2f1f4a7.woff2")
-    format("woff2");
-  font-weight: normal;
+  src: url("assets/fonts/righteous-v13-latin-regular.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
