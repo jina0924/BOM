@@ -12,13 +12,18 @@ function HeadBar() {
   const navigate = useNavigate();
   const wardNum = ls.get("number");
   function logoutSuccess(res) {
-    ls.clear();
+    ls.remove("accessToken");
+    ls.remove("refreshToken");
     navigate("/login");
   }
 
   function logoutFail(err) {
-    console.log(err);
-    alert("다시 한 번 시도해주세요.");
+    if (err.response?.status === 401) {
+      alert("로그인 페이지로 이동합니다.");
+      // console.log(err.response.status);
+      ls.clear();
+      navigate("/login");
+    }
   }
 
   function onClickLogout(event) {

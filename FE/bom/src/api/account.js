@@ -2,7 +2,7 @@ import UserApi from "api/UserApi";
 // import axios from "axios";
 
 // 만료 시간
-// const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
+// const JWT_EXPIRY_TIME = 12 * 3600 * 1000;
 
 function requestLogin(username, password, success, fail) {
   UserApi.post("accounts/user/login/", {
