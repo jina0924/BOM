@@ -28,8 +28,8 @@ function PatientDetail({ isPC }) {
   // url 상 환자번호
   const params = useParams();
   // 컴포넌트 번호
-  const [isHealth, setIsHealth] = useState(true);
-  const component = useRef(0);
+  // const component = useRef(0);
+  const [component, setComponent] = useState(0);
   // 타이머
   const timerID = useRef([]);
   // 환자정보
@@ -41,7 +41,8 @@ function PatientDetail({ isPC }) {
   const [nokPhonenumber, setNokPhonenumber] = useState("");
   const [doctor, setDoctor] = useState("");
   // 필터 정보
-  const filterRef = useRef({ period: "now" });
+  const filter = useRef({ period: "now" });
+  // const [filter, setFilter] = useState({ period: "now" });
   // 환자 건강 정보
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
@@ -57,7 +58,7 @@ function PatientDetail({ isPC }) {
   const [soc2, setSoc2] = useState(0);
   const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
   const [voltageData, setVoltageData] = useState([]);
-  const [voltage2Data, setVoltage2Data] = useState([]);
+  // const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
@@ -67,7 +68,7 @@ function PatientDetail({ isPC }) {
       );
       requestPatientDetailHealthInfo(
         params.id,
-        filterRef.current,
+        filter,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
@@ -114,7 +115,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    console.log(res, filterRef.current, timerID.current);
+    console.log(res, filter.current, timerID.current);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
@@ -131,7 +132,7 @@ function PatientDetail({ isPC }) {
         requestPatientDetailHealthInfo,
         10000,
         params.id,
-        filterRef.current,
+        filter.current,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
@@ -151,14 +152,14 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailDeviceInfoSuccess = (res) => {
-    console.log(res, filterRef.current);
+    console.log(res, filter, timerID.current);
     setBmsTemperature(res.data.실시간.온도);
     setVoltage1(res.data.실시간.전압1);
     setVoltage2(res.data.실시간.전압2);
     setSoc1(res.data.실시간.잔량1);
     setSoc2(res.data.실시간.잔량2);
     setBmsTemperatureData(res.data.온도);
-    // setVoltageData(res.data.전압);
+    setVoltageData(res.data.전압);
     for (let timer of timerID.current) {
       clearTimeout(timer);
     }
@@ -167,47 +168,57 @@ function PatientDetail({ isPC }) {
       requestPatientDetailDeviceInfo,
       10000,
       params.id,
-      filterRef.current,
+      filter.current,
       requestPatientDetailDeviceInfoSuccess,
       (err) => console.log(err)
     );
     timerID.current = [...timerID.current, newTimerID];
   };
 
+  // const changeFilter = (event) => {
+  //   setFilter(event);
+  // };
+
   const selectPeriod = (event) => {
-    console.log(timerID);
-    filterRef.current = { period: event.target.value };
-    component.current !== 1 &&
+    const period = { period: event.target.value };
+    // changeFilter(period);
+    filter.current = period;
+    console.log(timerID, period);
+    component !== 1 &&
       requestPatientDetailHealthInfo(
         params.id,
-        filterRef.current,
+        period,
         requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
-    component.current === 1 &&
+    component === 1 &&
       requestPatientDetailDeviceInfo(
         params.id,
-        filterRef.current,
+        period,
         requestPatientDetailDeviceInfoSuccess,
         (err) => console.log(err)
       );
   };
 
+  const changeComponent = (number) => {
+    setComponent(number);
+  };
+
   const clickComponent = (number) => {
-    component.current = number;
-    console.log(component.current);
-    if (number === 0) {
-      requestPatientDetailHealthInfo(
+    changeComponent(number);
+    console.log(component);
+    if (number === 1) {
+      requestPatientDetailDeviceInfo(
         params.id,
-        filterRef.current,
-        requestPatientDetailHealthInfoSuccess,
+        filter.current,
+        requestPatientDetailDeviceInfoSuccess,
         (err) => console.log(err)
       );
     } else {
-      requestPatientDetailDeviceInfo(
+      requestPatientDetailHealthInfo(
         params.id,
-        filterRef.current,
-        requestPatientDetailDeviceInfoSuccess,
+        filter.current,
+        requestPatientDetailHealthInfoSuccess,
         (err) => console.log(err)
       );
     }
@@ -233,15 +244,15 @@ function PatientDetail({ isPC }) {
             <HeadBar />
             <div className="filter-download-btn-box flex justify-between pr-10 h-[9vh] text-xs items-center">
               <div className="device-btn-box pl-10">
-                {(component.current === 0) | (component.current === 1) ? (
+                {(component === 0) | (component === 1) ? (
                   <div className="info-change-btns flex justify-start">
                     <Btn
                       className={`${
-                        component.current === 1 &&
+                        component === 1 &&
                         "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28 mr-3 focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
                       } 
                       ${
-                        component.current === 0 &&
+                        component === 0 &&
                         "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28 mr-3 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
                       }
                         `}
@@ -252,11 +263,11 @@ function PatientDetail({ isPC }) {
                     />
                     <Btn
                       className={`${
-                        component.current === 0 &&
+                        component === 0 &&
                         "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl w-28  focus:outline-none bg-white text-font1 shadow-bg  hover:bg-main/20 hover:text-main"
                       } 
                     ${
-                      component.current === 1 &&
+                      component === 1 &&
                       "flex justify-center items-center px-4 py-2 h-[2rem] rounded-xl  w-28 focus:outline-none bg-main/20 text-main shadow-bg font-bold"
                     }
                       `}
@@ -284,7 +295,7 @@ function PatientDetail({ isPC }) {
               </div>
             </div>
             {/* 전체 서머리 페이지 */}
-            {component.current === 0 && (
+            {component === 0 && (
               <div className="components grid grid-cols-2 px-10 h-[75vh]">
                 <div className="components-left col-span-1">
                   <div className="left-first-component pr-8 pb-8 h-1/2">
@@ -303,11 +314,11 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="체온"
                       onZoom={() => {
-                        component.current = 2;
+                        changeComponent(2);
                       }}
                       liveData={liveTemperature}
                       data={temperatureData}
-                      filter={filterRef.current}
+                      filter={filter.current}
                     />
                   </div>
                 </div>
@@ -317,11 +328,11 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="심박수"
                       onZoom={() => {
-                        component.current = 3;
+                        changeComponent(3);
                       }}
                       liveData={liveBPM}
                       data={heartbeatData}
-                      filter={filterRef.current}
+                      filter={filter.current}
                     />
                   </div>
                   <div className="right-third-component pb-5 h-1/2">
@@ -329,18 +340,18 @@ function PatientDetail({ isPC }) {
                       isPC={isPC}
                       part="산소포화도"
                       onZoom={() => {
-                        component.current = 4;
+                        changeComponent(4);
                       }}
                       liveData={liveOxygen}
                       data={oxyzenData}
-                      filter={filterRef.current}
+                      filter={filter.current}
                     />
                   </div>
                 </div>
               </div>
             )}
             {/* 디바이스 디테일 페이지 */}
-            {component.current === 1 && (
+            {component === 1 && (
               <div className="device-detail-full px-10 pb-5 h-[75vh] ">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
@@ -354,57 +365,57 @@ function PatientDetail({ isPC }) {
                 <div className="device-detail-info pb-5 h-[50vh]">
                   <DeviceDetailInfo
                     onZoom={() => {
-                      component.current = 0;
+                      changeComponent(0);
                     }}
                     bmsTemperatureData={bmsTemperatureData}
                     voltageData={voltageData}
-                    filter={filterRef.current}
+                    filter={filter.current}
                   />
                 </div>
               </div>
             )}
             {/* 체온 디테일 페이지 */}
-            {component.current === 2 && (
+            {component === 2 && (
               <div className="body-temperature-full px-10 pb-5 h-[75vh]">
                 <BodyInfo
                   part="체온"
                   onZoom={() => {
-                    component.current = 0;
+                    changeComponent(0);
                   }}
                   onOff={true}
                   liveData={liveTemperature}
                   data={temperatureData}
-                  filter={filterRef.current}
+                  filter={filter.current}
                 />
               </div>
             )}
             {/* 심박수 디테일 페이지 */}
-            {component.current === 3 && (
+            {component === 3 && (
               <div className="body-temperature-full px-10 pb-5 h-[75vh] ">
                 <BodyInfo
                   part="심박수"
                   onZoom={() => {
-                    component.current = 0;
+                    changeComponent(0);
                   }}
                   onOff={true}
                   liveData={liveBPM}
                   data={heartbeatData}
-                  filter={filterRef.current}
+                  filter={filter.current}
                 />
               </div>
             )}
             {/* 산소포화도 디테일 페이지 */}
-            {component.current === 4 && (
+            {component === 4 && (
               <div className="body-temperature-full px-10 pb-5 h-[75vh]">
                 <BodyInfo
                   part="산소포화도"
                   onZoom={() => {
-                    component.current = 0;
+                    changeComponent(0);
                   }}
                   onOff={true}
                   liveData={liveOxygen}
                   data={oxyzenData}
-                  filter={filterRef.current}
+                  filter={filter.current}
                 />
               </div>
             )}
