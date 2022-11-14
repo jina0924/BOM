@@ -116,18 +116,6 @@ function Patients({ isPC }) {
 
   function handlePageChange(page) {
     setNow(page);
-    // console.log(`page: ${now}`);
-    // if (keyword) {
-    //   requestSearchPatient(
-    //     page,
-    //     9,
-    //     keyword,
-    //     patientListSuccess,
-    //     patientListFail
-    //   );
-    // } else {
-    //   requestPatientList(page, 9, patientListSuccess, patientListFail);
-    // }
   }
 
   function onSearch() {
