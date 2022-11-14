@@ -14,4 +14,5 @@ urlpatterns = [
     path('patients/<str:patient_number>/health', views.health),
     path('nurse', views.NurseAPIView.as_view()),
     path('doctor', views.DoctorAPIView.as_view()),
+    path('test', views.TestViewSet.as_view({'get': 'list'})),
 ]
