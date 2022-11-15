@@ -245,7 +245,12 @@ function PatientDetail({ isPC }) {
     var tempLink = document.createElement("a");
     tempLink.style.display = "none";
     tempLink.href = blobURL;
-    tempLink.setAttribute("download", "test.xlsx");
+    tempLink.setAttribute(
+      "download",
+      component === 1
+        ? `${username}_${name}_디바이스정보.xlsx`
+        : `${username}_${name}_건강정보.xlsx`
+    );
     document.body.appendChild(tempLink);
     tempLink.click();
     document.body.removeChild(tempLink);
