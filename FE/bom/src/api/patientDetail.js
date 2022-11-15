@@ -1,4 +1,5 @@
 import UserApi from "api/UserApi";
+import { success } from "daisyui/src/colors";
 
 function requestPatientDetail(patientNumber, success, fail) {
   patientNumber !== null
@@ -20,8 +21,15 @@ function requestPatientDetailDeviceInfo(patientNumber, params, success, fail) {
     .catch(fail);
 }
 
+function requestExcelDownload(params, success, fail) {
+  UserApi.get("wards/patients/excel", { responseType: "blob", params })
+    .then(success)
+    .catch(fail);
+}
+
 export {
   requestPatientDetail,
   requestPatientDetailHealthInfo,
   requestPatientDetailDeviceInfo,
+  requestExcelDownload,
 };
