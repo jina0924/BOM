@@ -205,3 +205,5 @@ AWS_STORAGE_BUCKET_NAME = my_settings.AWS_STORAGE_BUCKET_NAME
 AWS_REGION = 'ap-northeast-2'
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+
+DRF_EXCEL_DATETIME_FORMAT = 'yyyy-mm-dd hh:mm:ss'
