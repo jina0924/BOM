@@ -63,3 +63,9 @@ https://kiranvj.com/blog/blog/recharts-show-legend-on-top-of-chart/
 ## useState 동기처리
 
 https://velog.io/@alstnsrl98/useState%EB%8A%94-%EB%8F%99%EA%B8%B0-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%8F%99%EA%B8%B0%EC%A0%81-%EC%B2%98%EB%A6%AC
+
+
+
+## React 컴포넌트 마운트 효과
+
+https://juni-official.tistory.com/185
