@@ -104,7 +104,7 @@ def read_voltage(adcChannel):
         if(minV[adcChannel] > V):
             minV[adcChannel] = V
         
-        if (minV[adcChannel] >= 4.1):
+        if (minV[adcChannel] > 4.1):
             SOC[adcChannel] = 100
         elif (minV[adcChannel] >= 2.5):
             SOC[adcChannel] = round((minV[adcChannel]-2.5)/1.6 * 100)
@@ -120,7 +120,7 @@ def read_voltage(adcChannel):
         if(maxV[adcChannel] < V):
             maxV[adcChannel] = V
             
-        if (maxV[adcChannel] >= 4.1):
+        if (maxV[adcChannel] > 4.1):
             SOC[adcChannel] = 100
         elif (maxV[adcChannel] >= 2.5):
             SOC[adcChannel] = round((maxV[adcChannel]-2.5)/1.6 * 100)
@@ -298,6 +298,12 @@ def db_pub(mode):
         c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+        #for now
+        c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
+        c.execute(f'insert into bms_status_now(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+
 
         db.commit()
     
@@ -307,6 +313,12 @@ def db_pub(mode):
         c.execute(f'insert into bms_status(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[0]});')
         c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[1]});')
+        
+        #for now
+        c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
+        c.execute(f'insert into bms_status_now(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[1]});')
 
         db.commit()
 
@@ -330,7 +342,7 @@ def getGyro():
         else:
             is_fall = False
 
-        sleep(0.3)
+        sleep(0.1)
 #t1 = threading.Thread(target=getSensor)
 #t2 = threading.Thread(target=getHeart)
 #t1.start()
