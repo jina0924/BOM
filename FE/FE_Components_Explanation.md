@@ -28,6 +28,8 @@
 
 - 선 두개 쓰이는 그래프만
 
+##### DonutGraph.js
+
 ##### DownloadBtn.js
 
 ##### BMSIcon.js
@@ -43,6 +45,8 @@
 - 환자 정보 한줄
 
 ##### PaginationNumber.js
+
+##### Select.js
 
 
 
@@ -109,6 +113,12 @@
 ##### DeviceDetailInfo.js
 
 - 디바이스 정보 확대 후 하단의 배터리 잔량, 전압을 표현한 시계열 그래프
+
+#### 404
+
+##### Mobile404.js
+
+##### PC404.js
 
 
 

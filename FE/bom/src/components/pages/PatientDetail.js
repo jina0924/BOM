@@ -7,7 +7,6 @@ import SideBar from "components/molecules/common/SideBar";
 import HeadBar from "components/molecules/common/Headbar";
 import PatientDetailInfo from "components/molecules/PatientDetail/PatientDetailInfo";
 import DownloadBtn from "components/atoms/DownloadBtn";
-import DeviceSummary from "components/molecules/PatientDetail/DeviceSummary";
 import BodyInfo from "components/molecules/PatientDetail/BodyInfo";
 import LiveDeviceStatus from "components/molecules/PatientDetail/LiveDeviceStatus";
 import DeviceDetailInfo from "components/molecules/PatientDetail/DeviceDetailInfo";
@@ -16,6 +15,7 @@ import Btn from "components/atoms/Btn";
 
 // API
 import {
+  requestExcelDownload,
   requestPatientDetail,
   requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
@@ -235,6 +235,38 @@ function PatientDetail({ isPC }) {
     navigate("/login");
   };
 
+  const requestExcelDownloadSuccess = (res) => {
+    // console.log(res);
+    // const blobURL = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
+    var blob = new Blob([res.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    var blobURL = window.URL.createObjectURL(blob);
+    var tempLink = document.createElement("a");
+    tempLink.style.display = "none";
+    tempLink.href = blobURL;
+    tempLink.setAttribute(
+      "download",
+      component === 1
+        ? `${username}_${name}_디바이스정보.xlsx`
+        : `${username}_${name}_건강정보.xlsx`
+    );
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+    window.URL.revokeObjectURL(blobURL);
+  };
+
+  const clickExcelDownload = () => {
+    const newParams = {
+      number: params.id,
+      period: filter.current.period,
+    };
+    requestExcelDownload(newParams, requestExcelDownloadSuccess, (err) =>
+      console.log(err)
+    );
+  };
+
   return (
     <>
       {isPC && (
@@ -291,7 +323,7 @@ function PatientDetail({ isPC }) {
                   <option value="week">7 일</option>
                   <option value="month">30 일</option>
                 </select>
-                <DownloadBtn />
+                <DownloadBtn onClickFunction={clickExcelDownload} />
               </div>
             </div>
             {/* 전체 서머리 페이지 */}
