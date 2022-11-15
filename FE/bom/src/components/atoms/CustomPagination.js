@@ -15,7 +15,7 @@ function CustomPagination({
   return (
     <Pagination
       activePage={page}
-      itemsCountPage={itemsCount}
+      itemsCountPerPage={itemsCount}
       totalItemsCount={totalCount}
       pageRangeDisplayed={pageRange}
       prevPageText={"<"}

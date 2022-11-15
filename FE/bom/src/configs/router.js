@@ -2,6 +2,7 @@ import React from "react";
 import Main from "components/pages/Main";
 import Login from "components/pages/Login";
 import Patients from "components/pages/Patients";
+import PatientsAutoPlay from "components/pages/PatientsAutoPlay";
 import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
@@ -83,6 +84,14 @@ export default function RouterConfiguration() {
           element={
             <CheckAuth>
               <Patients isPC={isPC} />
+            </CheckAuth>
+          }
+        />
+        <Route
+          path="/patients/autoplay"
+          element={
+            <CheckAuth>
+              <PatientsAutoPlay isPC={isPC} />
             </CheckAuth>
           }
         />
