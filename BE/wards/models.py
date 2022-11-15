@@ -70,6 +70,32 @@ class PatientStatus(models.Model):
         db_table = 'patient_status'
 
 
+class PatientStatusExcel(models.Model):
+    temperature = models.FloatField()
+    bpm = models.IntegerField()
+    oxygen_saturation = models.IntegerField()
+    slope = models.IntegerField(null=True)
+    now = models.DateTimeField()
+    patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'patient_status_excel'
+
+
+class PatientStatusNow(models.Model):
+    temperature = models.FloatField()
+    bpm = models.IntegerField()
+    oxygen_saturation = models.IntegerField()
+    slope = models.IntegerField(null=True)
+    now = models.DateTimeField()
+    patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'patient_status_now'
+
+
 class Alert(models.Model):
     category = models.CharField(max_length=191)
     status = models.CharField(max_length=191)

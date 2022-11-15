@@ -22,6 +22,26 @@ class BmsStatus(models.Model):
         db_table = 'bms_status'
 
 
+class BmsStatusExcel(models.Model):
+    temperature = models.IntegerField()
+    now = models.DateTimeField()
+    bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
+    
+    class Meta:
+        managed = True
+        db_table = 'bms_status_excel'
+
+
+class BmsStatusNow(models.Model):
+    temperature = models.IntegerField()
+    now = models.DateTimeField()
+    bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
+    
+    class Meta:
+        managed = True
+        db_table = 'bms_status_now'
+
+
 class Battery(models.Model):
     register_date = models.DateTimeField()
     max_voltage = models.FloatField()
@@ -41,3 +61,25 @@ class BatteryStatus(models.Model):
     class Meta:
         managed = True
         db_table = 'battery_status'
+
+
+class BatteryStatusExcel(models.Model):
+    voltage = models.FloatField()
+    amount = models.IntegerField()
+    now = models.DateTimeField()
+    battery = models.ForeignKey(Battery, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'battery_status_excel'
+
+
+class BatteryStatusNow(models.Model):
+    voltage = models.FloatField()
+    amount = models.IntegerField()
+    now = models.DateTimeField()
+    battery = models.ForeignKey(Battery, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'battery_status_now'

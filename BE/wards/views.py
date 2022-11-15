@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert
+from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert, PatientStatusExcel, PatientStatusNow
 from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer
 import jwt
 from thundervolt.settings import SECRET_KEY
@@ -924,17 +924,17 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from drf_excel.mixins import XLSXFileMixin
 from drf_excel.renderers import XLSXRenderer
 
-class TestViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
+class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
-    queryset = PatientStatus.objects.all()
-    serializer_class =HealthSerializer
+    # queryset = PatientStatusExcel.objects.all()
+    serializer_class = HealthSerializer
     renderer_classes = (XLSXRenderer,)
-    filename = 'my_export.xlsx'
+    filename = 'health_excel_download.xlsx'
 
     def get_queryset(self):
 
-        now = datetime.datetime(2022, 11, 10, 4, 32, 2)
-        # now = datetime.datetime.now()
+        # now = datetime.datetime(2022, 11, 15, 17, 58, 2)
+        now = datetime.datetime.now()
         now = now + relativedelta(seconds=-(now.second % 5))
 
         period = self.request.GET.get('period')
@@ -943,39 +943,25 @@ class TestViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
         if period == 'month':
             start = now + relativedelta(days=-30)
-            data_count = 24 * 30
 
         elif period == 'week':
             start = now + relativedelta(days=-7)
-            data_count = 24 * 7
 
         elif period == 'day':
             start = now + relativedelta(days=-1)
-            data_count = 24
 
         elif period == 'now' or period == None:
             start = now + relativedelta(seconds=-60)
-            data_count = 12
 
         number = self.request.GET.get('number')
 
-        queryset = []
-
         # queryset = queryset.filter(user=self.request.user.id)
         # queryset = PatientStatus.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+        if period == 'month' or period == 'week' or period == 'day':
+            queryset = PatientStatusExcel.objects.filter(patient__number=number, now__gt=start, now__lte=now)
 
-        for i in range(1, data_count+1):
-            if period == 'month' or period == 'week' or period == 'day':
-
-                data = PatientStatus.objects.filter(patient__number=number, now=start + relativedelta(hours=1*i))
-
-            elif period == 'now' or period == None:
-
-                data = PatientStatus.objects.filter(patient__number=number, now=start + relativedelta(seconds=5*i))
-
-            if len(data) == True:
-                data = data[0]
-                queryset.append(data)
+        elif period == 'now' or period == None:
+            queryset = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
 
         return queryset
 
@@ -991,13 +977,93 @@ class TestViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
             return {
             'tab_title': '건강정보', # title of tab/workbook
             'use_header': True,  # show the header_title 
-            'header_title': f'{patient_name}님의 건강정보입니다.'
+            'header_title': f'{patient_name}님의 건강정보입니다.',
+            'height': 30,
+            'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': '1A3263',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+            },
+            'font': {
+                'size': 15,
+                'bold': True,
+                'color': 'FFFFFF',
+            }
+            }
             }
 
         else:
-
             return {
             'tab_title': '건강정보', # title of tab/workbook
             'use_header': True,  # show the header_title 
-            'header_title': f'환자의 정보가 존재하지 않습니다.'
+            'header_title': f'환자의 정보가 존재하지 않습니다.',
+            'height': 30,
+            'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': '1A3263',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+            },
+            'font': {
+                'size': 15,
+                'bold': True,
+                'color': 'FFFFFF',
             }
+            }
+            }
+
+    column_header = {
+        'column_width': [19, 19, 19, 19],
+        'height': 19,
+        'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': 'F6F7FB',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+                # 'wrapText': True,
+                # 'shrink_to_fit': True,
+            },
+            'border_side': {
+                'border_style': 'thin',
+                'color': '333333',
+            },
+            'font': {
+                # 'name': 'Arial',
+                'size': 12,
+                'bold': True,
+                'color': '1A3263',
+            },
+        },
+    }
+
+    body = {
+        'style': {
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+                # 'wrapText': True,
+                # 'shrink_to_fit': True,
+            },
+            # 'border_side': {
+            #     'border_style': 'thin',
+            #     'color': 'FF000000',
+            # },
+            'font': {
+                # 'name': 'Arial',
+                'size': 11,
+                'bold': False,
+                'color': '333333',
+            }
+        },
+        'height': 19,
+    }

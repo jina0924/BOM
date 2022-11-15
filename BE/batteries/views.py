@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Bms, BmsStatus, Battery, BatteryStatus
+from .models import Bms, BmsStatus, Battery, BatteryStatus, BmsStatusExcel, BatteryStatusExcel, BmsStatusNow, BatteryStatusNow
 from wards.models import Ward, Patient
-from .serializers import BmsStatusSerializer
+from .serializers import BmsStatusSerializer, BatteryStatusSerializer
 import jwt
 from thundervolt.settings import SECRET_KEY
 import datetime
@@ -144,5 +144,165 @@ def bms(request, patient_number):
     return Response({'실시간': result_now, '온도': result_temperature, '전압': result_voltage}, status=status.HTTP_200_OK)
 
 
+# 엑셀 다운로드
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from drf_excel.mixins import XLSXFileMixin
+from drf_excel.renderers import XLSXRenderer
 
+class BmsExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
+    serializer_class = BatteryStatusSerializer
+    renderer_classes = (XLSXRenderer,)
+    filename = 'bms_excel_download.xlsx'
+
+    def get_queryset(self):
+
+        now = datetime.datetime(2022, 11, 15, 17, 58, 2)
+        # now = datetime.datetime.now()
+        now = now + relativedelta(seconds=-(now.second % 5))
+
+        period = self.request.GET.get('period')
+        if period == 'month' or period == 'week' or period == 'day':
+            now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+
+        if period == 'month':
+            start = now + relativedelta(days=-30)
+
+        elif period == 'week':
+            start = now + relativedelta(days=-7)
+
+        elif period == 'day':
+            start = now + relativedelta(days=-1)
+
+        elif period == 'now' or period == None:
+            start = now + relativedelta(seconds=-60)
+
+        number = self.request.GET.get('number')
+
+        queryset = []
+
+        bms = Bms.objects.filter(patient__number=number)
+        # bms = BmsStatus.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+        if len(bms) == True:
+            bms_id = bms[0].id
+
+            batteries = Battery.objects.filter(bms_id=bms_id)
+            battery1_id = batteries[0].id
+            battery2_id = batteries[1].id
+
+            if period == 'month' or period == 'week' or period == 'day':
+                temperature = BmsStatusExcel.objects.filter(bms_id=bms_id, now__gt=start, now__lte=now)
+                battery1 = BatteryStatusExcel.objects.filter(battery_id=battery1_id, now__gt=start, now__lte=now)
+                battery2 = BatteryStatusExcel.objects.filter(battery_id=battery2_id, now__gt=start, now__lte=now)
+
+            elif period == 'now' or period == None:
+                temperature = BmsStatusNow.objects.filter(bms_id=bms_id, now__gt=start, now__lte=now)
+                battery1 = BatteryStatusNow.objects.filter(battery_id=battery1_id, now__gt=start, now__lte=now)
+                battery2 = BatteryStatusNow.objects.filter(battery_id=battery2_id, now__gt=start, now__lte=now)
+
+            for i in range(len(temperature)):
+                data = dict()
+                data['시간'] = temperature[i].now
+                data['온도'] = temperature[i].temperature
+                data['전압1'] = battery1[i].voltage
+                data['전압2'] = battery2[i].voltage
+                queryset.append(data)
+
+        return queryset
+
+    def get_header(self):
+
+        number = self.request.GET.get('number')
+
+        patient = Patient.objects.filter(number=number)
+        
+        if len(patient) == True:
+            patient_name = patient[0].name
+
+            return {
+            'tab_title': '디바이스정보', # title of tab/workbook
+            'use_header': True,  # show the header_title 
+            'header_title': f'{patient_name}님의 디바이스정보입니다.',
+            'height': 30,
+            'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': '1A3263',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+            },
+            'font': {
+                'size': 15,
+                'bold': True,
+                'color': 'FFFFFF',
+            }
+            }
+            }
+
+        else:
+            return {
+            'tab_title': '디바이스정보', # title of tab/workbook
+            'use_header': True,  # show the header_title 
+            'header_title': f'환자의 정보가 존재하지 않습니다.',
+            'height': 30,
+            'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': '1A3263',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+            },
+            'font': {
+                'size': 15,
+                'bold': True,
+                'color': 'FFFFFF',
+            }
+            }
+            }
+
+    column_header = {
+        'column_width': [19, 19, 19, 19],
+        'height': 19,
+        'style': {
+            'fill': {
+                'fill_type': 'solid',
+                'start_color': 'F6F7FB',
+            },
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+            },
+            'border_side': {
+                'border_style': 'thin',
+                'color': '333333',
+            },
+            'font': {
+                # 'name': 'Arial',
+                'size': 12,
+                'bold': True,
+                'color': '1A3263',
+            },
+        },
+    }
+
+    body = {
+        'style': {
+            'alignment': {
+                'horizontal': 'center',
+                'vertical': 'center',
+                # 'wrapText': True,
+                # 'shrink_to_fit': True,
+            },
+            'font': {
+                # 'name': 'Arial',
+                'size': 11,
+                'bold': False,
+                'color': '333333',
+            }
+        },
+        'height': 19,
+    }
