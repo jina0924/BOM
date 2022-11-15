@@ -29,7 +29,10 @@ function PatientList({
   useEffect(() => {
     if (location.pathname === "/main") {
       setPathname("main");
-    } else if (location.pathname === "/patients") {
+    } else if (
+      (location.pathname === "/patients") |
+      (location.pathname === "/patients/autoplay")
+    ) {
       setPathname("patients");
     }
   }, [location]);
@@ -55,15 +58,19 @@ function PatientList({
               </span>
             </Link>
           )}
-          {nowPage === "patients" && onOff === false && (
-            <div onClick={onZoom}>
+          {nowPage === "patients" && (
+            // <div onClick={onZoom}>
+            <Link to="/patients/autoplay">
               <UilArrowResizeDiagonal className="text-font2 inline h-[16px] transition delay-150 ease-in-out  hover:cursor-pointer hover:scale-125 duration-300" />
-            </div>
+            </Link>
+            // </div>
           )}
-          {nowPage === "patients" && onOff === true && (
-            <div onClick={onZoom}>
+          {nowPage === "patientsAutoPlay" && (
+            // <div onClick={onZoom}>
+            <Link to="/patients">
               <UilArrowDownLeft className="text-font2 inline h-[16px] transition delay-150 ease-in-out hover:cursor-pointer hover:scale-125 duration-300" />
-            </div>
+            </Link>
+            // </div>
           )}
         </div>
       </div>
@@ -224,15 +231,17 @@ function PatientList({
             )}
           </table>
           {/* pagination */}
-          <div className="pagination-number">
-            <CustomPagination
-              page={page}
-              itemsCount={limit}
-              totalCount={count}
-              pageRange={5}
-              onChange={handlePageChange}
-            />
-          </div>
+          {nowPage !== "patientsAutoPlay" && (
+            <div className="pagination-number">
+              <CustomPagination
+                page={page}
+                itemsCount={limit}
+                totalCount={count}
+                pageRange={5}
+                onChange={handlePageChange}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
