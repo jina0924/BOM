@@ -70,19 +70,32 @@ function PatientDetail({ isPC }) {
         params.id,
         filter,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        (err) => {
+          console.log(err);
+          if (err.response.request.status === 404) {
+            alert("없는 환자입니다.");
+            navigate("/404");
+          } else if (err.response.request.status === 403) {
+            alert("다른 병동 환자입니다.");
+            navigate("/");
+          }
+        }
       );
     }
     if (userType === "patient" && !isPC) {
-      requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
-        console.log(err)
-      );
-      requestPatientDetailHealthInfo(
-        null,
-        null,
-        requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
-      );
+      if (ls.number === params.id) {
+        requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
+          console.log(err)
+        );
+        requestPatientDetailHealthInfo(
+          null,
+          null,
+          requestPatientDetailHealthInfoSuccess,
+          (err) => console.log(err)
+        );
+      } else {
+        navigate(`/patient/${ls.number}`);
+      }
     }
     return () => {
       for (let timer of timerID.current) {
