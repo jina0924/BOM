@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
+import "./patientListCarouselEffect.css";
+
 import {
   UilArrowResizeDiagonal,
   UilArrowDownLeft,
@@ -25,6 +27,7 @@ function PatientList({
   const navigate = useNavigate();
 
   const [pathname, setPathname] = useState("");
+  const [fade, setFade] = useState("");
 
   useEffect(() => {
     if (location.pathname === "/main") {
@@ -36,6 +39,18 @@ function PatientList({
       setPathname("patients");
     }
   }, [location]);
+
+  useEffect(() => {
+    console.log("환자 리스트", patientList);
+    // setFade("end");
+    const to = setTimeout(() => {
+      setFade("end");
+    });
+    return () => {
+      clearTimeout(to);
+      setFade("");
+    };
+  }, [patientList]);
 
   function onClickPatientDetailInfo(item) {
     navigate(`/patient/${item.number}`);
@@ -76,7 +91,7 @@ function PatientList({
       </div>
       <div className="h-[90%] overflow-x-auto">
         <div className="h-full flex flex-col justify-evenly items-center">
-          <table className="w-[85%] border-collapse px-4 mx-auto">
+          <table className={`w-[85%] border-collapse px-4 mx-auto ${fade}`}>
             <thead>
               <tr>
                 <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
