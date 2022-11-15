@@ -41,16 +41,15 @@ function PatientList({
   }, [location]);
 
   useEffect(() => {
-    console.log("환자 리스트", patientList);
     // setFade("end");
     const to = setTimeout(() => {
       setFade("end");
-    });
+    }, 10);
     return () => {
       clearTimeout(to);
       setFade("");
     };
-  }, [patientList]);
+  }, [page]);
 
   function onClickPatientDetailInfo(item) {
     navigate(`/patient/${item.number}`);

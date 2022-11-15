@@ -31,12 +31,12 @@ function PatientsAutoPlay({ isPC }) {
     if (!res.data.next) {
       // setNow(1);
       console.log("맨 처음 페이지로 요청 보낼 예정");
-      const timerID = setTimeout(setNow, 10000, 1);
+      const timerID = setTimeout(setNow, 5000, 1);
       patientListTimerID.current = [...patientListTimerID.current, timerID];
     } else {
       // setNow(now + 1);
       console.log(`${now}다음 페이지로 요청 보낼 예정`);
-      const timerID = setTimeout(setNow, 10000, now + 1);
+      const timerID = setTimeout(setNow, 5000, now + 1);
       patientListTimerID.current = [...patientListTimerID.current, timerID];
     }
     // const timerID = setTimeout(
