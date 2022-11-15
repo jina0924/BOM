@@ -15,6 +15,7 @@ import Btn from "components/atoms/Btn";
 
 // API
 import {
+  requestExcelDownload,
   requestPatientDetail,
   requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
@@ -234,6 +235,33 @@ function PatientDetail({ isPC }) {
     navigate("/login");
   };
 
+  const requestExcelDownloadSuccess = (res) => {
+    // console.log(res);
+    // const blobURL = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
+    var blob = new Blob([res.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    var blobURL = window.URL.createObjectURL(blob);
+    var tempLink = document.createElement("a");
+    tempLink.style.display = "none";
+    tempLink.href = blobURL;
+    tempLink.setAttribute("download", "test.xlsx");
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+    window.URL.revokeObjectURL(blobURL);
+  };
+
+  const clickExcelDownload = () => {
+    const newParams = {
+      number: params.id,
+      period: filter.current.period,
+    };
+    requestExcelDownload(newParams, requestExcelDownloadSuccess, (err) =>
+      console.log(err)
+    );
+  };
+
   return (
     <>
       {isPC && (
@@ -290,7 +318,7 @@ function PatientDetail({ isPC }) {
                   <option value="week">7 일</option>
                   <option value="month">30 일</option>
                 </select>
-                <DownloadBtn />
+                <DownloadBtn onClickFunction={clickExcelDownload} />
               </div>
             </div>
             {/* 전체 서머리 페이지 */}
