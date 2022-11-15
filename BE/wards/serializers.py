@@ -188,3 +188,4 @@ class PatientListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ('id', 'number', 'name', 'sex', 'temperature', 'bpm', 'oxygenSaturation', 'nokName', 'nokPhonenumber', 'doctor', 'isWarning',)
+
