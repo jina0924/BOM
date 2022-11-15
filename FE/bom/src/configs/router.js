@@ -37,9 +37,11 @@ function CheckAuth({ children }) {
   } else if (checkAuth() === 1) {
     if (
       children.type.name === "PatientDetail" &&
-      ls.get("number") === parseInt(window.location.pathname.substring(9))
+      ls.get("number") === +window.location.pathname.substring(9)
     ) {
       return children;
+    } else {
+      return <Navigate to={`/patient/${ls.get("number")}`} />;
     }
   } else {
     ls.clear();
