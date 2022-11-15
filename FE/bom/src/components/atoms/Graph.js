@@ -78,8 +78,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최대"
                     stroke="#EA5455"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 {filter.period !== "now" && (
@@ -88,8 +87,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최소"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 {filter.period === "now" && (
@@ -98,8 +96,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="체온"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
               </LineChart>
@@ -126,8 +123,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최대"
                     stroke="#EA5455"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
@@ -137,8 +133,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최소"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 {filter.period === "now" && (
@@ -147,8 +142,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="심박수"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
               </LineChart>
@@ -175,8 +169,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최대"
                     stroke="#EA5455"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
@@ -186,8 +179,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최소"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 {filter.period === "now" && (
@@ -196,8 +188,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="산소포화도"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
               </LineChart>
@@ -226,7 +217,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   dataKey="전압1"
                   stroke="#EA5455"
                   dot={{ r: 0 }}
-                  activeDot={{ r: 2 }}
+                  activeDot={{ r: 4 }}
                   isAnimationActive={false}
                 />
 
@@ -237,7 +228,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   dataKey="전압2"
                   stroke="#5C78B1"
                   dot={{ r: 0 }}
-                  activeDot={{ r: 2 }}
+                  activeDot={{ r: 4 }}
                   isAnimationActive={false}
                 />
               </LineChart>
@@ -264,8 +255,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="온도"
                     stroke="#5C78B1"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
                 {filter.period !== "now" && (
@@ -274,8 +264,7 @@ function Graph({ part, isPC = true, data, filter }) {
                     dataKey="최고"
                     stroke="#EA5455"
                     dot={{ r: 0 }}
-                    activeDot={{ r: 2 }}
-                    isAnimationActive={false}
+                    activeDot={{ r: 4 }}
                   />
                 )}
 
@@ -320,7 +309,6 @@ function Graph({ part, isPC = true, data, filter }) {
                     stroke="#5C78B1"
                     dot={{ r: 2 }}
                     activeDot={{ r: 4 }}
-                    isAnimationActive={false}
                   />
                 )}
                 <Legend verticalAlign="top" width="100%" />
@@ -344,7 +332,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[30, 45]} />
+                <YAxis type="number" domain={[0, 45]} />
                 <Tooltip />
 
                 <Line
@@ -352,7 +340,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   dataKey="체온"
                   stroke="#5C78B1"
                   dot={{ r: 0 }}
-                  activeDot={{ r: 2 }}
+                  activeDot={{ r: 4 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -370,7 +358,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[20, 100]} />
+                <YAxis type="number" domain={[0, 250]} />
                 <Tooltip />
 
                 <Line
@@ -378,7 +366,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   dataKey="심박수"
                   stroke="#5C78B1"
                   dot={{ r: 0 }}
-                  activeDot={{ r: 2 }}
+                  activeDot={{ r: 4 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -396,7 +384,7 @@ function Graph({ part, isPC = true, data, filter }) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[80, 100]} />
+                <YAxis type="number" domain={[0, 100]} />
                 <Tooltip />
 
                 <Line
@@ -404,7 +392,7 @@ function Graph({ part, isPC = true, data, filter }) {
                   dataKey="산소포화도"
                   stroke="#5C78B1"
                   dot={{ r: 0 }}
-                  activeDot={{ r: 2 }}
+                  activeDot={{ r: 4 }}
                 />
               </LineChart>
             </ResponsiveContainer>

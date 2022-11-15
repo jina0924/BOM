@@ -142,14 +142,14 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class HealthSerializer(serializers.ModelSerializer):
 
+    시간 = serializers.DateTimeField(source='now', format='%Y-%m-%d %H:%M:%S')
     체온 = serializers.FloatField(source='temperature')
     심박수 = serializers.IntegerField(source='bpm')
     산소포화도 = serializers.IntegerField(source='oxygen_saturation')
-    시간 = serializers.DateTimeField(source='now', format='%Y-%m-%d %H:%M:%S')
 
     class Meta:
         model = PatientStatus
-        fields = ('체온', '심박수', '산소포화도', '시간',)
+        fields = ('시간', '체온', '심박수', '산소포화도',)
 
 
 class PatientStatusSerializer(serializers.ModelSerializer):
@@ -188,3 +188,4 @@ class PatientListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ('id', 'number', 'name', 'sex', 'temperature', 'bpm', 'oxygenSaturation', 'nokName', 'nokPhonenumber', 'doctor', 'isWarning',)
+

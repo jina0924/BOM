@@ -22,6 +22,9 @@ function PatientList({
   onZoom,
   onOff,
 }) {
+  const [pathname, setPathname] = useState("");
+  // const [component, setComponent] = useState(0);
+
   const location = useLocation();
   const navigate = useNavigate();
 
