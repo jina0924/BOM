@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useEffect } from "react";
 import ls from "helper/LocalStorage";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +20,11 @@ function DeviceNotSupport({ isPC }) {
     } else if (userType === "patient" && !isPC) {
       navigate(`/patient/${ls.get("number")}`);
     }
+  };
+
+  const goToLogin = () => {
+    ls.clear();
+    navigate("login");
   };
 
   return (
@@ -51,7 +56,7 @@ function DeviceNotSupport({ isPC }) {
             <Logo disabled={true} size="l" />
           </div>
           <div className="content-box w-[100vw] h-1/2 flex justify-center">
-            <div className="square-box bg-white w-4/5 h-full rounded-[20px] shadow-box flex flex-col justify-center">
+            <div className="square-box bg-white w-4/5 h-full rounded-[20px] shadow-box flex flex-col justify-center relative">
               <div className="icon-box flex justify-center text-main pb-10">
                 <UilLaptop size={100} />
               </div>
@@ -64,6 +69,14 @@ function DeviceNotSupport({ isPC }) {
                 <span className="flex justify-center">더 넓은 화면의</span>
                 <span className="flex justify-center">
                   디바이스를 이용해주세요.
+                </span>
+              </div>
+              <div className="absolute bottom-5">
+                <span
+                  className="flex justify-center text-sm font-semibold text-font1 hover:cursor-pointer hover:text-font2"
+                  onClick={goToLogin}
+                >
+                  로그인 화면으로 이동
                 </span>
               </div>
             </div>
