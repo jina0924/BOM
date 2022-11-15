@@ -14,26 +14,26 @@ import ls from "helper/LocalStorage";
 
 function Patients({ isPC }) {
   const navigate = useNavigate();
-  const [component, setComponent] = useState(0);
+  // const [component, setComponent] = useState(0);
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [now, setNow] = useState(1);
-  const [next, setNext] = useState("");
+  // const [next, setNext] = useState("");
   const [keyword, setKeyword] = useState("");
   const patientListTimerID = useRef([]);
 
   // 응답받고 데이터 확인해서 쓰지 않는 값이면 setTimeout 걸지 말기
   // 페이지가 같고 키워드가 다를땐?????????????
   function patientListSuccess(res) {
-    console.log("응답 받음", res.data, `component: ${component}`);
+    console.log("응답 받음", res.data);
     setPatientList(res.data.results);
     setCount(res.data.count);
-    setNext(res.data.next);
+    // setNext(res.data.next);
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    console.log("재요청 보냄", `now: ${now}`, `component: ${component}`);
+    console.log("재요청 보냄", `now: ${now}`);
     // if (component === 0) {
     if (keyword === "" && now === res.data.now) {
       const timerID = setTimeout(
@@ -94,7 +94,7 @@ function Patients({ isPC }) {
   }
 
   useEffect(() => {
-    console.log("환자 리스트 요청 보냄", now, component);
+    console.log("환자 리스트 요청 보냄", now);
     if (keyword) {
       requestSearchPatient(
         now,
@@ -139,13 +139,13 @@ function Patients({ isPC }) {
     }
   }
 
-  function onZoom() {
-    if (component === 0) {
-      setComponent(1);
-    } else if (component === 1) {
-      setComponent(0);
-    }
-  }
+  // function onZoom() {
+  //   if (component === 0) {
+  //     navigate("/patients");
+  //   } else if (component === 1) {
+  //     navigate("/patients/autoplay");
+  //   }
+  // }
 
   // useEffect(() => {
   //   let timerID = "";
@@ -186,37 +186,37 @@ function Patients({ isPC }) {
 
   return (
     <>
-      {component === 0 && (
-        <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
-          <SideBar />
-          <div className="info-zone col-span-5">
-            <HeadBar />
-            <div className="flex flex-col justify-center items-center h-[84vh]">
-              <div className="h-[12vh] w-full">
-                <PatientSearchBar
-                  keyword={keyword}
-                  onChangeInput={(e) => setKeyword(e.target.value)}
-                  onSearch={onSearch}
-                  onKeyPress={onKeyPressSearch}
-                />
-              </div>
-              <div className="px-8 h-[72vh] pb-4 w-full">
-                <PatientList
-                  patientList={patientList}
-                  page={now}
-                  count={count}
-                  limit={9}
-                  handlePageChange={handlePageChange}
-                  nowPage="patients"
-                  onZoom={onZoom}
-                  onOff={false}
-                />
-              </div>
+      {/* {component === 0 && ( */}
+      <div className="grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
+        <SideBar />
+        <div className="info-zone col-span-5">
+          <HeadBar />
+          <div className="flex flex-col justify-center items-center h-[84vh]">
+            <div className="h-[12vh] w-full">
+              <PatientSearchBar
+                keyword={keyword}
+                onChangeInput={(e) => setKeyword(e.target.value)}
+                onSearch={onSearch}
+                onKeyPress={onKeyPressSearch}
+              />
+            </div>
+            <div className="px-8 h-[72vh] pb-4 w-full">
+              <PatientList
+                patientList={patientList}
+                page={now}
+                count={count}
+                limit={9}
+                handlePageChange={handlePageChange}
+                nowPage="patients"
+                // onZoom={onZoom}
+                onOff={false}
+              />
             </div>
           </div>
         </div>
-      )}
-      {component === 1 && (
+      </div>
+      {/* )} */}
+      {/* {component === 1 && (
         <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
           <PatientList
             patientList={patientList}
@@ -229,7 +229,7 @@ function Patients({ isPC }) {
             onOff={true}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 }
