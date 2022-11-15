@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // components
 import Title from "components/atoms/Title";
 import CustomPagination from "components/atoms/CustomPagination";
 
-// api
-// import { requestPatientList } from "api/patients";
+import "./patientListCarouselEffect.css";
 
 import {
   UilArrowResizeDiagonal,
@@ -30,15 +28,30 @@ function PatientList({
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [pathname, setPathname] = useState("");
+  const [fade, setFade] = useState("");
+
   useEffect(() => {
     if (location.pathname === "/main") {
       setPathname("main");
-      // 환자리스트 limit=8로 요청보내기
-    } else if (location.pathname === "/patients") {
+    } else if (
+      (location.pathname === "/patients") |
+      (location.pathname === "/patients/autoplay")
+    ) {
       setPathname("patients");
-      // 환자리스트 limit=9로 요청보내기
     }
   }, [location]);
+
+  useEffect(() => {
+    // setFade("end");
+    const to = setTimeout(() => {
+      setFade("end");
+    }, 10);
+    return () => {
+      clearTimeout(to);
+      setFade("");
+    };
+  }, [page]);
 
   function onClickPatientDetailInfo(item) {
     navigate(`/patient/${item.number}`);
@@ -61,21 +74,25 @@ function PatientList({
               </span>
             </Link>
           )}
-          {nowPage === "patients" && onOff === false && (
-            <div onClick={onZoom}>
+          {nowPage === "patients" && (
+            // <div onClick={onZoom}>
+            <Link to="/patients/autoplay">
               <UilArrowResizeDiagonal className="text-font2 inline h-[16px] transition delay-150 ease-in-out  hover:cursor-pointer hover:scale-125 duration-300" />
-            </div>
+            </Link>
+            // </div>
           )}
-          {nowPage === "patients" && onOff === true && (
-            <div onClick={onZoom}>
+          {nowPage === "patientsAutoPlay" && (
+            // <div onClick={onZoom}>
+            <Link to="/patients">
               <UilArrowDownLeft className="text-font2 inline h-[16px] transition delay-150 ease-in-out hover:cursor-pointer hover:scale-125 duration-300" />
-            </div>
+            </Link>
+            // </div>
           )}
         </div>
       </div>
       <div className="h-[90%] overflow-x-auto">
         <div className="h-full flex flex-col justify-evenly items-center">
-          <table className="w-[85%] border-collapse px-4 mx-auto">
+          <table className={`w-[85%] border-collapse px-4 mx-auto ${fade}`}>
             <thead>
               <tr>
                 <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
@@ -229,7 +246,6 @@ function PatientList({
               </tbody>
             )}
           </table>
-          {/* pagination */}
           <div className="pagination-number">
             <CustomPagination
               page={page}
