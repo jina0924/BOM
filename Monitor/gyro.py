@@ -99,9 +99,9 @@ class Gyro():
         #if(isFall == True):
          #   print("warning")
         #print(f'X : {xGyro}, Y : {yGyro}, Z : {zGyro}')
-        if(abs(xGyro) > 4000 or abs(yGyro) >4000 or abs(zGyro)>4000):
+        if(abs(xGyro) + abs(yGyro) + abs(zGyro) > 5000):
             isFall = True
-        elif(abs(xGyro) < 3000 and abs(yGyro) < 3000 and abs(zGyro) < 3000):
+        elif(abs(xGyro) + abs(yGyro) + abs(zGyro) < 3000):
             isFall = False
         
         return xGyro, yGyro,zGyro,isFall
