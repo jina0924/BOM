@@ -236,7 +236,7 @@ function PatientDetail({ isPC }) {
   };
 
   const requestExcelDownloadSuccess = (res) => {
-    console.log(res);
+    // console.log(res);
     // const blobURL = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
     var blob = new Blob([res.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
