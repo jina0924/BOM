@@ -77,6 +77,7 @@ function Main({ isPC }) {
   const [utilization, setUtilization] = useState(1);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   function wardInfoSuccess(res) {
     console.log("병동 정보", res);
@@ -210,7 +211,7 @@ function Main({ isPC }) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    if (now === res.data.now) {
+    if (now === res.data.now && location.pathname === "/main") {
       console.log("재요청 보냄", now);
       const timerID = setTimeout(
         requestPatientList,
