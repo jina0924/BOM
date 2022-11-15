@@ -26,7 +26,7 @@ function DeviceNotSupport({ isPC }) {
 
   const goToLogin = () => {
     ls.clear();
-    navigate("login");
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -42,20 +42,30 @@ function DeviceNotSupport({ isPC }) {
       {isPC && (
         <div className="device-not-support-pc h-[100vh] bg-back flex flex-col justify-center items-center">
           <div className="square-box bg-white h-4/5 w-4/5 flex flex-col justify-center">
-            <div className="logo-box flex justify-center pb-20">
-              <Logo disabled={true} size="xl" />
+            <div className="h-[90%] flex flex-col justify-center">
+              <div className="logo-box flex justify-center pb-20">
+                <Logo disabled={true} size="xl" />
+              </div>
+              <div className="icon-box flex justify-center pb-10 text-main">
+                <UilMobileAndroid size={60} />
+              </div>
+              <div className="content-box flex flex-col justify-center text-2xl text-font1">
+                <span className="flex justify-center">보호자 및 환자에게</span>
+                <span className="flex justify-center">
+                  지원하지 않는 디바이스입니다.
+                </span>
+                <br />
+                <span className="flex justify-center">모바일 환경으로</span>
+                <span className="flex justify-center">이용해주세요.</span>
+              </div>
             </div>
-            <div className="icon-box flex justify-center pb-10 text-main">
-              <UilMobileAndroid size={60} />
-            </div>
-            <div className="content-box flex flex-col justify-center text-2xl text-font1">
-              <span className="flex justify-center">보호자 및 환자에게</span>
-              <span className="flex justify-center">
-                지원하지 않는 디바이스입니다.
+            <div className="h-[10%]">
+              <span
+                className="font-medium text-lg text-font2 flex justify-center hover:cursor-pointer hover:text-sub2"
+                onClick={goToLogin}
+              >
+                로그인 화면으로 이동
               </span>
-              <br />
-              <span className="flex justify-center">모바일 환경으로</span>
-              <span className="flex justify-center">이용해주세요.</span>
             </div>
           </div>
         </div>
@@ -97,7 +107,7 @@ function DeviceNotSupport({ isPC }) {
                 </div>
               </div>
               <span
-                className="h-[10%] text-sm font-medium text-font2 flex justify-center hover:cursor-pointer hover:text-font2"
+                className="h-[10%] text-sm font-medium text-font2 flex justify-center hover:cursor-pointer hover:text-sub2"
                 onClick={goToLogin}
               >
                 로그인 화면으로 이동

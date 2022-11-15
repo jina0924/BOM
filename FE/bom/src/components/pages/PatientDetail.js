@@ -66,10 +66,10 @@ function PatientDetail({ isPC }) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) => {
         console.log(err.response.request.status);
         if (err.response.request.status === 404) {
-          alert("존재하지 않는 환자입니다.");
+          // alert("존재하지 않는 환자입니다.");
           navigate("/404");
         } else if (err.response.request.status === 403) {
-          alert("다른 병동 환자입니다.");
+          // alert("다른 병동 환자입니다.");
           navigate("/");
         }
       });
@@ -80,10 +80,10 @@ function PatientDetail({ isPC }) {
         (err) => {
           console.log(err.response.request.status);
           if (err.response.request.status === 404) {
-            alert("존재하지 않는 환자입니다.");
+            // alert("존재하지 않는 환자입니다.");
             navigate("/404");
           } else if (err.response.request.status === 403) {
-            alert("다른 병동 환자입니다.");
+            // alert("다른 병동 환자입니다.");
             navigate("/");
           }
         }
