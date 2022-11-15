@@ -14,14 +14,14 @@ function PatientsAutoPlay() {
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
   const [now, setNow] = useState(1);
-  const [next, setNext] = useState("");
+  // const [next, setNext] = useState("");
   const patientListTimerID = useRef([]);
 
   function patientListSuccess(res) {
     console.log("요청에 응답 받음", res.data);
     setPatientList(res.data.results);
     setCount(res.data.count);
-    setNext(res.data.next);
+    // setNext(res.data.next);
     for (let timer of patientListTimerID.current) {
       clearTimeout(timer);
     }
