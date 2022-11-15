@@ -231,17 +231,17 @@ function PatientList({
             )}
           </table>
           {/* pagination */}
-          {nowPage !== "patientsAutoPlay" && (
-            <div className="pagination-number">
-              <CustomPagination
-                page={page}
-                itemsCount={limit}
-                totalCount={count}
-                pageRange={5}
-                onChange={handlePageChange}
-              />
-            </div>
-          )}
+          {/* {nowPage !== "patientsAutoPlay" && ( */}
+          <div className="pagination-number">
+            <CustomPagination
+              page={page}
+              itemsCount={limit}
+              totalCount={count}
+              pageRange={5}
+              onChange={handlePageChange}
+            />
+          </div>
+          {/* )} */}
         </div>
       </div>
     </div>
