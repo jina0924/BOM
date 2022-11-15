@@ -126,6 +126,7 @@ export default function RouterConfiguration() {
           element={<DeviceNotSupport isPC={isPC} />}
         />
         <Route path="/404" element={<PageNotFound isPC={isPC} />} />
+        <Route path="*" element={<PageNotFound isPC={isPC} />} />
       </Routes>
     </Router>
   );
