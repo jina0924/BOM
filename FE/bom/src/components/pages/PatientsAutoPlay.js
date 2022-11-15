@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 // component
@@ -39,15 +38,6 @@ function PatientsAutoPlay({ isPC }) {
       const timerID = setTimeout(setNow, 5000, now + 1);
       patientListTimerID.current = [...patientListTimerID.current, timerID];
     }
-    // const timerID = setTimeout(
-    //   requestPatientList,
-    //   10000,
-    //   now,
-    //   9,
-    //   patientListSuccess,
-    //   patientListFail
-    // );
-    // patientListTimerID.current = [...patientListTimerID.current, timerID]
   }
 
   function patientListFail(err) {
@@ -92,7 +82,6 @@ function PatientsAutoPlay({ isPC }) {
         limit={9}
         handlePageChange={handlePageChange}
         nowPage="patientsAutoPlay"
-        // onZoom={onZoom}
         onOff={true}
       />
     </div>

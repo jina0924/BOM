@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 // components
 import Title from "components/atoms/Title";
@@ -244,8 +243,6 @@ function PatientList({
               </tbody>
             )}
           </table>
-          {/* pagination */}
-          {/* {nowPage !== "patientsAutoPlay" && ( */}
           <div className="pagination-number">
             <CustomPagination
               page={page}
@@ -255,7 +252,6 @@ function PatientList({
               onChange={handlePageChange}
             />
           </div>
-          {/* )} */}
         </div>
       </div>
     </div>
