@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // component
 import PatientList from "components/molecules/common/PatientList";
@@ -8,8 +8,10 @@ import PatientList from "components/molecules/common/PatientList";
 // api
 import { requestPatientList } from "api/patients";
 
-function PatientsAutoPlay() {
-  // const navigate = useNavigate();
+import ls from "helper/LocalStorage";
+
+function PatientsAutoPlay({ isPC }) {
+  const navigate = useNavigate();
 
   const [patientList, setPatientList] = useState([]);
   const [count, setCount] = useState(1);
@@ -52,6 +54,10 @@ function PatientsAutoPlay() {
     console.log("요청 실패", err);
   }
 
+  function handlePageChange(page) {
+    setNow(page);
+  }
+
   useEffect(() => {
     console.log(`${now}번째 환자리스트 요청보냄`);
     requestPatientList(now, 9, patientListSuccess, patientListFail);
@@ -64,6 +70,19 @@ function PatientsAutoPlay() {
     };
   }, [now]);
 
+  useEffect(() => {
+    checkUserType();
+  }, [isPC]);
+
+  const checkUserType = () => {
+    const userType = ls.get("userType");
+    if (userType === "ward" && !isPC) {
+      navigate("/deviceNotSupported");
+    } else if (userType === "patient" && isPC) {
+      navigate("/deviceNotSupported");
+    }
+  };
+
   return (
     <div className="w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw]">
       <PatientList
@@ -71,7 +90,7 @@ function PatientsAutoPlay() {
         page={now}
         count={count}
         limit={9}
-        // handlePageChange={handlePageChange}
+        handlePageChange={handlePageChange}
         nowPage="patientsAutoPlay"
         // onZoom={onZoom}
         onOff={true}
