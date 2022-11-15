@@ -978,3 +978,26 @@ class TestViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
                 queryset.append(data)
 
         return queryset
+
+    def get_header(self):
+
+        number = self.request.GET.get('number')
+
+        patient = Patient.objects.filter(number=number)
+        
+        if len(patient) == True:
+            patient_name = patient[0].name
+
+            return {
+            'tab_title': '건강정보', # title of tab/workbook
+            'use_header': True,  # show the header_title 
+            'header_title': f'{patient_name}님의 건강정보입니다.'
+            }
+
+        else:
+
+            return {
+            'tab_title': '건강정보', # title of tab/workbook
+            'use_header': True,  # show the header_title 
+            'header_title': f'환자의 정보가 존재하지 않습니다.'
+            }
