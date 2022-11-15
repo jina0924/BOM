@@ -9,6 +9,8 @@ import Logo from "components/atoms/Logo";
 function DeviceNotSupport({ isPC }) {
   const navigate = useNavigate();
 
+  const [isRow, setIsRow] = useState(false);
+
   useEffect(() => {
     checkUserType();
   }, [isPC]);
@@ -21,6 +23,19 @@ function DeviceNotSupport({ isPC }) {
       navigate(`/patient/${ls.get("number")}`);
     }
   };
+
+  const goToLogin = () => {
+    ls.clear();
+    navigate("login");
+  };
+
+  useEffect(() => {
+    if (window.innerHeight < 450) {
+      setIsRow(true);
+    } else {
+      setIsRow(false);
+    }
+  }, []);
 
   return (
     <>
@@ -51,21 +66,42 @@ function DeviceNotSupport({ isPC }) {
             <Logo disabled={true} size="l" />
           </div>
           <div className="content-box w-[100vw] h-1/2 flex justify-center">
-            <div className="square-box bg-white w-4/5 h-full rounded-[20px] shadow-box flex flex-col justify-center">
-              <div className="icon-box flex justify-center text-main pb-10">
-                <UilLaptop size={100} />
+            <div className="square-box bg-white w-4/5 h-full rounded-[20px] shadow-box flex flex-col justify-center relative">
+              <div
+                className={`h-[90%] ${
+                  isRow
+                    ? "flex justify-center items-center"
+                    : "flex flex-col justify-center"
+                }`}
+              >
+                <div
+                  className={`icon-box flex justify-center text-main ${
+                    isRow ? "pr-10" : "pb-10"
+                  }`}
+                >
+                  <UilLaptop size={isRow ? 80 : 100} />
+                </div>
+                <div className="message-box flex flex-col text-font1">
+                  <span className={`${!isRow && "flex justify-center"}`}>
+                    간호사에게 지원하지 않는
+                  </span>
+                  <span className={`${!isRow && "flex justify-center"}`}>
+                    디바이스입니다.
+                  </span>
+                  <span className={`pt-3 ${!isRow && "flex justify-center"}`}>
+                    더 넓은 화면의
+                  </span>
+                  <span className={`${!isRow && "flex justify-center"}`}>
+                    디바이스를 이용해주세요.
+                  </span>
+                </div>
               </div>
-              <div className="message-box flex flex-col text-font1">
-                <span className="flex justify-center">
-                  간호사에게 지원하지 않는
-                </span>
-                <span className="flex justify-center">디바이스입니다.</span>
-                <br />
-                <span className="flex justify-center">더 넓은 화면의</span>
-                <span className="flex justify-center">
-                  디바이스를 이용해주세요.
-                </span>
-              </div>
+              <span
+                className="h-[10%] text-sm font-medium text-font2 flex justify-center hover:cursor-pointer hover:text-font2"
+                onClick={goToLogin}
+              >
+                로그인 화면으로 이동
+              </span>
             </div>
           </div>
         </div>
