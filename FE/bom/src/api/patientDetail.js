@@ -1,5 +1,4 @@
 import UserApi from "api/UserApi";
-import { success } from "daisyui/src/colors";
 
 function requestPatientDetail(patientNumber, success, fail) {
   patientNumber !== null
