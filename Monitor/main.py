@@ -140,7 +140,7 @@ def getSensor():
     #g=gyro.Gyro()
 
     while True:
-
+        
         if(exit_flag == 1):
             break
         #battery
@@ -155,8 +155,11 @@ def getSensor():
         
         
         #temp_battery
-        _,tb = Adafruit_DHT.read_retry(s,23)
-        temp_battery = int(tb)
+        try:
+            _,tb = Adafruit_DHT.read_retry(s,23)
+            temp_battery = int(tb)
+        except:
+            temp_battery = 26
 
         # temp_human
         if(is_Finger == True):
@@ -175,33 +178,39 @@ def getSensor():
 
         temps.append(temp_human)
 
-        now = datetime.strftime(datetime.now(),"%M:%S")
-        idx.append(str(now))
+        now_ms = datetime.strftime(datetime.now(),"%M:%S")
+        idx.append(str(now_ms))
         #sleep(1)
         
        # t+=1
+        ns = datetime.now().second 
+        now = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
 
         if (is_Finger == True):
             if(is_warn == False):
                 if(temp_human >= 38 or spo2 <= 90 or heart_rate <=30 or heart_rate >= 180):
                     is_warn = True
-                    db_pub(0)
+                    #db_pub(0,now)
+                    threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
             else:
                 if(temp_human < 37 and spo2 > 90 and heart_rate > 40 and heart_rate <175 and is_fall == False):
                     is_warn=False
                     print("Turn off warn")
         else:
             is_warn = False
-        
-        ns =datetime.now().second
 
+        
+        #ns =datetime.now().second
+        
         if(ns %5==0 ):
             #db_human
             #db_battery
             if(is_Finger==True):
-                db_pub(1)
+                #db_pub(1,now)
+                threading.Thread(target=db_pub,args=(1,now),daemon=True).start()
             else:
-                db_pub(2)
+                #db_pub(2,now)
+                threading.Thread(target=db_pub,args=(2,now),daemon=True).start()
             
 
         sleep(1)
@@ -280,9 +289,9 @@ def getHeart():
         idx_h.append(str(now))
 
 
-def db_pub(mode):
+def db_pub(mode,now):
     global db,c
-
+    
     #warning mode
     if(mode == 0):
         c.execute(f'update patient set is_warning = 1 where id = {patient_id};')
@@ -292,7 +301,7 @@ def db_pub(mode):
 
     #5sec mode
     elif(mode == 1):
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
         c.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
         c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
@@ -308,17 +317,17 @@ def db_pub(mode):
         db.commit()
     
     else:
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
         c.execute(f'insert into bms_status(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[1]});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
         
         #for now
         c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
         c.execute(f'insert into bms_status_now(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value(0,0,"{str(now)}",{bt_id[1]});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
 
         db.commit()
 
@@ -337,8 +346,10 @@ def getGyro():
         
         if(is_Finger==True):
             if(is_warn==False and is_fall==True):
-                is_warn = True
-                db_pub(0)
+                is_warn = True 
+                now = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
+                threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
+                #db_pub(0,now)
         else:
             is_fall = False
 
@@ -457,12 +468,13 @@ class MainPage(QDialog,QWidget,mainUi):
 
 
     def exit(self):
-        global exit_flag
+        global exit_flag,c,db
         exit_flag = 1
         #t.join()
         t1.join()
         t2.join()
         t3.join()
+        c.close()
         db.close()
         #subprocess.run("sudo reboot",shell = True)
         quit()
@@ -538,6 +550,9 @@ for (res) in c:
 t1 = threading.Thread(target=getSensor)
 t2 = threading.Thread(target=getHeart)
 t3 = threading.Thread(target=getGyro)
+t1.daemon=True
+t2.daemon=True
+t3.daemon=True
 t1.start()
 t2.start()
 t3.start()
