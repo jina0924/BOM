@@ -19,11 +19,8 @@ function PatientList({
   limit,
   handlePageChange,
   nowPage,
-  onZoom,
   onOff,
 }) {
-  // const [component, setComponent] = useState(0);
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,7 +39,6 @@ function PatientList({
   }, [location]);
 
   useEffect(() => {
-    // setFade("end");
     const to = setTimeout(() => {
       setFade("end");
     }, 10);
@@ -74,18 +70,14 @@ function PatientList({
             </Link>
           )}
           {nowPage === "patients" && (
-            // <div onClick={onZoom}>
             <Link to="/patients/autoplay">
               <UilArrowResizeDiagonal className="text-font2 inline h-[16px] transition delay-150 ease-in-out  hover:cursor-pointer hover:scale-125 duration-300" />
             </Link>
-            // </div>
           )}
           {nowPage === "patientsAutoPlay" && (
-            // <div onClick={onZoom}>
             <Link to="/patients">
               <UilArrowDownLeft className="text-font2 inline h-[16px] transition delay-150 ease-in-out hover:cursor-pointer hover:scale-125 duration-300" />
             </Link>
-            // </div>
           )}
         </div>
       </div>
@@ -148,7 +140,8 @@ function PatientList({
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
+                        ${item.isWarning && "text-sub1"}`}
                     >
                       {item.number}
                     </td>
