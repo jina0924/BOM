@@ -11,7 +11,8 @@ import ls from "helper/LocalStorage";
 function HeadBar() {
   const navigate = useNavigate();
   const wardNum = ls.get("number");
-  function logoutSuccess(res) {
+
+  function logoutSuccess() {
     ls.remove("accessToken");
     ls.remove("refreshToken");
     navigate("/login");
@@ -20,7 +21,6 @@ function HeadBar() {
   function logoutFail(err) {
     if (err.response?.status === 401) {
       alert("로그인 페이지로 이동합니다.");
-      // console.log(err.response.status);
       ls.clear();
       navigate("/login");
     }
