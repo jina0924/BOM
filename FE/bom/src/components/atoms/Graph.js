@@ -10,48 +10,7 @@ import {
   Legend,
 } from "recharts";
 
-// data & style guide
-
-// const data = [
-//   {
-//     시간: "Page A",
-//     최소: 40,
-//     최대: 24,
-//   },
-//   {
-//     시간: "Page B",
-//     최소: 30,
-//     최대: 13,
-//   },
-//   {
-//     시간: "Page C",
-//     최소: 20,
-//     최대: 40,
-//   },
-//   {
-//     시간: "Page D",
-//     최소: 27,
-//     최대: 39,
-//   },
-//   {
-//     시간: "Page E",
-//     최소: 18,
-//     최대: 48,
-//   },
-//   {
-//     시간: "Page F",
-//     최소: 23,
-//     최대: 38,
-//   },
-//   {
-//     시간: "Page G",
-//     최소: 34,
-//     최대: 43,
-//   },
-// ];
-
 function Graph({ part, isPC = true, data, filter }) {
-  // console.log(data);
   return (
     <>
       {isPC && (
@@ -63,7 +22,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
@@ -109,7 +67,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
@@ -155,7 +112,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
@@ -202,13 +158,12 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[0, 4]} />
+                <XAxis dataKey="시간" fontSize={11} />
+                <YAxis type="number" domain={[0, 4]} fontSize={11} />
                 <Tooltip />
                 <Legend verticalAlign="top" width="100%" />
 
@@ -241,13 +196,12 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="시간" />
-                <YAxis type="number" domain={[-20, 80]} />
+                <XAxis dataKey="시간" fontSize={11} />
+                <YAxis type="number" domain={[-20, 80]} fontSize={11} />
                 <Tooltip />
                 {filter.period === "now" && (
                   <Line
@@ -279,29 +233,13 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
                   bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis type="number" domain={[0, 300]} />
+                <XAxis dataKey="month" fontSize={11} />
+                <YAxis type="number" fontSize={11} />
                 <Tooltip />
-                {/* {!!data[0].최대 && (
-                  <Line
-                    type="monotone"
-                    dataKey="최대"
-                    stroke="#8884d8"
-                    activeDot={{ r: 4 }}
-                  />
-                )}
-                <Legend verticalAlign="top" width="100%" />
-                {!!data[0].최소 && (
-                  <Line type="monotone" dataKey="최소" stroke="#82ca9d" />
-                )}
-                {!!data[0].실시간 && (
-                  <Line type="monotone" dataKey="실시간" stroke="#82ca9d" />
-                )} */}
                 {!!data[0] && (
                   <Line
                     type="monotone"
@@ -326,8 +264,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
-                  // bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -352,8 +288,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
-                  // bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -378,8 +312,6 @@ function Graph({ part, isPC = true, data, filter }) {
                 margin={{
                   top: 0,
                   right: 50,
-                  // left: 20,
-                  // bottom: 5,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />

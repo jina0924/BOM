@@ -11,6 +11,7 @@ import Btn from "components/atoms/Btn";
 import LoginCarousel from "components/molecules/Login/LoginCarousel";
 
 import "./Login.css";
+import "./MobileLogin.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -46,8 +47,6 @@ function Login() {
   }
 
   function getUserInfoSuccess(res) {
-    console.log(res);
-    // 병동로그인인지 환자로그인인지에 따라 navigate 분리
     const userType = res.data.userType;
     const number = res.data.number;
     ls.set("userType", userType);
@@ -59,9 +58,7 @@ function Login() {
     }
   }
 
-  function getUserInfoFail(err) {
-    console.log(err);
-  }
+  function getUserInfoFail() {}
 
   async function loginSuccess(res) {
     const accessToken = res.data.access_token;
@@ -71,16 +68,13 @@ function Login() {
     await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
-  function loginFail(err) {
-    console.log(err);
+  function loginFail() {
     alert("다시 한 번 작성해주세요");
   }
 
   async function onSubmitLogin(event) {
     event.preventDefault();
-    // 유효성 검사
     await requestLogin(username, password, loginSuccess, loginFail);
-    // await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   return (
@@ -90,7 +84,7 @@ function Login() {
           <div className="login-frame shadow-login w-[60vw] h-[70vh] rounded-[20px] flex">
             <div className="login-box bg-white rounded-l-[20px] w-1/2 h-full flex flex-col items-center">
               <div className="login-frame h-full">
-                <Logo size="s" logoClassName="h-[20%]" />
+                <Logo size="s" logoClassName="h-[25%]" />
                 <h2 className="font-extrabold text-3xl text-main h-[15%]">
                   로그인
                 </h2>
@@ -120,7 +114,7 @@ function Login() {
                     </label>
                   </div>
                   <Btn
-                    className="text-white bg-main shadow-loginbtn w-[18vw] text-sm h-9 rounded-full mt-5"
+                    className="text-white bg-main shadow-loginbtn w-[18vw] text-sm font-semibold h-10 rounded-full mt-10"
                     onClick={onSubmitLogin}
                     content="로그인"
                   />

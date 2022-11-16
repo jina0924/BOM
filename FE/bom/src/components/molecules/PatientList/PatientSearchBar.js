@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Input from "components/atoms/Input";
 import Btn from "components/atoms/Btn";
@@ -6,14 +6,6 @@ import Btn from "components/atoms/Btn";
 import { UilSearch } from "@iconscout/react-unicons";
 
 function PatientSearchBar({ keyword, onChangeInput, onSearch, onKeyPress }) {
-  // const [inputValue, setInputValue] = useState("");
-
-  // function onChangeInput(event) {
-  //   const inputValue = event.target.value;
-  //   setInputValue(inputValue);
-  //   console.log(inputValue);
-  // }
-
   return (
     <div className="searchbar-box grid grid-cols-10 items-center h-full py-4 px-8">
       <div className="input-box h-full col-span-9 flex items-center">

@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import Logo from "components/atoms/Logo";
 import MenuItem from "components/atoms/MenuItem";
 
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function SideBar() {
   const location = useLocation();
   const [menuIndex, setMenuIndex] = useState("");
-
-  // console.log(menuIndex);
 
   useEffect(() => {
     if (location.pathname === "/") {
