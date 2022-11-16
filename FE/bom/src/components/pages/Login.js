@@ -11,6 +11,7 @@ import Btn from "components/atoms/Btn";
 import LoginCarousel from "components/molecules/Login/LoginCarousel";
 
 import "./Login.css";
+import "./MobileLogin.css";
 
 function Login() {
   const navigate = useNavigate();
