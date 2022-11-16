@@ -20,8 +20,14 @@ function requestPatientDetailDeviceInfo(patientNumber, params, success, fail) {
     .catch(fail);
 }
 
-function requestExcelDownload(params, success, fail) {
+function requestHealthExcelDownload(params, success, fail) {
   UserApi.get("wards/patients/excel", { responseType: "blob", params })
+    .then(success)
+    .catch(fail);
+}
+
+function requestDeviceExcelDownload(params, success, fail) {
+  UserApi.get("batteries/excel", { responseType: "blob", params })
     .then(success)
     .catch(fail);
 }
@@ -30,5 +36,6 @@ export {
   requestPatientDetail,
   requestPatientDetailHealthInfo,
   requestPatientDetailDeviceInfo,
-  requestExcelDownload,
+  requestHealthExcelDownload,
+  requestDeviceExcelDownload,
 };
