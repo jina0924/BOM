@@ -65,7 +65,6 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
             )}
             {size === "l" && (
               <div className={`flex items-center ${logoClassName}`}>
-                {/* <Link to="/"> */}
                 <img
                   src={symbol}
                   alt="BOM 심볼"
