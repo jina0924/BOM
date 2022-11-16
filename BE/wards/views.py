@@ -185,10 +185,9 @@ def patient_detail(request, patient_number):
     patient = Patient.objects.filter(number=patient_number)
 
     if len(patient) == True:
+        patient = patient[0]
         if patient.ward_id != ward.id:
             return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
-        else:
-            patient = patient[0]
     else:  # 환자번호에 해당하는 환자가 없으면
         return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -785,10 +784,9 @@ def health(request, patient_number):
     patient = Patient.objects.filter(number=patient_number)
 
     if len(patient) == True:
+        patient = patient[0]
         if patient.ward_id != ward.id:
             return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
-        else:
-            patient = patient[0]
     else:  # 환자번호에 해당하는 환자가 없으면
         return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
