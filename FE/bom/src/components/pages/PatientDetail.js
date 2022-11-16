@@ -1,4 +1,4 @@
-import { useState, React, useEffect } from "react";
+import { useState, React, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ls from "helper/LocalStorage";
 
@@ -22,14 +22,12 @@ import {
   requestPatientDetailHealthInfo,
 } from "api/patientDetail";
 import { requestLogout } from "api/account";
-import { useRef } from "react";
 
 function PatientDetail({ isPC }) {
   const navigate = useNavigate();
   // url 상 환자번호
   const params = useParams();
   // 컴포넌트 번호
-  // const component = useRef(0);
   const [component, setComponent] = useState(0);
   // 타이머
   const timerID = useRef([]);
@@ -43,7 +41,6 @@ function PatientDetail({ isPC }) {
   const [doctor, setDoctor] = useState("");
   // 필터 정보
   const filter = useRef({ period: "now" });
-  // const [filter, setFilter] = useState({ period: "now" });
   // 환자 건강 정보
   const [liveTemperature, setLiveTemperature] = useState(0);
   const [liveBPM, setLiveBPM] = useState(0);
@@ -59,18 +56,15 @@ function PatientDetail({ isPC }) {
   const [soc2, setSoc2] = useState(0);
   const [bmsTemperatureData, setBmsTemperatureData] = useState([]);
   const [voltageData, setVoltageData] = useState([]);
-  // const [voltage2Data, setVoltage2Data] = useState([]);
 
   useEffect(() => {
     const userType = ls.get("userType");
     if (userType === "ward" && isPC) {
       requestPatientDetail(params.id, requestPatientDetailSuccess, (err) => {
-        console.log(err.response.request.status);
         if (err.response.request.status === 404) {
-          // alert("존재하지 않는 환자입니다.");
           navigate("/404");
         } else if (err.response.request.status === 403) {
-          // alert("다른 병동 환자입니다.");
+          alert("다른 병동 환자입니다.");
           navigate("/");
         }
       });
@@ -78,27 +72,16 @@ function PatientDetail({ isPC }) {
         params.id,
         filter,
         requestPatientDetailHealthInfoSuccess,
-        (err) => {
-          console.log(err.response.request.status);
-          if (err.response.request.status === 404) {
-            // alert("존재하지 않는 환자입니다.");
-            navigate("/404");
-          } else if (err.response.request.status === 403) {
-            // alert("다른 병동 환자입니다.");
-            navigate("/");
-          }
-        }
+        () => {}
       );
     }
     if (userType === "patient" && !isPC) {
-      requestPatientDetail(null, requestPatientDetailSuccess, (err) =>
-        console.log(err)
-      );
+      requestPatientDetail(null, requestPatientDetailSuccess, () => {});
       requestPatientDetailHealthInfo(
         null,
         null,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
     }
     return () => {
@@ -132,7 +115,6 @@ function PatientDetail({ isPC }) {
   };
 
   const requestPatientDetailHealthInfoSuccess = (res) => {
-    // console.log(res, filter.current, timerID.current);
     setLiveTemperature(res.data.실시간.체온);
     setLiveBPM(res.data.실시간.심박수);
     setLiveOxyzen(res.data.실시간.산소포화도);
@@ -151,7 +133,7 @@ function PatientDetail({ isPC }) {
         params.id,
         filter.current,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
       timerID.current = [...timerID.current, newTimerID];
     }
@@ -162,7 +144,7 @@ function PatientDetail({ isPC }) {
         null,
         null,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
       timerID.current = [...timerID.current, newTimerID];
     }
@@ -187,33 +169,27 @@ function PatientDetail({ isPC }) {
       params.id,
       filter.current,
       requestPatientDetailDeviceInfoSuccess,
-      (err) => console.log(err)
+      () => {}
     );
     timerID.current = [...timerID.current, newTimerID];
   };
 
-  // const changeFilter = (event) => {
-  //   setFilter(event);
-  // };
-
   const selectPeriod = (event) => {
     const period = { period: event.target.value };
-    // changeFilter(period);
     filter.current = period;
-    // console.log(timerID, period);
     component !== 1 &&
       requestPatientDetailHealthInfo(
         params.id,
         period,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
     component === 1 &&
       requestPatientDetailDeviceInfo(
         params.id,
         period,
         requestPatientDetailDeviceInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
   };
 
@@ -229,22 +205,20 @@ function PatientDetail({ isPC }) {
         params.id,
         filter.current,
         requestPatientDetailDeviceInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
     } else {
       requestPatientDetailHealthInfo(
         params.id,
         filter.current,
         requestPatientDetailHealthInfoSuccess,
-        (err) => console.log(err)
+        () => {}
       );
     }
   };
 
   const clickLogout = () => {
-    requestLogout(requestLogoutSuccess, (err) => {
-      console.log(err);
-    });
+    requestLogout(requestLogoutSuccess, () => {});
   };
 
   const requestLogoutSuccess = () => {
@@ -253,7 +227,6 @@ function PatientDetail({ isPC }) {
   };
 
   const requestExcelDownloadSuccess = (res) => {
-    // console.log(res);
     // const blobURL = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
     var blob = new Blob([res.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -283,12 +256,12 @@ function PatientDetail({ isPC }) {
       ? requestHealthExcelDownload(
           newParams,
           requestExcelDownloadSuccess,
-          (err) => console.log(err)
+          () => {}
         )
       : requestDeviceExcelDownload(
           newParams,
           requestExcelDownloadSuccess,
-          (err) => console.log(err)
+          () => {}
         );
   };
 

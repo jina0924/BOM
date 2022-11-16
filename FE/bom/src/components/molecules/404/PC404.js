@@ -1,10 +1,8 @@
-import Btn from "components/atoms/Btn";
-import React from "react";
-import Logo from "components/atoms/Logo";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState, React } from "react";
 import { useNavigate } from "react-router-dom";
 import ls from "helper/LocalStorage";
+import Btn from "components/atoms/Btn";
+import Logo from "components/atoms/Logo";
 
 function PC404({ userType = "guest" }) {
   const navigate = useNavigate();
