@@ -3519,7 +3519,7 @@ $ python manage.py runserver
 
 
 
-### 엑셀 파일 다운
+### 건강정보 엑셀 파일 다운
 
 - 실시간(now) + 기간(period)
 - 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
@@ -3555,7 +3555,52 @@ $ python manage.py runserver
 - Response
 
   ```
-  
+  파일 다운로드
+  ```
+
+
+
+### 디바이스정보 엑셀 파일 다운
+
+- 실시간(now) + 기간(period)
+
+- 기간 데이터는 오래된 데이터부터 최신 데이터 순으로 
+
+- 기본(now): 최근 1분 동안의 정보 (5초마다 데이터가 저장되므로 총 12개의 데이터)
+
+- day, week, month: 매 시 정각에 해당하는 데이터
+
+- access token 필요
+
+- GET
+
+- URL
+
+  ```
+  http://127.0.0.1:8000/api/batteries/excel
+  ```
+
+- URL example
+
+  ```
+  http://127.0.0.1:8000/api/batteries/excel?number=225070001
+  ```
+
+  ```
+  http://127.0.0.1:8000/api/batteries/excel?number=225070001&period=month
+  ```
+
+- Params
+
+  | Key    | Type   | Description                                 | Mandatory | Example   |
+  | ------ | ------ | ------------------------------------------- | --------- | --------- |
+  | period | String | month<br />week<br />day<br />now (default) |           | month     |
+  | number | String | 환자 번호 (pk X)                            | O         | 225070001 |
+
+- Response
+
+  ```
+  파일 다운로드
   ```
 
 
