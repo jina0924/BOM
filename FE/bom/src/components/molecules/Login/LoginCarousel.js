@@ -41,7 +41,7 @@ function LoginCarousel() {
         </div>
         <div className="carousel-text p-3">
           <span className="text-white text-sm font-light">
-            환자의 상태 이상을 파악할 수 있습니다.
+            병동 환자 목록을 볼 수 있습니다.
           </span>
         </div>
       </div>
