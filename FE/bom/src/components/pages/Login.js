@@ -90,7 +90,7 @@ function Login() {
           <div className="login-frame shadow-login w-[60vw] h-[70vh] rounded-[20px] flex">
             <div className="login-box bg-white rounded-l-[20px] w-1/2 h-full flex flex-col items-center">
               <div className="login-frame h-full">
-                <Logo size="s" logoClassName="h-[20%]" />
+                <Logo size="s" logoClassName="h-[25%]" />
                 <h2 className="font-extrabold text-3xl text-main h-[15%]">
                   로그인
                 </h2>
@@ -120,7 +120,7 @@ function Login() {
                     </label>
                   </div>
                   <Btn
-                    className="text-white bg-main shadow-loginbtn w-[18vw] text-sm h-9 rounded-full mt-5"
+                    className="text-white bg-main shadow-loginbtn w-[18vw] text-sm font-semibold h-10 rounded-full mt-10"
                     onClick={onSubmitLogin}
                     content="로그인"
                   />
