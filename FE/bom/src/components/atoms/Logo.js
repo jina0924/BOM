@@ -60,7 +60,6 @@ function Logo({ disabled = false, size = "l", logoClassName }) {
                 <span className="font-righteous text-main text-xl tracking-wider">
                   BOM
                 </span>
-                {/* </Link> */}
               </div>
             )}
             {size === "l" && (

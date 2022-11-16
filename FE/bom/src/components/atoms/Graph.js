@@ -10,48 +10,7 @@ import {
   Legend,
 } from "recharts";
 
-// data & style guide
-
-// const data = [
-//   {
-//     시간: "Page A",
-//     최소: 40,
-//     최대: 24,
-//   },
-//   {
-//     시간: "Page B",
-//     최소: 30,
-//     최대: 13,
-//   },
-//   {
-//     시간: "Page C",
-//     최소: 20,
-//     최대: 40,
-//   },
-//   {
-//     시간: "Page D",
-//     최소: 27,
-//     최대: 39,
-//   },
-//   {
-//     시간: "Page E",
-//     최소: 18,
-//     최대: 48,
-//   },
-//   {
-//     시간: "Page F",
-//     최소: 23,
-//     최대: 38,
-//   },
-//   {
-//     시간: "Page G",
-//     최소: 34,
-//     최대: 43,
-//   },
-// ];
-
 function Graph({ part, isPC = true, data, filter }) {
-  // console.log(data);
   return (
     <>
       {isPC && (
