@@ -2,7 +2,7 @@ import React from "react";
 
 import Title from "components/atoms/Title";
 
-function WardInfo({ wardInfoTitle, wardInfoDetail, wardNum }) {
+function WardInfo({ wardInfoTitle, wardInfoDetail }) {
   return (
     <div className="ward-info-card col-span-1 shadow-box bg-white rounded-[20px] h-[11vh] flex flex-col justify-center pl-5">
       <div className="ward-info-content">
