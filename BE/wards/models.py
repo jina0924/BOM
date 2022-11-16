@@ -96,6 +96,31 @@ class PatientStatusNow(models.Model):
         db_table = 'patient_status_now'
 
 
+class PatientStatusDefault(models.Model):
+    temperature = models.FloatField()
+    bpm = models.IntegerField()
+    oxygen_saturation = models.IntegerField()
+
+    class Meta:
+        managed = True
+        db_table = 'patient_status_default'
+
+
+class PatientDay(models.Model):
+    min_t = models.FloatField()
+    max_t = models.FloatField()
+    min_b = models.IntegerField()
+    max_b = models.IntegerField()
+    min_o = models.IntegerField()
+    max_o = models.IntegerField()
+    now = models.DateTimeField()
+    patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'patient_day'
+
+
 class Alert(models.Model):
     category = models.CharField(max_length=191)
     status = models.CharField(max_length=191)
