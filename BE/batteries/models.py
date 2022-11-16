@@ -42,6 +42,17 @@ class BmsStatusNow(models.Model):
         db_table = 'bms_status_now'
 
 
+class BmsDay(models.Model):
+    min_t = models.IntegerField()
+    max_t = models.IntegerField()
+    now = models.DateTimeField()
+    bms = models.ForeignKey(Bms, on_delete=models.PROTECT)
+    
+    class Meta:
+        managed = True
+        db_table = 'bms_day'
+
+
 class Battery(models.Model):
     register_date = models.DateTimeField()
     max_voltage = models.FloatField()
@@ -83,3 +94,14 @@ class BatteryStatusNow(models.Model):
     class Meta:
         managed = True
         db_table = 'battery_status_now'
+
+
+class BatteryDay(models.Model):
+    min_v = models.FloatField()
+    max_v = models.FloatField()
+    now = models.DateTimeField()
+    battery = models.ForeignKey(Battery, on_delete=models.PROTECT)
+
+    class Meta:
+        managed = True
+        db_table = 'battery_day'
