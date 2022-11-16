@@ -15,7 +15,8 @@ import Btn from "components/atoms/Btn";
 
 // API
 import {
-  requestExcelDownload,
+  requestHealthExcelDownload,
+  requestDeviceExcelDownload,
   requestPatientDetail,
   requestPatientDetailDeviceInfo,
   requestPatientDetailHealthInfo,
@@ -278,9 +279,17 @@ function PatientDetail({ isPC }) {
       number: params.id,
       period: filter.current.period,
     };
-    requestExcelDownload(newParams, requestExcelDownloadSuccess, (err) =>
-      console.log(err)
-    );
+    component !== 1
+      ? requestHealthExcelDownload(
+          newParams,
+          requestExcelDownloadSuccess,
+          (err) => console.log(err)
+        )
+      : requestDeviceExcelDownload(
+          newParams,
+          requestExcelDownloadSuccess,
+          (err) => console.log(err)
+        );
   };
 
   return (
