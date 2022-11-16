@@ -20,7 +20,7 @@ function Doctors({ isPC }) {
   const wardNum = ls.get("number");
 
   useEffect(() => {
-    requestDoctorList("", requestDoctorListSuccess, (err) => console.log(err));
+    requestDoctorList("", requestDoctorListSuccess, () => {});
   }, []);
 
   const requestDoctorListSuccess = (res) => {
@@ -33,9 +33,7 @@ function Doctors({ isPC }) {
     // setNow(page);
     now.current = page;
     const params = { page: page };
-    requestDoctorList(params, requestDoctorListSuccess, (err) =>
-      console.log(err)
-    );
+    requestDoctorList(params, requestDoctorListSuccess, () => {});
   };
 
   useEffect(() => {
