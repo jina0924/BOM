@@ -7,7 +7,6 @@ function Input({ type, className, placeholder, value, onKeyPress, onChange }) {
       className={className}
       placeholder={placeholder}
       value={value}
-      // onKeyUp={onKeyup}
       onKeyPress={onKeyPress}
       onChange={onChange}
     />
