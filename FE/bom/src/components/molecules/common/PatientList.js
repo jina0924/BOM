@@ -148,7 +148,8 @@ function PatientList({
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
+                        ${item.isWarning && "text-sub1"}`}
                     >
                       {item.number}
                     </td>
