@@ -1,9 +1,7 @@
+import { useEffect, useState, React } from "react";
+import ls from "helper/LocalStorage";
 import Mobile404 from "components/molecules/404/Mobile404";
 import PC404 from "components/molecules/404/PC404";
-import ls from "helper/LocalStorage";
-import { useEffect } from "react";
-import { useState } from "react";
-import { React } from "react";
 
 function PageNotFound({ isPC }) {
   const [userType, setUserType] = useState();

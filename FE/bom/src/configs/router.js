@@ -71,7 +71,6 @@ export default function RouterConfiguration() {
   return (
     <Router>
       <Routes>
-        <Route path="/test" element={<Test />} />
         <Route path="/login" element={<Login isPC={isPC} />} />
         <Route
           path="/"
