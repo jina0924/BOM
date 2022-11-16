@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert, PatientStatusExcel, PatientStatusNow
+from .models import Ward, Nurse, Doctor, Patient, PatientStatus, Alert, PatientStatusExcel, PatientStatusNow, PatientDay, PatientStatusDefault
 from .serializers import WardSerializer, PatientSerializer, PatientDetailSerializer, WardDetailSerializer, TemperatureSerializer, BpmSerializer, OxygenSaturationSerializer, NurseSerializer, DoctorSerializer, HealthSerializer, PatientListSerializer
 import jwt
 from thundervolt.settings import SECRET_KEY
@@ -790,19 +790,23 @@ def health(request, patient_number):
     else:  # 환자번호에 해당하는 환자가 없으면
         return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
-    # now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+    # now = datetime.datetime(2022, 11, 2, 22, 38, 25)
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
-    now_health = PatientStatus.objects.filter(patient__number=patient_number, now__lte=now).last()  # 실시간
+    now_health = PatientStatusNow.objects.filter(patient__number=patient_number, now=now)  # 실시간
 
-    if now_health != None:
-        now_serializer = HealthSerializer(now_health)
+    if len(now_health) == True:
+        now_serializer = HealthSerializer(now_health[0])
 
     else:
+        temperature = 36.5
+        bpm = 80
+        oxygen_saturation = 98
+
         now_health_data = {
-            'temperature': 0.0,
-            'bpm': 0,
-            'oxygen_saturation': 0,
+            'temperature': temperature,
+            'bpm': bpm,
+            'oxygen_saturation': oxygen_saturation,
             'now': now
         }
         now_serializer = HealthSerializer(now_health_data)
@@ -813,69 +817,369 @@ def health(request, patient_number):
     result_bpm = []
     result_oxygen_saturation = []
 
-    connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=1, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
-
-    # delta 단위 = 초
     if period == 'month':
 
-        data_count = 30
+        time = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+        start = time + relativedelta(days=-30)
 
-        time = now.strftime('%Y-%m-%d')
+        check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
 
-        for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_month_{i+1}')
-            bpm = connect.hgetall(f'{time}_{patient_number}_bpm_month_{i+1}')
-            oxygen_saturation = connect.hgetall(f'{time}_{patient_number}_oxygen_saturation_month_{i+1}')
+        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
 
-            result_temperature.append(temperature)
-            result_bpm.append(bpm)
-            result_oxygen_saturation.append(oxygen_saturation)
+            for i in range(30):
+                end = start + relativedelta(days=1)
+
+                health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
+                
+                if len(health) >= 1:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d'),
+                            '최대': health.aggregate(최대=Max('max_t'))['최대'],
+                            '최소': health.aggregate(최소=Min('min_t'))['최소']
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d'),
+                        '최대': health.aggregate(최대=Max('max_b'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_b'))['최소']
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d'),
+                        '최대': health.aggregate(최대=Max('max_o'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_o'))['최소']
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                else:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d'),
+                            '최대': 0.0,
+                            '최소': 0.0
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
+
+        else:  # 최대/최소값 데이터가 단 한 개도 없다면
+            
+            health = PatientStatusDefault.objects.all()
+
+            for i in range(30):
+
+                end = start + relativedelta(days=1)
+
+                temperature_data = {
+                        '시간': start.strftime('%Y-%m-%d'),
+                        '최대': health[i].temperature + 1,
+                        '최소': health[i].temperature - 1
+                    }
+                result_temperature.append(temperature_data)
+                
+                bpm_data = {
+                    '시간': start.strftime('%Y-%m-%d'),
+                    '최대': health[i].bpm + 1,
+                    '최소': health[i].bpm - 1
+                }
+                result_bpm.append(bpm_data)
+            
+                oxygen_saturation_data = {
+                    '시간': start.strftime('%Y-%m-%d'),
+                    '최대': health[i].oxygen_saturation + 1,
+                    '최소': health[i].oxygen_saturation - 1
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
 
     elif period == 'week':
-        data_count = 14
+
         if now.hour >= 12:
-            period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
+            time = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
         elif now.hour < 12:
-            period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+            time = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
 
-        time = period_now.strftime('%Y-%m-%d %H')
+        start = time + relativedelta(days=-7)
 
-        for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_week_{i+1}')
-            bpm = connect.hgetall(f'{time}_{patient_number}_bpm_week_{i+1}')
-            oxygen_saturation = connect.hgetall(f'{time}_{patient_number}_oxygen_saturation_week_{i+1}')
+        check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
 
-            result_temperature.append(temperature)
-            result_bpm.append(bpm)
-            result_oxygen_saturation.append(oxygen_saturation)
+        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
+
+            for i in range(14):
+                end = start + relativedelta(hours=12)
+
+                health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
+                
+                if len(health) >= 1:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d %H'),
+                            '최대': health.aggregate(최대=Max('max_t'))['최대'],
+                            '최소': health.aggregate(최소=Min('min_t'))['최소']
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health.aggregate(최대=Max('max_b'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_b'))['최소']
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health.aggregate(최대=Max('max_o'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_o'))['최소']
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                else:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d %H'),
+                            '최대': 0.0,
+                            '최소': 0.0
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
+
+        else:  # 최대/최소값 데이터가 단 한 개도 없다면
+            
+            health = PatientStatusDefault.objects.all()
+
+            for i in range(14):
+
+                end = start + relativedelta(hours=12)
+
+                temperature_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health[i].temperature + 1,
+                        '최소': health[i].temperature - 1
+                    }
+                result_temperature.append(temperature_data)
+                
+                bpm_data = {
+                    '시간': start.strftime('%Y-%m-%d %H'),
+                    '최대': health[i].bpm + 1,
+                    '최소': health[i].bpm - 1
+                }
+                result_bpm.append(bpm_data)
+            
+                oxygen_saturation_data = {
+                    '시간': start.strftime('%Y-%m-%d %H'),
+                    '최대': health[i].oxygen_saturation + 1,
+                    '최소': health[i].oxygen_saturation - 1
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
 
     elif period == 'day':
-        data_count = 24
-        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
 
-        time = period_now.strftime('%Y-%m-%d %H')
-    
-        for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_day_{i+1}')
-            bpm = connect.hgetall(f'{time}_{patient_number}_bpm_day_{i+1}')
-            oxygen_saturation = connect.hgetall(f'{time}_{patient_number}_oxygen_saturation_day_{i+1}')
+        time = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
 
-            result_temperature.append(temperature)
-            result_bpm.append(bpm)
-            result_oxygen_saturation.append(oxygen_saturation)
+        start = time + relativedelta(days=-1)
+
+        check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
+
+        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
+
+            for i in range(24):
+                end = start + relativedelta(hours=1)
+
+                health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
+                
+                if len(health) >= 1:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d %H'),
+                            '최대': health.aggregate(최대=Max('max_t'))['최대'],
+                            '최소': health.aggregate(최소=Min('min_t'))['최소']
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health.aggregate(최대=Max('max_b'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_b'))['최소']
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health.aggregate(최대=Max('max_o'))['최대'],
+                        '최소': health.aggregate(최소=Min('min_o'))['최소']
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                else:
+                    temperature_data = {
+                            '시간': start.strftime('%Y-%m-%d %H'),
+                            '최대': 0.0,
+                            '최소': 0.0
+                        }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': 0,
+                        '최소': 0
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
+
+        else:  # 최대/최소값 데이터가 단 한 개도 없다면
+            
+            health = PatientStatusDefault.objects.all()
+
+            for i in range(24):
+
+                end = start + relativedelta(hours=1)
+
+                temperature_data = {
+                        '시간': start.strftime('%Y-%m-%d %H'),
+                        '최대': health[i].temperature + 1,
+                        '최소': health[i].temperature - 1
+                    }
+                result_temperature.append(temperature_data)
+                
+                bpm_data = {
+                    '시간': start.strftime('%Y-%m-%d %H'),
+                    '최대': health[i].bpm + 1,
+                    '최소': health[i].bpm - 1
+                }
+                result_bpm.append(bpm_data)
+            
+                oxygen_saturation_data = {
+                    '시간': start.strftime('%Y-%m-%d %H'),
+                    '최대': health[i].oxygen_saturation + 1,
+                    '최소': health[i].oxygen_saturation - 1
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
+
+                start = end
 
     elif period == None or period == 'now':
+
+        start = now + relativedelta(seconds=-60)
         
-        connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=3, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
+        check = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=now)
 
-        for i in range(12):
-            temperature = connect.hgetall(f'{patient_number}_temperature_now_{i+1}')
-            bpm = connect.hgetall(f'{patient_number}_bpm_now_{i+1}')
-            oxygen_saturation = connect.hgetall(f'{patient_number}_oxygen_saturation_now_{i+1}')
+        if len(check) >= 1:
 
-            result_temperature.append(temperature)
-            result_bpm.append(bpm)
-            result_oxygen_saturation.append(oxygen_saturation)
+            for i in range(12):
+                end = start + relativedelta(seconds=5)
+
+                health = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=end)
+
+                if len(health) >= 1:
+                
+                    temperature_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '체온': health[0].temperature
+                    }
+                    result_temperature.append(temperature_data)
+                    
+                    bpm_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '심박수': health[0].bpm
+                    }
+                    result_bpm.append(bpm_data)
+                
+                    oxygen_saturation_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '산소포화도': health[0].oxygen_saturation
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+
+                else:
+
+                    temperature_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '체온': 0.0
+                    }
+                    result_temperature.append(temperature_data)
+
+                    bpm_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '심박수': 0
+                    }
+                    result_bpm.append(bpm_data)
+
+                    oxygen_saturation_data = {
+                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '산소포화도': 0
+                    }
+                    result_oxygen_saturation.append(oxygen_saturation_data)
+        
+                start = end
+
+            if result_temperature[-1]['체온'] == 0.0 and result_bpm[-1]['심박수'] == 0 and result_oxygen_saturation[-1]['산소포화도'] == 0:
+                result_temperature[-1]['체온'] = 36.5
+                result_bpm[-1]['심박수'] = 80
+                result_oxygen_saturation[-1]['산소포화도'] = 98
+
+        else:
+
+            health = PatientStatusDefault.objects.all()
+
+            for i in range(12):
+
+                tmp_time = (start + relativedelta(seconds=5*(i+1))).strftime('%Y-%m-%d %H:%M:%S')
+
+                temperature_data = {
+                    '시간': tmp_time,
+                    '체온': health[i].temperature
+                }
+                result_temperature.append(temperature_data)
+                
+                bpm_data = {
+                    '시간': tmp_time,
+                    '심박수': health[i].bpm
+                }
+                result_bpm.append(bpm_data)
+            
+                oxygen_saturation_data = {
+                    '시간': tmp_time,
+                    '산소포화도': health[i].oxygen_saturation
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
 
         return Response({'실시간': now_serializer.data, '체온': result_temperature, '심박수': result_bpm, '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
 
@@ -900,19 +1204,23 @@ def patient_health(request):
     else:
         return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    # now = datetime.datetime(2022, 10, 2, 22, 31, 25)
+    # now = datetime.datetime(2022, 11, 2, 22, 38, 25)
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
-    now_health = PatientStatus.objects.filter(patient=patient, now__lte=now).last()
+    now_health = PatientStatusNow.objects.filter(patient__number=patient.number, now=now)  # 실시간
 
-    if now_health != None:
-        serializer = HealthSerializer(now_health)
+    if len(now_health) == True:
+        serializer = HealthSerializer(now_health[0])
 
     else:
+        temperature = 36.5
+        bpm = 80
+        oxygen_saturation = 98
+
         now_health_data = {
-            'temperature': 0.0,
-            'bpm': 0,
-            'oxygen_saturation': 0,
+            'temperature': temperature,
+            'bpm': bpm,
+            'oxygen_saturation': oxygen_saturation,
             'now': now
         }
         serializer = HealthSerializer(now_health_data)
@@ -923,16 +1231,89 @@ def patient_health(request):
     result_bpm = []
     result_oxygen_saturation = []
 
-    connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=3, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
+    start = now + relativedelta(seconds=-60)
+        
+    check = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=now)
 
-    for i in range(12):
-        temperature = connect.hgetall(f'{patient_number}_temperature_now_{i+1}')
-        bpm = connect.hgetall(f'{patient_number}_bpm_now_{i+1}')
-        oxygen_saturation = connect.hgetall(f'{patient_number}_oxygen_saturation_now_{i+1}')
+    if len(check) >= 1:
 
-        result_temperature.append(temperature)
-        result_bpm.append(bpm)
-        result_oxygen_saturation.append(oxygen_saturation)
+        for i in range(12):
+            end = start + relativedelta(seconds=5)
+
+            health = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=end)
+
+            if len(health) >= 1:
+            
+                temperature_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '체온': health[0].temperature
+                }
+                result_temperature.append(temperature_data)
+                
+                bpm_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '심박수': health[0].bpm
+                }
+                result_bpm.append(bpm_data)
+            
+                oxygen_saturation_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '산소포화도': health[0].oxygen_saturation
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
+
+            else:
+
+                temperature_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '체온': 0.0
+                }
+                result_temperature.append(temperature_data)
+
+                bpm_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '심박수': 0
+                }
+                result_bpm.append(bpm_data)
+
+                oxygen_saturation_data = {
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                    '산소포화도': 0
+                }
+                result_oxygen_saturation.append(oxygen_saturation_data)
+    
+            start = end
+
+        if result_temperature[-1]['체온'] == 0.0 and result_bpm[-1]['심박수'] == 0 and result_oxygen_saturation[-1]['산소포화도'] == 0:
+            result_temperature[-1]['체온'] = 36.5
+            result_bpm[-1]['심박수'] = 80
+            result_oxygen_saturation[-1]['산소포화도'] = 98
+
+    else:
+
+        health = PatientStatusDefault.objects.all()
+
+        for i in range(12):
+
+            tmp_time = (start + relativedelta(seconds=5*(i+1))).strftime('%Y-%m-%d %H:%M:%S')
+
+            temperature_data = {
+                '시간': tmp_time,
+                '체온': health[i].temperature
+            }
+            result_temperature.append(temperature_data)
+            
+            bpm_data = {
+                '시간': tmp_time,
+                '심박수': health[i].bpm
+            }
+            result_bpm.append(bpm_data)
+        
+            oxygen_saturation_data = {
+                '시간': tmp_time,
+                '산소포화도': health[i].oxygen_saturation
+            }
+            result_oxygen_saturation.append(oxygen_saturation_data)
 
     return Response({'실시간': serializer.data, '체온': result_temperature, '심박수': result_bpm , '산소포화도': result_oxygen_saturation}, status=status.HTTP_200_OK)
 
@@ -944,15 +1325,14 @@ from drf_excel.renderers import XLSXRenderer
 
 class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
-    # queryset = PatientStatusExcel.objects.all()
     serializer_class = HealthSerializer
     renderer_classes = (XLSXRenderer,)
     filename = 'health_excel_download.xlsx'
 
     def get_queryset(self):
 
-        # now = datetime.datetime(2022, 11, 15, 17, 58, 2)
-        now = datetime.datetime.now()
+        now = datetime.datetime(2022, 11, 16, 22, 38, 25)
+        # now = datetime.datetime.now()
         now = now + relativedelta(seconds=-(now.second % 5))
 
         period = self.request.GET.get('period')
@@ -973,13 +1353,62 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
         number = self.request.GET.get('number')
 
-        # queryset = queryset.filter(user=self.request.user.id)
-        # queryset = PatientStatus.objects.filter(patient__number=number, now__gt=start, now__lte=now)
         if period == 'month' or period == 'week' or period == 'day':
             queryset = PatientStatusExcel.objects.filter(patient__number=number, now__gt=start, now__lte=now)
 
         elif period == 'now' or period == None:
-            queryset = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+            health = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+
+            queryset = []
+
+            for i in range(len(health)):
+
+                data = {
+                    'now': health[i].now,
+                    'temperature': health[i].temperature,
+                    'bpm': health[i].bpm,
+                    'oxygen_saturation': health[i].oxygen_saturation
+                }
+
+                queryset.append(data)
+
+            if len(queryset) >= 1:
+
+                if len(queryset) != 12:
+
+                    tmp_health = []
+
+                    for i in range(1, 12 - len(queryset) + 1):
+                        tmp_time = (now + relativedelta(seconds=-60) + relativedelta(seconds=5*i)).strftime('%Y-%m-%d %H:%M:%S')
+
+                        data = {
+                            'now': tmp_time,
+                            'temperature': 0.0,
+                            'bpm': 0,
+                            'oxygen_saturation': 0
+                        }
+                        tmp_health.append(data)
+
+                    queryset = tmp_health + queryset
+
+                    print(queryset)
+
+            else:
+                queryset = []
+                health = PatientStatusDefault.objects.all()
+
+                for i in range(12):
+
+                    tmp_time = (now + relativedelta(seconds=-60) + relativedelta(seconds=5*(i+1))).strftime('%Y-%m-%d %H:%M:%S')
+
+                    data = {
+                        'now': tmp_time,
+                        'temperature': health[i].temperature,
+                        'bpm': health[i].bpm,
+                        'oxygen_saturation': health[i].oxygen_saturation
+                    }
+                    
+                    queryset.append(data)
 
         return queryset
 
