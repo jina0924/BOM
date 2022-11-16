@@ -79,16 +79,18 @@ def ward(request):
             period_end = period_start + relativedelta(months=1)
 
             patients = Patient.objects.filter(ward=ward, hospitalized_date__lt=period_end, discharged_date__gte=period_start).count()
+            patients_ing = Patient.objects.filter(ward=ward, hospitalized_date__lt=period_end, discharged_date=None).count()
 
             data = {
                 'month': period_start.strftime('%Y-%m'),
-                '환자 수': patients
+                '환자 수': patients + patients_ing
             }
 
             tendency.append(data)
+            print(data)
 
             period_start = period_end
-
+        print(tendency)
         result = dict()
         result.update(serializer.data)
         result['tendency'] = tendency
