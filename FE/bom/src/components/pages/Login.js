@@ -46,8 +46,6 @@ function Login() {
   }
 
   function getUserInfoSuccess(res) {
-    console.log(res);
-    // 병동로그인인지 환자로그인인지에 따라 navigate 분리
     const userType = res.data.userType;
     const number = res.data.number;
     ls.set("userType", userType);
@@ -59,9 +57,7 @@ function Login() {
     }
   }
 
-  function getUserInfoFail(err) {
-    console.log(err);
-  }
+  function getUserInfoFail() {}
 
   async function loginSuccess(res) {
     const accessToken = res.data.access_token;
@@ -71,16 +67,13 @@ function Login() {
     await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
-  function loginFail(err) {
-    console.log(err);
+  function loginFail() {
     alert("다시 한 번 작성해주세요");
   }
 
   async function onSubmitLogin(event) {
     event.preventDefault();
-    // 유효성 검사
     await requestLogin(username, password, loginSuccess, loginFail);
-    // await requestUserInfo(getUserInfoSuccess, getUserInfoFail);
   }
 
   return (
