@@ -119,6 +119,7 @@ def ward(request):
 # 환자 등록 (POST)
 # 환자: 상세 정보 조회 (GET)
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def patient(request):
 
     def get():
@@ -149,9 +150,8 @@ def patient(request):
         if serializer.is_valid(raise_exception=True):
             this_year = str(datetime.datetime.today().year)[2:]
             ward_number = request.data['number']
-            ward_cnt = Ward.objects.all().count()
-            all_cnt = User.objects.all().count()
-            cnt = all_cnt - ward_cnt
+            ward_id = ward.id
+            cnt = Patient.objects.filter(ward_id=ward_id).count()
             # cnt = Patient.objects.filter(number__startswith=(this_year + ward_number)).count()
             patient_number = this_year + str(ward_number) + '0'*(4-len(str(cnt+1))) + str(cnt+1)
 
