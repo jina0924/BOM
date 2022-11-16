@@ -149,7 +149,10 @@ def patient(request):
         if serializer.is_valid(raise_exception=True):
             this_year = str(datetime.datetime.today().year)[2:]
             ward_number = request.data['number']
-            cnt = Patient.objects.filter(number__startswith=(this_year + ward_number)).count()
+            ward_cnt = Ward.objects.all().count()
+            all_cnt = User.objects.all().count()
+            cnt = all_cnt - ward_cnt
+            # cnt = Patient.objects.filter(number__startswith=(this_year + ward_number)).count()
             patient_number = this_year + str(ward_number) + '0'*(4-len(str(cnt+1))) + str(cnt+1)
 
             user.username = patient_number
@@ -176,10 +179,18 @@ def patient_detail(request, patient_number):
     if Ward.objects.filter(user_id=user_id):
         ward = Ward.objects.get(user_id=user_id)
         
-    else:
+    else:  # 요청자가 환자라면
         return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    patient = get_object_or_404(Patient, number=patient_number, ward=ward)
+    patient = Patient.objects.filter(number=patient_number)
+
+    if len(patient) == True:
+        if patient.ward_id != ward.id:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            patient = patient[0]
+    else:  # 환자번호에 해당하는 환자가 없으면
+        return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
     serializer = PatientDetailSerializer(patient)
 
@@ -771,8 +782,15 @@ def health(request, patient_number):
     else:
         return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    if ward.number != patient_number[2:5]:
-        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+    patient = Patient.objects.filter(number=patient_number)
+
+    if len(patient) == True:
+        if patient.ward_id != ward.id:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            patient = patient[0]
+    else:  # 환자번호에 해당하는 환자가 없으면
+        return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
     # now = datetime.datetime(2022, 10, 2, 22, 31, 25)
     now = datetime.datetime.now()

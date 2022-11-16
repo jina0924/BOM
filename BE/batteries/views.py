@@ -29,14 +29,15 @@ def bms(request, patient_number):
     else:
         return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
 
-    if ward.number != patient_number[2:5]:
-        return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+    patient = Patient.objects.filter(number=patient_number)
 
-    if Patient.objects.filter(number=patient_number):
-        patient = Patient.objects.get(number=patient_number)
-
-    else:
-        return Response({'result': '존재하지 않는 환자입니다.'}, status=status.HTTP_404_NOT_FOUND)
+    if len(patient) == True:
+        if patient.ward_id != ward.id:
+            return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            patient = patient[0]
+    else:  # 환자번호에 해당하는 환자가 없으면
+        return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
