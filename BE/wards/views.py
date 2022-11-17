@@ -687,6 +687,9 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
         patitent_not_warning_lst = []
         patient_warning_lst = []
 
+        now = datetime.datetime.now()
+        now = now + relativedelta(seconds=-(now.second % 5))
+
         if patient_name_number is not None:
             if patient_name_number.isdecimal():
                 patients = Patient.objects.filter(ward=ward, discharged_date=None, number__contains=patient_name_number)  # 입원한 해당 병동의 filter 번호를 포함하는 환자
@@ -697,7 +700,7 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
         for i in range(len(patients)-1, -1, -1):
 
             patient = patients[i]
-            health = PatientStatus.objects.filter(patient=patient).last()
+            health = PatientStatusNow.objects.filter(patient=patient, now=now)
 
             patient_data = {
                 'id': patient.id,
@@ -710,15 +713,16 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
                 'is_warning': patient.is_warning
             }
 
-            if health != None:
-                patient_data['temperature'] = health.temperature
-                patient_data['bpm'] = health.bpm
-                patient_data['oxygenSaturation'] = health.oxygen_saturation
+            if len(health) >= 1:
+                patient_data['temperature'] = health[0].temperature
+                patient_data['bpm'] = health[0].bpm
+                patient_data['oxygenSaturation'] = health[0].oxygen_saturation
                 
             else:
-                patient_data['temperature'] = 0.0
-                patient_data['bpm'] = 0
-                patient_data['oxygenSaturation'] = 0
+                patient_data['temperature'] = 36.5
+                patient_data['bpm'] = 80
+                patient_data['oxygenSaturation'] = 98
+
             if patient.is_warning == True:
                 patient_warning_lst.append(patient_data)
 
@@ -887,22 +891,22 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d'),
-                        '최대': health[i].temperature + 1,
-                        '최소': health[i].temperature - 1
+                        '최대': health[i].temperature + 5,
+                        '최소': health[i].temperature - 5
                     }
                 result_temperature.append(temperature_data)
                 
                 bpm_data = {
                     '시간': start.strftime('%Y-%m-%d'),
-                    '최대': health[i].bpm + 1,
-                    '최소': health[i].bpm - 1
+                    '최대': health[i].bpm + 5,
+                    '최소': health[i].bpm - 5
                 }
                 result_bpm.append(bpm_data)
             
                 oxygen_saturation_data = {
                     '시간': start.strftime('%Y-%m-%d'),
-                    '최대': health[i].oxygen_saturation + 1,
-                    '최소': health[i].oxygen_saturation - 1
+                    '최대': health[i].oxygen_saturation + 5,
+                    '최소': health[i].oxygen_saturation - 5
                 }
                 result_oxygen_saturation.append(oxygen_saturation_data)
 
@@ -982,22 +986,22 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d %H'),
-                        '최대': health[i].temperature + 1,
-                        '최소': health[i].temperature - 1
+                        '최대': health[i].temperature + 5,
+                        '최소': health[i].temperature - 5
                     }
                 result_temperature.append(temperature_data)
                 
                 bpm_data = {
                     '시간': start.strftime('%Y-%m-%d %H'),
-                    '최대': health[i].bpm + 1,
-                    '최소': health[i].bpm - 1
+                    '최대': health[i].bpm + 5,
+                    '최소': health[i].bpm - 5
                 }
                 result_bpm.append(bpm_data)
             
                 oxygen_saturation_data = {
                     '시간': start.strftime('%Y-%m-%d %H'),
-                    '최대': health[i].oxygen_saturation + 1,
-                    '최소': health[i].oxygen_saturation - 1
+                    '최대': health[i].oxygen_saturation + 5,
+                    '최소': health[i].oxygen_saturation - 5
                 }
                 result_oxygen_saturation.append(oxygen_saturation_data)
 
@@ -1074,22 +1078,22 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d %H'),
-                        '최대': health[i].temperature + 1,
-                        '최소': health[i].temperature - 1
+                        '최대': health[i].temperature + 5,
+                        '최소': health[i].temperature - 5
                     }
                 result_temperature.append(temperature_data)
                 
                 bpm_data = {
                     '시간': start.strftime('%Y-%m-%d %H'),
-                    '최대': health[i].bpm + 1,
-                    '최소': health[i].bpm - 1
+                    '최대': health[i].bpm + 5,
+                    '최소': health[i].bpm - 5
                 }
                 result_bpm.append(bpm_data)
             
                 oxygen_saturation_data = {
                     '시간': start.strftime('%Y-%m-%d %H'),
-                    '최대': health[i].oxygen_saturation + 1,
-                    '최소': health[i].oxygen_saturation - 1
+                    '최대': health[i].oxygen_saturation + 5,
+                    '최소': health[i].oxygen_saturation - 5
                 }
                 result_oxygen_saturation.append(oxygen_saturation_data)
 
