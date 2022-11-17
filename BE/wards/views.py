@@ -697,7 +697,7 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
                 patients = Patient.objects.filter(ward=ward, discharged_date=None, name__contains=patient_name_number)  # 입원한 해당 병동의 filter 이름을 포함하는 환자
         else:
             patients = Patient.objects.filter(ward=ward, discharged_date=None)  # 입원한 해당 병동의 모든 환자
-        for i in range(len(patients)-1, -1, -1):
+        for i in range(len(patients)):
 
             patient = patients[i]
             health = PatientStatusNow.objects.filter(patient=patient, now=now)
