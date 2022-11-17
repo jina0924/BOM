@@ -130,9 +130,10 @@ def read_voltage(adcChannel):
         voltage[adcChannel] = maxV[adcChannel]
     
 
+mode = 0
 def getSensor():
     global battery_amount_val,temp_battery, temp_human,is_charge
-    global db,temps,idx,is_warn,is_fall,c
+    global db,temps,idx,is_warn,is_fall,c,mode
     #t=0
 
     s = Adafruit_DHT.DHT11
@@ -191,18 +192,24 @@ def getSensor():
                 if(temp_human >= 38 or spo2 <= 90 or heart_rate <=30 or heart_rate >= 180):
                     is_warn = True
                     #db_pub(0,now)
-                    threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
+                    #threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
+                    mode = 1
+            
             else:
                 if(temp_human < 37 and spo2 > 90 and heart_rate > 40 and heart_rate <175 and is_fall == False):
                     is_warn=False
+                    mode = 0
                     print("Turn off warn")
         else:
             is_warn = False
+            mode = 0
 
         
         #ns =datetime.now().second
-        
+        #print("ns : ",ns);
+        '''
         if(ns %5==0 ):
+
             #db_human
             #db_battery
             if(is_Finger==True):
@@ -212,7 +219,7 @@ def getSensor():
                 #db_pub(2,now)
                 threading.Thread(target=db_pub,args=(2,now),daemon=True).start()
             
-
+'''
         sleep(1)
     c.close()
 
@@ -289,52 +296,65 @@ def getHeart():
         idx_h.append(str(now))
 
 
-def db_pub(mode,now):
-    global db,c
-    
-    #warning mode
-    if(mode == 0):
-        c.execute(f'update patient set is_warning = 1 where id = {patient_id};')
-        db.commit()
-        print("Turn on warn")
+def db_pub():
+    global db,c,mode
 
-
-    #5sec mode
-    elif(mode == 1):
-        #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
-        c.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
-        c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
-        #for now
-        c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
-        c.execute(f'insert into bms_status_now(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
-
-
-        db.commit()
-    
-    else:
-        #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
-        c.execute(f'insert into bms_status(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+    while(exit_flag == 0):
         
-        #for now
-        c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
-        c.execute(f'insert into bms_status_now(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
-        c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+        ns = datetime.now().second 
+        now = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
+        print("ns:",ns)
+        if(ns%5 != 0):
+            sleep(0.5)
+            continue
 
-        db.commit()
+        #warning mode
+        if(mode == 1):
+            c.execute(f'update patient set is_warning = 1 where id = {patient_id};')
+            db.commit()
+            mode = 0;
+            print("Turn on warn")
 
-    print("db update")
+
+        #5sec mode
+        if(is_Finger == True):
+            #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
+            c.execute(f'update bms set temperature={temp_battery},is_charge ={is_charge} where id = {bms_id};')
+            c.execute(f'insert into bms_status(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
+            c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+            c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+            #for now
+            c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value ({temp_human},{heart_rate},{spo2},0,"{str(now)}",{patient_id});')
+            c.execute(f'insert into bms_status_now(temperature,now,bms_id) value ({temp_battery},"{str(now)}",{bms_id});')
+            c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+            c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+
+
+            db.commit()
+            print("db update")
+        else:
+            #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute(f'insert into patient_status(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
+            c.execute(f'insert into bms_status(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
+            c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+            c.execute(f'insert into battery_status(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+            
+            #for now
+            c.execute(f'insert into patient_status_now(temperature,bpm,oxygen_saturation,slope,now,patient_id) value (0,0,0,0,"{str(now)}",{patient_id});')
+            c.execute(f'insert into bms_status_now(temperature,now,bms_id) value (0,"{str(now)}",{bms_id});')
+            c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[0]},{SOC[0]},"{str(now)}",{bt_id[0]});')
+            c.execute(f'insert into battery_status_now(voltage,amount,now,battery_id) value({voltage[1]},{SOC[1]},"{str(now)}",{bt_id[1]});')
+
+            db.commit()
+
+            print("db update")
+        
+        sleep(1)
+
 
 def getGyro():
-    global is_fall,is_warn
+    global is_fall,is_warn,mode
     
     g= gyro.Gyro()
     while(1):
@@ -346,12 +366,14 @@ def getGyro():
         
         if(is_Finger==True):
             if(is_warn==False and is_fall==True):
-                is_warn = True 
-                now = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
-                threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
+                is_warn = True
+                mode = 1
+               # now = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
+                #threading.Thread(target=db_pub,args=(0,now),daemon=True).start()
                 #db_pub(0,now)
         else:
             is_fall = False
+            mode = 0
 
         sleep(0.1)
 #t1 = threading.Thread(target=getSensor)
@@ -550,12 +572,15 @@ for (res) in c:
 t1 = threading.Thread(target=getSensor)
 t2 = threading.Thread(target=getHeart)
 t3 = threading.Thread(target=getGyro)
+t4 = threading.Thread(target=db_pub)
 t1.daemon=True
 t2.daemon=True
 t3.daemon=True
+t4.daemon=True
 t1.start()
 t2.start()
 t3.start()
+t4.start()
 
 print("show widget")
 widgets.show()
