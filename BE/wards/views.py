@@ -1110,7 +1110,7 @@ def health(request, patient_number):
             for i in range(12):
                 end = start + relativedelta(seconds=5)
 
-                health = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=end)
+                health = check.filter(now=end)
 
                 if len(health) >= 1:
                 
@@ -1335,7 +1335,7 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
     def get_queryset(self):
 
-        now = datetime.datetime(2022, 11, 16, 22, 38, 25)
+        now = datetime.datetime(2022, 11, 17, 18, 9, 30)
         # now = datetime.datetime.now()
         now = now + relativedelta(seconds=-(now.second % 5))
 
@@ -1345,59 +1345,79 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
         if period == 'month':
             start = now + relativedelta(days=-30)
+            data_count = 720
 
         elif period == 'week':
             start = now + relativedelta(days=-7)
+            data_count = 168
 
         elif period == 'day':
             start = now + relativedelta(days=-1)
+            data_count = 24
 
         elif period == 'now' or period == None:
             start = now + relativedelta(seconds=-60)
+            data_count = 12
 
         number = self.request.GET.get('number')
 
         if period == 'month' or period == 'week' or period == 'day':
-            queryset = PatientStatusExcel.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+            check = PatientStatusExcel.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+           
+            if len(check) >= 1:
+
+                queryset = []
+                
+                for i in range(data_count):
+                    
+                    end = start + relativedelta(hours=1)
+                    health = check.filter(now=end)
+
+                    if len(health) >= 1:
+                        queryset.append(health[0])
+
+                    start = end
+
+            else:  # 데이터가 한 개도 존재하지 않으면
+                
+                queryset = []
+
+                health = PatientStatusDefault.objects.all()
+
+                for i in range(data_count):
+                    tmp_time = (start + relativedelta(hours=1*(i+1))).strftime('%Y-%m-%d %H:%M:%S')
+                    tmp_data = health[i % 30]
+                    
+                    data = {
+                        'now': tmp_time,
+                        'temperature': tmp_data.temperature,
+                        'bpm': tmp_data.bpm,
+                        'oxygen_saturation': tmp_data.oxygen_saturation
+                    }
+
+                    queryset.append(data)
 
         elif period == 'now' or period == None:
-            health = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
 
-            queryset = []
+            check = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
+            if len(check) >= 1:
 
-            for i in range(len(health)):
+                queryset = []
 
-                data = {
-                    'now': health[i].now,
-                    'temperature': health[i].temperature,
-                    'bpm': health[i].bpm,
-                    'oxygen_saturation': health[i].oxygen_saturation
-                }
+                for i in range(12):
+                    
+                    end = start + relativedelta(seconds=5)
 
-                queryset.append(data)
+                    health = check.filter(now=end)
 
-            if len(queryset) >= 1:
+                    if len(health) >= 1:
+                        
+                        queryset.append(health[0])
 
-                if len(queryset) != 12:
+                    start = end
 
-                    tmp_health = []
+            else:  # 데이터가 한 개도 없으면
 
-                    for i in range(1, 12 - len(queryset) + 1):
-                        tmp_time = (now + relativedelta(seconds=-60) + relativedelta(seconds=5*i)).strftime('%Y-%m-%d %H:%M:%S')
-
-                        data = {
-                            'now': tmp_time,
-                            'temperature': 0.0,
-                            'bpm': 0,
-                            'oxygen_saturation': 0
-                        }
-                        tmp_health.append(data)
-
-                    queryset = tmp_health + queryset
-
-                    print(queryset)
-
-            else:
                 queryset = []
                 health = PatientStatusDefault.objects.all()
 
