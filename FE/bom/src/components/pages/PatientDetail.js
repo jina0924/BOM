@@ -312,7 +312,6 @@ function PatientDetail({ isPC }) {
                 ) : null}
               </div>
               <div className="filter-download-btn flex justify-end">
-                <DownloadBtn onClickFunction={clickExcelDownload} />
                 <select
                   name="기간"
                   id="기간"
@@ -324,6 +323,7 @@ function PatientDetail({ isPC }) {
                   <option value="week">7 일</option>
                   <option value="month">30 일</option>
                 </select>
+                <DownloadBtn onClickFunction={clickExcelDownload} />
               </div>
             </div>
             {/* 전체 서머리 페이지 */}
