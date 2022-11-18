@@ -43,35 +43,48 @@ def bms(request, patient_number):
 
     bms = Bms.objects.filter(patient=patient)
 
-    if len(bms) == True:
+    if len(bms) == True:  # 연결된 bms가 있는 경우
         bms = Bms.objects.get(patient=patient)
 
-        now_bms = BmsStatus.objects.filter(bms=bms, now__lte=now).last()  # 실시간
-        now_serializer = BmsStatusSerializer(now_bms)
+        now_bms = BmsStatusNow.objects.filter(bms=bms, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
-        batteries = Battery.objects.filter(bms=bms)
-        battery1 = batteries[0].id
-        battery2 = batteries[1].id
+        if len(now_bms) >= 1:  # 실시간 데이터가 있는 경우
+            now_bms = now_bms[0]
+            now_serializer = BmsStatusSerializer(now_bms)
 
-        battery1_now_voltage = BatteryStatus.objects.filter(battery_id=battery1, now__lte=now).last()
-        battery2_now_voltage = BatteryStatus.objects.filter(battery_id=battery2, now__lte=now).last()
+            batteries = Battery.objects.filter(bms=bms)
+            battery1 = batteries[0].id
+            battery2 = batteries[1].id
 
-        result_now = dict()
-        result_now.update(now_serializer.data)
-        result_now['전압1'] = battery1_now_voltage.voltage
-        result_now['전압2'] = battery2_now_voltage.voltage
-        result_now['잔량1'] = battery1_now_voltage.amount
-        result_now['잔량2'] = battery2_now_voltage.amount
+            battery1_now_voltage = BatteryStatusNow.objects.filter(battery_id=battery1, now=now.strftime('%Y-%m-%d %H:%M:%S'))[0]
+            battery2_now_voltage = BatteryStatusNow.objects.filter(battery_id=battery2, now=now.strftime('%Y-%m-%d %H:%M:%S'))[0]
+
+            result_now = dict()
+            result_now.update(now_serializer.data)
+            result_now['전압1'] = battery1_now_voltage.voltage
+            result_now['전압2'] = battery2_now_voltage.voltage
+            result_now['잔량1'] = battery1_now_voltage.amount
+            result_now['잔량2'] = battery2_now_voltage.amount
+
+        else:  # 실시간 데이터가 없는 경우
+            result_now = {
+            '온도': 26,
+            '시간': now.strftime('%Y-%m-%d %H:%M:%S'),
+            '전압1': 3.8,
+            '전압2': 3.8,
+            '잔량1': 100,
+            '잔량2': 100
+        }
     
-    else:
+    else:  # 연결된 bms가 없는 경우
         
         result_now = {
-            '온도': 0,
+            '온도': 26,
             '시간': now.strftime('%Y-%m-%d %H:%M:%S'),
-            '전압1': 0.0,
-            '전압2': 0.0,
-            '잔량1': 0,
-            '잔량2': 0
+            '전압1': 3.8,
+            '전압2': 3.8,
+            '잔량1': 100,
+            '잔량2': 100
         }
 
     period = request.GET.get('period')
