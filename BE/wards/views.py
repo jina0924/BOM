@@ -1100,7 +1100,7 @@ def health(request, patient_number):
                 start = end
 
     elif period == None or period == 'now':
-
+        
         start = now + relativedelta(seconds=-60)
         
         check = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=now)
@@ -1108,26 +1108,26 @@ def health(request, patient_number):
         if len(check) >= 1:
 
             for i in range(12):
-                end = start + relativedelta(seconds=5)
+                end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
 
                 health = check.filter(now=end)
-
+                # print(health)
                 if len(health) >= 1:
                 
                     temperature_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '체온': health[0].temperature
                     }
                     result_temperature.append(temperature_data)
                     
                     bpm_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '심박수': health[0].bpm
                     }
                     result_bpm.append(bpm_data)
                 
                     oxygen_saturation_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '산소포화도': health[0].oxygen_saturation
                     }
                     result_oxygen_saturation.append(oxygen_saturation_data)
@@ -1135,24 +1135,24 @@ def health(request, patient_number):
                 else:
 
                     temperature_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '체온': 0.0
                     }
                     result_temperature.append(temperature_data)
 
                     bpm_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '심박수': 0
                     }
                     result_bpm.append(bpm_data)
 
                     oxygen_saturation_data = {
-                        '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
+                        '시간': end,
                         '산소포화도': 0
                     }
                     result_oxygen_saturation.append(oxygen_saturation_data)
         
-                start = end
+                start = start + relativedelta(seconds=5)
 
             if result_temperature[-1]['체온'] == 0.0 and result_bpm[-1]['심박수'] == 0 and result_oxygen_saturation[-1]['산소포화도'] == 0:
                 result_temperature[-1]['체온'] = 36.5
