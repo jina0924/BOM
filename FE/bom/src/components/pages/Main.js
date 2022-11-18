@@ -72,7 +72,7 @@ function Main({ isPC }) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    if (now === res.data.now && location.pathname === "/main") {
+    if (now === res.data.now) {
       const timerID = setTimeout(
         requestPatientList,
         10000,
