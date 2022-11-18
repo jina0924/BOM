@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Bms, BmsStatus, Battery, BatteryStatus, BmsStatusExcel, BatteryStatusExcel, BmsStatusNow, BatteryStatusNow
+from .models import Bms, BmsStatus, Battery, BatteryStatus, BmsStatusExcel, BatteryStatusExcel, BmsStatusNow, BatteryStatusNow, BmsBatteryDefault
 from wards.models import Ward, Patient
 from .serializers import BmsStatusSerializer, BatteryStatusSerializer
 import jwt
@@ -38,17 +38,48 @@ def bms(request, patient_number):
     else:  # 환자번호에 해당하는 환자가 없으면
         return Response({'result': '환자의 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
+    
+
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
 
     bms = Bms.objects.filter(patient=patient)
 
-    if len(bms) == True:  # 연결된 bms가 있는 경우
+    period = request.GET.get('period')
+
+    if period == 'month':
+        data_count = 30
+        period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+        start = period_now + relativedelta(days=-30)
+
+    elif period == 'week':
+        data_count = 14
+        if now.hour >= 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
+        elif now.hour < 12:
+            period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+        start = period_now + relativedelta(days=-7)
+
+        
+    elif period == 'day':
+        data_count = 24
+        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+        start = period_now + relativedelta(days=-1)
+
+    elif period == 'now' or period == None:
+        data_count = 12
+        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
+        start = period_now + relativedelta(seconds=-60)
+
+    result_temperature = []
+    result_voltage = []
+
+    if bms.exists():  # 연결된 bms가 있는 경우
         bms = Bms.objects.get(patient=patient)
 
         now_bms = BmsStatusNow.objects.filter(bms=bms, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
-        if len(now_bms) >= 1:  # 실시간 데이터가 있는 경우
+        if now_bms.exists():  # 실시간 데이터가 있는 경우
             now_bms = now_bms[0]
             now_serializer = BmsStatusSerializer(now_bms)
 
@@ -75,7 +106,93 @@ def bms(request, patient_number):
             '잔량1': 100,
             '잔량2': 100
         }
-    
+
+        if period == 'month':
+            pass
+
+        elif period == 'week':
+            pass
+
+        elif period == 'day':
+            pass
+
+        elif period == None or period == 'now':
+
+            check = BmsStatusNow.objects.filter(bms=bms, now__gt=start, now__lte=now)
+
+            if check.exists():  # 기간에 해당하는 데이터가 한 개 이상이면
+
+                for i in range(12):
+
+                    end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
+
+                    bms_data = check.filter(now=end)
+
+                    if bms_data.exists():  # 해당 시간에 bms정보가 있으면
+
+                        temperature_data = {
+                            '시간': end,
+                            '온도': bms_data[0].temperature
+                        }
+                        result_temperature.append(temperature_data)
+                        
+                        batteries = Battery.objects.filter(bms=bms)
+                        battery1 = batteries[0]
+                        battery2 = batteries[1]
+
+                        voltage_data = {
+                            '시간': end,
+                            '전압1': BatteryStatusNow.objects.filter(battery=battery1)[0].voltage,
+                            '전압2': BatteryStatusNow.objects.filter(battery=battery2)[0].voltage
+                        }
+                        result_voltage.append(voltage_data)
+
+                    else:  # 해당 시간에 bms 정보가 없으면
+                        
+                        temperature_data = {
+                            '시간': end,
+                            '온도': 0
+                        }
+                        result_temperature.append(temperature_data)
+
+                        voltage_data = {
+                            '시간': end,
+                            '전압1': 0.0,
+                            '전압2': 0.0
+                        }
+                        result_voltage.append(voltage_data)
+
+                    start = start + relativedelta(seconds=5)
+                
+                if result_temperature[-1]['온도'] == 0 and result_voltage[-1]['전압1'] == 0.0 and result_voltage[-1]['전압2'] == 0.0:
+                    result_temperature[-1]['온도'] = 26
+                    result_voltage[-1]['전압1'] = 3.8
+                    result_voltage[-1]['전압2'] = 3.8
+
+            else:  # 기간 동안 해당하는 데이터가 한 개도 없다면
+                
+                bms_data = BmsBatteryDefault.objects.all()
+                
+                for i in range(12):
+                    end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
+
+                    temperature_data = {
+                        '시간': end,
+                        '온도': bms_data[i].temperature
+                        }
+                    result_temperature.append(temperature_data)
+
+                    voltage_data = {
+                        '시간': end,
+                        '전압1': bms_data[i].voltage1,
+                        '전압2': bms_data[i].voltage2
+                        }
+                    result_voltage.append(voltage_data)
+                    
+                    start = start + relativedelta(seconds=5)
+
+            return Response({'실시간': result_now, '온도': result_temperature, '전압': result_voltage}, status=status.HTTP_200_OK)
+
     else:  # 연결된 bms가 없는 경우
         
         result_now = {
@@ -87,73 +204,55 @@ def bms(request, patient_number):
             '잔량2': 100
         }
 
-    period = request.GET.get('period')
-
-    result_temperature = []
-    result_voltage = []
-
-    connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=5, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
-
-    # delta 단위 = 초
-    if period == 'month':
-        data_count = 30
-
-        time = now.strftime('%Y-%m-%d')
+        all_data = BmsBatteryDefault.objects.all()
 
         for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_month_{i+1}')
-            voltage = connect.hgetall(f'{time}_{patient_number}_voltage_month_{i+1}')
 
-            result_temperature.append(temperature)
-            result_voltage.append(voltage)
+            bms_battery = all_data[i % 12]
 
-    elif period == 'week':
+            if period == 'month':
+                end = start + relativedelta(days=1)
+                
+            elif period == 'week':
+                end = start + relativedelta(hours=12)
+            
+            elif period == 'day':
+                end = start + relativedelta(hours=1)
 
-        data_count = 14
-        if now.hour >= 12:
-            period_now = datetime.datetime(now.year, now.month, now.day, 12, 0, 0)
-        elif now.hour < 12:
-            period_now = datetime.datetime(now.year, now.month, now.day, 0, 0, 0)
+            elif period == 'now' or period == None:
+                end = start + relativedelta(seconds=5)
 
-        time = period_now.strftime('%Y-%m-%d %H')
+            if period == 'month' or period == 'week' or period == 'day':
 
-        for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_week_{i+1}')
-            voltage = connect.hgetall(f'{time}_{patient_number}_voltage_week_{i+1}')
+                temperature_data = {
+                    '시간': end,
+                    '최고': bms_battery.temperature
+                }
+                result_temperature.append(temperature_data)
 
-            result_temperature.append(temperature)
-            result_voltage.append(voltage)
+                voltage_data = {
+                    '시간': end,
+                    '전압1': bms_battery.voltage1,
+                    '전압2': bms_battery.voltage2
+                }
+                result_voltage.append(voltage_data)
+            
+            elif period == 'now' or period == None:
+                temperature_data = {
+                    '시간': end,
+                    '온도': bms_battery.temperature
+                }
+                result_temperature.append(temperature_data)
 
-    elif period == 'day':
+                voltage_data = {
+                    '시간': end,
+                    '전압1': bms_battery.voltage1,
+                    '전압2': bms_battery.voltage2
+                }
+                result_voltage.append(voltage_data)
 
-        data_count = 24
-        period_now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
-
-        time = period_now.strftime('%Y-%m-%d %H')
-
-        for i in range(data_count):
-            temperature = connect.hgetall(f'{time}_{patient_number}_temperature_day_{i+1}')
-            voltage = connect.hgetall(f'{time}_{patient_number}_voltage_day_{i+1}')
-
-            result_temperature.append(temperature)
-            result_voltage.append(voltage)
-
-    elif period == None or period == 'now':
-
-        connect = redis.StrictRedis(host=DATABASES['default']['HOST'], port=6379, db=4, charset='utf-8', decode_responses=True, password=DATABASES['default']['PASSWORD'])
-
-        for i in range(12):
-            temperature = connect.hgetall(f'{patient_number}_temperature_now_{i+1}')
-            voltage = connect.hgetall(f'{patient_number}_voltage_now_{i+1}')
-
-            result_temperature.append(temperature)
-            result_voltage.append(voltage)
-
-        return Response({'실시간': result_now, '온도': result_temperature, '전압': result_voltage}, status=status.HTTP_200_OK)
-
-    else:
-        return Response({'result': '올바르지 않은 요청입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
+            start = end
+        
     return Response({'실시간': result_now, '온도': result_temperature, '전압': result_voltage}, status=status.HTTP_200_OK)
 
 
@@ -170,25 +269,32 @@ class BmsExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
     def get_queryset(self):
 
-        now = datetime.datetime(2022, 11, 15, 17, 58, 2)
-        # now = datetime.datetime.now()
+        # now = datetime.datetime(2022, 11, 15, 17, 58, 2)
+        now = datetime.datetime.now()
         now = now + relativedelta(seconds=-(now.second % 5))
 
         period = self.request.GET.get('period')
         if period == 'month' or period == 'week' or period == 'day':
             now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
 
+        elif period == 'now' or period == None:
+            now = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
+
         if period == 'month':
             start = now + relativedelta(days=-30)
+            data_count = 720
 
         elif period == 'week':
             start = now + relativedelta(days=-7)
+            data_count = 168
 
         elif period == 'day':
             start = now + relativedelta(days=-1)
+            data_count = 24
 
         elif period == 'now' or period == None:
             start = now + relativedelta(seconds=-60)
+            data_count = 12
 
         number = self.request.GET.get('number')
 
@@ -196,7 +302,7 @@ class BmsExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
         bms = Bms.objects.filter(patient__number=number)
         # bms = BmsStatus.objects.filter(patient__number=number, now__gt=start, now__lte=now)
-        if len(bms) == True:
+        if bms.exists():  # 연결된 bms가 존재할 때
             bms_id = bms[0].id
 
             batteries = Battery.objects.filter(bms_id=bms_id)
@@ -204,22 +310,116 @@ class BmsExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
             battery2_id = batteries[1].id
 
             if period == 'month' or period == 'week' or period == 'day':
+
                 temperature = BmsStatusExcel.objects.filter(bms_id=bms_id, now__gt=start, now__lte=now)
                 battery1 = BatteryStatusExcel.objects.filter(battery_id=battery1_id, now__gt=start, now__lte=now)
                 battery2 = BatteryStatusExcel.objects.filter(battery_id=battery2_id, now__gt=start, now__lte=now)
+
+                if temperature.exists():  # 기간 동안 해당하는 데이터가 한 개 이상이면
+
+                    for i in range(data_count):
+                        
+                        end = start + relativedelta(hours=1)
+                        check_temperature = temperature.filter(now=end)
+                        check_battery1 = battery1.filter(now=end)
+                        check_battery2 = battery2.filter(now=end)
+
+                        if check_temperature.exists():
+
+                            data = dict()
+                            data['시간'] = check_temperature[0].now
+                            data['온도'] = check_temperature[0].temperature
+                            data['전압1'] = check_battery1[0].voltage
+                            data['전압2'] = check_battery2[0].voltage
+                            queryset.append(data)
+                        
+                        start = end
+
+                else:  # 기간 동안 해당하는 데이터가 한 개도 없으면
+                    all_data = BmsBatteryDefault.objects.all()
+
+                    for i in range(data_count):
+                        end = start + relativedelta(hours=1)
+                        bms_battery = all_data[i % 12]
+
+                        data = {
+                            '시간': end,
+                            '온도': bms_battery.temperature,
+                            '전압1': bms_battery.voltage1,
+                            '전압2': bms_battery.voltage2
+                        }
+
+                        queryset.append(data)
+
+                        start = end
 
             elif period == 'now' or period == None:
                 temperature = BmsStatusNow.objects.filter(bms_id=bms_id, now__gt=start, now__lte=now)
                 battery1 = BatteryStatusNow.objects.filter(battery_id=battery1_id, now__gt=start, now__lte=now)
                 battery2 = BatteryStatusNow.objects.filter(battery_id=battery2_id, now__gt=start, now__lte=now)
 
-            for i in range(len(temperature)):
-                data = dict()
-                data['시간'] = temperature[i].now
-                data['온도'] = temperature[i].temperature
-                data['전압1'] = battery1[i].voltage
-                data['전압2'] = battery2[i].voltage
+                if temperature.exists():  # 실시간 데이터가 한 개 이상 존재하면
+
+                    for i in range(data_count):
+
+                        end = start + relativedelta(seconds=5)
+                        check_temperature = temperature.filter(now=end)
+                        check_battery1 = battery1.filter(now=end)
+                        check_battery2 = battery2.filter(now=end)
+                        
+                        if check_temperature.exists():
+
+                            data = dict()
+                            data['시간'] = check_temperature[0].now
+                            data['온도'] = check_temperature[0].temperature
+                            data['전압1'] = check_battery1[0].voltage
+                            data['전압2'] = check_battery2[0].voltage
+                            queryset.append(data)
+
+                        start = end
+
+                else:  # 실시간 데이터가 한 개도 없으면
+                    all_data = BmsBatteryDefault.objects.all()
+
+                    for i in range(data_count):
+                        end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
+                        bms_battery = all_data[i]
+
+                        data = {
+                            '시간': end,
+                            '온도': bms_battery.temperature,
+                            '전압1': bms_battery.voltage1,
+                            '전압2': bms_battery.voltage2
+                        }
+
+                        queryset.append(data)
+
+                        start = start + relativedelta(seconds=5)
+
+        else:  # 연결된 bms가 없을 때
+            
+            all_data = BmsBatteryDefault.objects.all()
+
+            for i in range(data_count):
+
+                if period == 'month' or period == 'week' or period == 'day':
+                    end = start + relativedelta(hours=1)
+                    bms_battery = all_data[i % 12]
+
+                elif period == 'now' or period == None:
+                    end = start + relativedelta(seconds=5)
+                    bms_battery = all_data[i]
+
+                data = {
+                        '시간': end,
+                        '온도': bms_battery.temperature,
+                        '전압1': bms_battery.voltage1,
+                        '전압2': bms_battery.voltage2
+                    }
+
                 queryset.append(data)
+
+                start = end
 
         return queryset
 
