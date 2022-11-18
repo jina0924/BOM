@@ -787,7 +787,7 @@ def health(request, patient_number):
 
     patient = Patient.objects.filter(number=patient_number)
 
-    if len(patient) == True:
+    if patient.exists():
         patient = patient[0]
         if patient.ward_id != ward.id:
             return Response({'result': '잘못된 접근입니다.'}, status=status.HTTP_403_FORBIDDEN)
@@ -799,7 +799,7 @@ def health(request, patient_number):
     now = now + relativedelta(seconds=-(now.second % 5))
     now_health = PatientStatusNow.objects.filter(patient__number=patient_number, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
-    if len(now_health) == True:
+    if now_health.exists():
         now_serializer = HealthSerializer(now_health[0])
 
     else:
@@ -828,14 +828,14 @@ def health(request, patient_number):
 
         check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
 
-        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
+        if check.exists():  # 하나라도 체크된 값이 있으면
 
             for i in range(30):
                 end = start + relativedelta(days=1)
 
                 health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
                 
-                if len(health) >= 1:
+                if health.exists():
                     temperature_data = {
                             '시간': start.strftime('%Y-%m-%d'),
                             '최대': health.aggregate(최대=Max('max_t'))['최대'],
@@ -923,14 +923,14 @@ def health(request, patient_number):
 
         check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
 
-        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
+        if check.exists():  # 하나라도 체크된 값이 있으면
 
             for i in range(14):
                 end = start + relativedelta(hours=12)
 
                 health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
                 
-                if len(health) >= 1:
+                if health.exists():
                     temperature_data = {
                             '시간': start.strftime('%Y-%m-%d %H'),
                             '최대': health.aggregate(최대=Max('max_t'))['최대'],
@@ -1015,14 +1015,14 @@ def health(request, patient_number):
 
         check = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=time)
 
-        if len(check) >= 1:  # 하나라도 체크된 값이 있으면
+        if check.exists():  # 하나라도 체크된 값이 있으면
 
             for i in range(24):
                 end = start + relativedelta(hours=1)
 
                 health = PatientDay.objects.filter(patient__number=patient_number, now__gte=start, now__lt=end)
                 
-                if len(health) >= 1:
+                if health.exists():
                     temperature_data = {
                             '시간': start.strftime('%Y-%m-%d %H'),
                             '최대': health.aggregate(최대=Max('max_t'))['최대'],
@@ -1105,14 +1105,14 @@ def health(request, patient_number):
         
         check = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=now)
 
-        if len(check) >= 1:
+        if check.exists():
 
             for i in range(12):
                 end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
 
                 health = check.filter(now=end)
                 # print(health)
-                if len(health) >= 1:
+                if health.exists():
                 
                     temperature_data = {
                         '시간': end,
@@ -1213,7 +1213,7 @@ def patient_health(request):
     now = now + relativedelta(seconds=-(now.second % 5))
     now_health = PatientStatusNow.objects.filter(patient__number=patient.number, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
-    if len(now_health) == True:
+    if now_health.exists():
         serializer = HealthSerializer(now_health[0])
 
     else:
@@ -1240,14 +1240,14 @@ def patient_health(request):
         
     check = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=now)
 
-    if len(check) >= 1:
+    if check.exists():
 
         for i in range(12):
             end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
 
             health = PatientStatusNow.objects.filter(patient__number=patient_number, now__gt=start, now__lte=end)
 
-            if len(health) >= 1:
+            if health.exists():
             
                 temperature_data = {
                     '시간': end,
@@ -1368,7 +1368,7 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
         if period == 'month' or period == 'week' or period == 'day':
             check = PatientStatusExcel.objects.filter(patient__number=number, now__gt=start, now__lte=now)
            
-            if len(check) >= 1:
+            if check.exists():
 
                 queryset = []
                 
@@ -1377,7 +1377,7 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
                     end = start + relativedelta(hours=1)
                     health = check.filter(now=end)
 
-                    if len(health) >= 1:
+                    if health.exists():
                         queryset.append(health[0])
 
                     start = end
@@ -1404,7 +1404,7 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
         elif period == 'now' or period == None:
 
             check = PatientStatusNow.objects.filter(patient__number=number, now__gt=start, now__lte=now)
-            if len(check) >= 1:
+            if check.exists():
 
                 queryset = []
 

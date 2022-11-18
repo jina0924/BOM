@@ -105,3 +105,13 @@ class BatteryDay(models.Model):
     class Meta:
         managed = True
         db_table = 'battery_day'
+
+
+class BmsBatteryDefault(models.Model):
+    temperature = models.IntegerField()
+    voltage1 = models.FloatField()
+    voltage2 = models.FloatField()
+    
+    class Meta:
+        managed = True
+        db_table = 'bms_battery_default'
