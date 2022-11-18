@@ -797,7 +797,7 @@ def health(request, patient_number):
     # now = datetime.datetime(2022, 11, 2, 22, 38, 25)
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
-    now_health = PatientStatusNow.objects.filter(patient__number=patient_number, now=now)  # 실시간
+    now_health = PatientStatusNow.objects.filter(patient__number=patient_number, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
     if len(now_health) == True:
         now_serializer = HealthSerializer(now_health[0])
@@ -1211,12 +1211,13 @@ def patient_health(request):
     # now = datetime.datetime(2022, 11, 2, 22, 38, 25)
     now = datetime.datetime.now()
     now = now + relativedelta(seconds=-(now.second % 5))
-    now_health = PatientStatusNow.objects.filter(patient__number=patient.number, now=now)  # 실시간
+    now_health = PatientStatusNow.objects.filter(patient__number=patient.number, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
     if len(now_health) == True:
         serializer = HealthSerializer(now_health[0])
 
     else:
+
         temperature = 36.5
         bpm = 80
         oxygen_saturation = 98
@@ -1335,13 +1336,16 @@ class HealthExcelViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
     def get_queryset(self):
 
-        now = datetime.datetime(2022, 11, 17, 18, 9, 30)
-        # now = datetime.datetime.now()
+        # now = datetime.datetime(2022, 11, 17, 18, 9, 30)
+        now = datetime.datetime.now()
         now = now + relativedelta(seconds=-(now.second % 5))
 
         period = self.request.GET.get('period')
         if period == 'month' or period == 'week' or period == 'day':
             now = datetime.datetime(now.year, now.month, now.day, now.hour, 0, 0)
+        
+        elif period == 'now' or period == None:
+            now = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
 
         if period == 'month':
             start = now + relativedelta(days=-30)
