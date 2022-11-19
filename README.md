@@ -10,8 +10,6 @@
 
 ## 설치
 
-사이트 주소 : https://thundervolt.co.kr
-
 > 자세한 내용은 [포팅 메뉴얼]() 참고
 
 - FE
@@ -30,6 +28,26 @@ $ npm start
 
 ```bash
 $ python manage.py runserver
+```
+
+
+
+## 사용 방법
+
+사이트 주소 : https://thundervolt.co.kr
+
+병동 로그인
+
+```tex
+ID : sw507
+PASSWORD : xptmxmdlqslek
+```
+
+환자(보호자) 로그인
+
+```tex
+ID : 225070001
+PASSWORD : xptmxmdlqslek
 ```
 
 
@@ -87,3 +105,32 @@ baseURL: "https://thundervolt.co.kr/api/",
 ## Convention
 [🔗 깃 컨벤션](./GitConvention.md)
 [🔗 지라 컨벤션](./JiraConvention.md)
+
+
+
+## 팀원
+
+권경민(팀장)
+
+- 담당 파트 : HW, FE
+- 기타 : onshape (3D), 발표
+
+김유민
+
+- 담당 파트 : HW, BE
+- 기타 : 회로 설계
+
+문요성
+
+- 담당 파트 : FE
+- 기타 : Figma, PPT
+
+이지수
+
+- 담당 파트 : BE
+- 기타 : UCC
+
+정진아
+
+- 담당 파트 : FE
+- 기타 : Figma, PPT
