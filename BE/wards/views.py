@@ -811,7 +811,7 @@ def health(request, patient_number):
             'temperature': temperature,
             'bpm': bpm,
             'oxygen_saturation': oxygen_saturation,
-            'now': now
+            'now': now.strftime('%Y-%m-%d %H:%M:%S')
         }
         now_serializer = HealthSerializer(now_health_data)
 

@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Bms, BmsStatus, Battery, BatteryStatus, BmsStatusExcel, BatteryStatusExcel, BmsStatusNow, BatteryStatusNow, BmsBatteryDefault
+from .models import Bms, BmsStatus, Battery, BatteryStatus, BmsStatusExcel, BatteryStatusExcel, BmsStatusNow, BatteryStatusNow, BmsBatteryDefault, BatteryDay, BmsDay
 from wards.models import Ward, Patient
 from .serializers import BmsStatusSerializer, BatteryStatusSerializer
 import jwt
@@ -76,16 +76,15 @@ def bms(request, patient_number):
 
     if bms.exists():  # 연결된 bms가 있는 경우
         bms = Bms.objects.get(patient=patient)
+        batteries = Battery.objects.filter(bms=bms)
+        battery1 = batteries[0].id
+        battery2 = batteries[1].id
 
         now_bms = BmsStatusNow.objects.filter(bms=bms, now=now.strftime('%Y-%m-%d %H:%M:%S'))  # 실시간
 
         if now_bms.exists():  # 실시간 데이터가 있는 경우
             now_bms = now_bms[0]
             now_serializer = BmsStatusSerializer(now_bms)
-
-            batteries = Battery.objects.filter(bms=bms)
-            battery1 = batteries[0].id
-            battery2 = batteries[1].id
 
             battery1_now_voltage = BatteryStatusNow.objects.filter(battery_id=battery1, now=now.strftime('%Y-%m-%d %H:%M:%S'))[0]
             battery2_now_voltage = BatteryStatusNow.objects.filter(battery_id=battery2, now=now.strftime('%Y-%m-%d %H:%M:%S'))[0]
@@ -107,14 +106,88 @@ def bms(request, patient_number):
             '잔량2': 100
         }
 
-        if period == 'month':
-            pass
+        if period == 'month' or period == 'week' or period == 'day':
+            check = BmsDay.objects.filter(bms=bms, now__gte=start, now__lt=period_now)
+            
+            if check.exists():  # 전체 기간에 해당하는 최소/최대 데이터가 한 개 이상이면
+                
+                for i in range(data_count):
+                    
+                    if period == 'month':
+                        end = start + relativedelta(days=1)
+                        time = start.strftime('%Y-%m-%d')
 
-        elif period == 'week':
-            pass
+                    if period == 'week':
+                        end = start + relativedelta(hours=12)
+                        time = start.strftime('%Y-%m-%d %H')
 
-        elif period == 'day':
-            pass
+                    if period == 'day':
+                        end = start + relativedelta(hours=1)
+                        time = start.strftime('%Y-%m-%d %H')
+
+                    bms_data = check.filter(now__gte=start, now__lt=end)
+
+                    if bms_data.exists():  # 특정 구간에 해당하는 값이 있다면
+                        temperature_data = {
+                            '시간': time,
+                            '최고': bms_data.aggregate(최고=Max('max_t'))['최고']
+                        }
+
+                        voltage_data = {
+                            '시간': time,
+                            '전압1': BatteryDay.objects.filter(battery=battery1, now__gte=start, now__lt=end).aggregate(전압1=Max('max_v'))['전압1'],
+                            '전압2': BatteryDay.objects.filter(battery=battery2, now__gte=start, now__lt=end).aggregate(전압2=Max('max_v'))['전압2']
+                        }
+
+                    else:  # 특정 구간에 해당하는 값이 없다면
+                        temperature_data = {
+                            '시간': time,
+                            '최고': 0
+                        }
+
+                        voltage_data = {
+                            '시간': time,
+                            '전압1': 0.0,
+                            '전압2': 0.0
+                        }
+
+                    result_temperature.append(temperature_data)
+                    result_voltage.append(voltage_data)
+
+                    start = end
+
+            else:  # 전체 기간에 해당하는 데이터가 한 개도 없다면
+                
+                bms_data = BmsBatteryDefault.objects.all()
+
+                for i in range(data_count):
+                    if period == 'month':
+                        end = start + relativedelta(days=1)
+                        time = start.strftime('%Y-%m-%d')
+
+                    if period == 'week':
+                        end = start + relativedelta(hours=12)
+                        time = start.strftime('%Y-%m-%d %H')
+
+                    if period == 'day':
+                        end = start + relativedelta(hours=1)
+                        time = start.strftime('%Y-%m-%d %H')    
+
+                    temperature_data = {
+                        '시간': time,
+                        '최고': bms_data[i % 12].temperature
+                    }
+
+                    voltage_data = {
+                        '시간': time,
+                        '전압1': bms_data[i % 12].voltage1,
+                        '전압2': bms_data[i % 12].voltage2
+                    }
+
+                    result_temperature.append(temperature_data)
+                    result_voltage.append(voltage_data)
+
+                    start = end
 
         elif period == None or period == 'now':
 
@@ -135,10 +208,6 @@ def bms(request, patient_number):
                             '온도': bms_data[0].temperature
                         }
                         result_temperature.append(temperature_data)
-                        
-                        batteries = Battery.objects.filter(bms=bms)
-                        battery1 = batteries[0]
-                        battery2 = batteries[1]
 
                         voltage_data = {
                             '시간': end,
@@ -179,14 +248,14 @@ def bms(request, patient_number):
                     temperature_data = {
                         '시간': end,
                         '온도': bms_data[i].temperature
-                        }
+                    }
                     result_temperature.append(temperature_data)
 
                     voltage_data = {
                         '시간': end,
                         '전압1': bms_data[i].voltage1,
                         '전압2': bms_data[i].voltage2
-                        }
+                    }
                     result_voltage.append(voltage_data)
                     
                     start = start + relativedelta(seconds=5)
@@ -222,34 +291,46 @@ def bms(request, patient_number):
             elif period == 'now' or period == None:
                 end = start + relativedelta(seconds=5)
 
-            if period == 'month' or period == 'week' or period == 'day':
+            if period == 'month':
 
                 temperature_data = {
-                    '시간': end,
+                    '시간': end.strftime('%Y-%m-%d'),
                     '최고': bms_battery.temperature
                 }
-                result_temperature.append(temperature_data)
 
                 voltage_data = {
-                    '시간': end,
+                    '시간': end.strftime('%Y-%m-%d'),
                     '전압1': bms_battery.voltage1,
                     '전압2': bms_battery.voltage2
                 }
-                result_voltage.append(voltage_data)
+            
+            elif period == 'week' or period == 'day':
+
+                temperature_data = {
+                    '시간': end.strftime('%Y-%m-%d %H'),
+                    '최고': bms_battery.temperature
+                }
+
+                voltage_data = {
+                    '시간': end.strftime('%Y-%m-%d %H'),
+                    '전압1': bms_battery.voltage1,
+                    '전압2': bms_battery.voltage2
+                }
             
             elif period == 'now' or period == None:
                 temperature_data = {
-                    '시간': end,
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
                     '온도': bms_battery.temperature
                 }
-                result_temperature.append(temperature_data)
 
                 voltage_data = {
-                    '시간': end,
+                    '시간': end.strftime('%Y-%m-%d %H:%M:%S'),
                     '전압1': bms_battery.voltage1,
                     '전압2': bms_battery.voltage2
                 }
-                result_voltage.append(voltage_data)
+
+            result_temperature.append(temperature_data)
+            result_voltage.append(voltage_data)
 
             start = end
         
