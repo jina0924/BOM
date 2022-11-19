@@ -41,7 +41,7 @@ function BodyInfo({
                 </div>
               </div>
               <div className="content-box grid grid-cols-4 px-3 h-5/6">
-                <div className="live-info-box col-span-1 h-full pl-[36px]">
+                <div className="live-info-box col-span-1 h-full pl-[30px]">
                   <LiveInfo isPC={isPC} value={`${liveData} ℃`} />
                 </div>
                 <div className="graph-box col-span-3 flex items-center  text-2xs">
@@ -69,7 +69,7 @@ function BodyInfo({
                 </div>
               </div>
               <div className="content-box grid grid-cols-4 px-3 h-5/6">
-                <div className="live-info-box col-span-1 h-full pl-[36px]">
+                <div className="live-info-box col-span-1 h-full pl-[30px]">
                   <LiveInfo isPC={isPC} value={`${liveData} bpm`} />
                 </div>
                 <div className="graph-box col-span-3 flex items-center text-2xs">
@@ -97,7 +97,7 @@ function BodyInfo({
                 </div>
               </div>
               <div className="content-box grid grid-cols-4 px-3 h-5/6">
-                <div className="live-info-box col-span-1 h-full pl-[36px]">
+                <div className="live-info-box col-span-1 h-full pl-[30px]">
                   <LiveInfo isPC={isPC} value={`${liveData} %`} />
                 </div>
                 <div className="graph-box col-span-3 flex items-center text-2xs">
