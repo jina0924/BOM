@@ -387,6 +387,7 @@ function PatientDetail({ isPC }) {
               <div className="device-detail-full px-10 pb-5 h-[75vh] ">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
+                    patientName={name}
                     bmsTemperature={bmsTemperature}
                     voltage1={voltage1}
                     voltage2={voltage2}
