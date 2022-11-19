@@ -23,12 +23,12 @@ function BMSIcon({ iconTag }) {
       )}
       {iconTag === "UilBatteryBolt" && (
         <div className="aspect-square h-full flex justify-center items-center bg-[#FFB400]/20 rounded-full">
-          <UilBatteryBolt className="text-[#FFB400] w-1/2 h-1/2" />
+          <UilBatteryBolt className="text-sub2 w-1/2 h-1/2" />
         </div>
       )}
       {iconTag === "UilBatteryEmpty" && (
         <div className="aspect-square h-full flex justify-center items-center bg-[#4F9DA6]/20 rounded-full">
-          <UilBatteryEmpty className="text-[#4F9DA6] w-1/2 h-1/2" />
+          <UilBatteryEmpty className="text-green w-1/2 h-1/2" />
         </div>
       )}
       {iconTag === "UilCircuit" && (

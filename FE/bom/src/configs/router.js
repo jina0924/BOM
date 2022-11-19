@@ -6,7 +6,6 @@ import PatientsAutoPlay from "components/pages/PatientsAutoPlay";
 import PatientDetail from "components/pages/PatientDetail";
 import Nurses from "components/pages/Nurses";
 import Doctors from "components/pages/Doctors";
-import Test from "components/pages/Test";
 import DeviceNotSupport from "components/pages/DeviceNotSupport";
 
 import ls from "helper/LocalStorage";
