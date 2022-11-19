@@ -29,12 +29,9 @@ function PatientList({
   const [fade, setFade] = useState("");
 
   useEffect(() => {
-    if (location.pathname === "/main") {
+    if (location.pathname === "/") {
       setPathname("main");
-    } else if (
-      (location.pathname === "/patients") |
-      (location.pathname === "/patients/autoplay")
-    ) {
+    } else {
       setPathname("patients");
     }
   }, [location]);
@@ -44,8 +41,8 @@ function PatientList({
       setFade("end");
     }, 10);
     return () => {
-      clearTimeout(to);
       setFade("");
+      clearTimeout(to);
     };
   }, [page]);
 
