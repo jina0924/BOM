@@ -6,7 +6,7 @@ function PatientInfoKeyValue({ isPC, key1, value }) {
       <div
         className={
           isPC
-            ? "key text-font2 border-b-[1px] px-5 flex justify-center"
+            ? "key text-font2 border-b-[1px] px-5 flex justify-center text-sm"
             : "key text-font2 border-b-[1px] px-3 flex justify-center text-sm"
         }
       >
@@ -15,7 +15,7 @@ function PatientInfoKeyValue({ isPC, key1, value }) {
       <div
         className={
           isPC
-            ? "value text-font1 font-bold px-5 flex justify-center"
+            ? "value text-font1 font-bold px-5 flex justify-center text-sm"
             : "value text-font1 font-bold px-3 flex justify-center text-sm"
         }
       >
