@@ -6,8 +6,8 @@ function LiveInfo({ isPC, value }) {
       {isPC && (
         <div className="h-full">
           <div className="flex flex-col justify-center items-center h-full">
-            <span className="text-font1 text-lg mr-2">실시간</span>
-            <span className="text-main text-2xl font-extrabold ">{value}</span>
+            <span className="text-font1 text-base mr-2">실시간</span>
+            <span className="text-main text-lg font-extrabold ">{value}</span>
           </div>
         </div>
       )}
