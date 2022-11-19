@@ -88,7 +88,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <details>
 <summary>로그인</summary>
 <div markdown="1">
-<img src="README.assets\login_gif">
+<img src="README.assets\login_gif.gif">
 <br>
 <br>
 </div>
@@ -96,7 +96,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <details>
 <summary>메인페이지</summary>
 <div markdown="1">
-<img src="README.assets\main">
+<img src="README.assets\main.jpg">
 <p>이곳에서 병동에 대한 정보를 확인할 수 있습니다.</p>
 <span>- 상단부터 우측 하단까지 병동에 대한 데이터를 한눈에 파악하게 도와줍니다.</span><br>
 <span>- 좌측 하단의 리스트를 통해 입원 환자들의 정보를 간략하게 살펴볼 수 있습니다.</span>
@@ -107,8 +107,8 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <details>
 <summary>환자 목록 페이지</summary>
 <div markdown="1">
-<img src="README.assets\patients">
-<img src="README.assets\patients_gif">
+<img src="README.assets\patients.jpg">
+<img src="README.assets\patients_gif.gif">
 <p>이곳에서 환자들에 대한 정보를 확인할 수 있습니다.</p>
 <span>- 환자들의 정보를 검색하여 파악할 수 있고, 위험한 환자의 경우 따로 표시해줍니다.</span><br>
 <span>- 또한 우측의 화살표 버튼을 통해 자동으로 넘어가는 캐로젤로 관제탑의 역할을 하는 페이지로 이동이 가능합니다.</span>
@@ -130,8 +130,8 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <details>
 <summary>의사/간호사 목록 페이지</summary>
 <div markdown="1">
-<img src="README.assets\doctors">
-<img src="README.assets\nurses">
+<img src="README.assets\doctors.jpg">
+<img src="README.assets\nurses.jpg">
 <p>이곳에서 의사/간호사 목록을 확인할 수 있습니다.</p>
 <span>- 툴팁을 통해 버튼에 마우스 오버하면 비상연락망을 확인할 수 있습니다.</span>
 <br>
@@ -146,7 +146,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <details>
 <summary>환자 정보 조회</summary>
 <div markdown="1">
-<img src="README.assets\nok_mobile">
+<img src="README.assets\nok_mobile.gif">
 <br>
 <br>
 </div>
