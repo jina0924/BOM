@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "components/atoms/Title.js";
 import Graph from "components/atoms/Graph";
+import { UilInfoCircle } from "@iconscout/react-unicons";
 
 function DeviceDetailInfo({ voltageData, bmsTemperatureData, filter }) {
   return (
@@ -17,7 +18,13 @@ function DeviceDetailInfo({ voltageData, bmsTemperatureData, filter }) {
         <div className="left-content-box col-span-1 h-full px-2">
           <div className="voltage-box shadow-dark rounded-[20px] w-full h-full">
             <div className="title-box flex justify-center items-center text-lg text-main font-bold h-[20%]">
-              <span>배터리 전압</span>
+              <span className="mr-2">배터리 전압</span>
+              <span
+                className="tooltip tooltip-top text-font2 flex justify-center items-center font-light"
+                data-tip="디바이스 구동에 쓰이는 두개의 배터리의 전압을 각각 나타냅니다"
+              >
+                <UilInfoCircle className="h-5/6 w-5/6" />
+              </span>
             </div>
             <div className="graph-box h-[80%] flex items-center">
               <Graph
