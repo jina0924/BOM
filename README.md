@@ -36,7 +36,9 @@ $ python manage.py runserver
 
 ## Embeded
 
-[코드정보]()
+[boms 코드정보]()
+
+[health 코드 정보]()
 
 외관
 
@@ -46,15 +48,15 @@ $ python manage.py runserver
 
 ### BE
 
-[코드정보]()
+[코드정보](./BE/)
 
-[API.md]() 참고
+[API.md](./BE/API.md) 참고
 
 
 
 ### FE
 
-[코드정보]()
+[코드정보](./FE/bom/)
 
 > bom폴더에서 vscode 실행 후 api 연결 포트 선택
 
@@ -70,15 +72,9 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 
 
-## 기술스택
-
-[기술 스택 정리 문서]()
-
-
-
 ## Docs
 
-[문서 모음]()
+[문서 모음](./Docs)
 
 
 
