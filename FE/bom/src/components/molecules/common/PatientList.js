@@ -10,6 +10,7 @@ import "./patientListCarouselEffect.css";
 import {
   UilArrowResizeDiagonal,
   UilArrowDownLeft,
+  UilInfoCircle,
 } from "@iconscout/react-unicons";
 
 function PatientList({
@@ -55,12 +56,20 @@ function PatientList({
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
       <div className="h-[10%] pt-6 px-8 flex justify-between">
-        <Title
-          iconTag="UilMedicalDrip"
-          iconTagClassName="text-sub1 inline mr-3"
-          content="환자 목록"
-          contentClassName="text-main font-bold text-lg"
-        />
+        <div className="patient-list-title flex items-center">
+          <Title
+            iconTag="UilMedicalDrip"
+            iconTagClassName="text-sub1 inline mr-3"
+            content="환자 목록"
+            contentClassName="text-main font-bold text-lg mr-3"
+          />
+          <span
+            className="tooltip tooltip-right text-font2 flex justify-center items-center font-light"
+            data-tip="체온, 심박수가 정상 수치를 초과하면 ▲, 미만이면 ▼가 나타납니다"
+          >
+            <UilInfoCircle className="h-5/6 w-5/6" />
+          </span>
+        </div>
         <div className="arrow-box">
           {nowPage === "main" && (
             <Link to="/patients">
