@@ -21,6 +21,8 @@ cnt = 0
 
 # 7min ->84
 '''
+
+# 실시간으로 넣을 때 - 5초 단위
 while(cnt<24):
     now_time = datetime.datetime.now()
 
@@ -74,6 +76,8 @@ while(cnt<24):
     
 '''
 
+
+# 특정 시간 사이의 데이터 삽입
 now = datetime.datetime(2022,11,17, 18,5,0)
 d = datetime.datetime(2022,11,17,18,10,10)
 
@@ -104,6 +108,7 @@ while(1):
 
 
 '''
+#하나만 넣을 때
 now = datetime.datetime(2022,10,19, 22,0,0)
 temp = round((36.5 + random.uniform(-0.9, 0.9)), 1)
 heart = int(80 + random.randint(-4, 4))
