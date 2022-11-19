@@ -131,6 +131,9 @@ function PatientList({
                 <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
                   주치의
                 </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  상태
+                </th>
               </tr>
             </thead>
             {!!patientList && (
@@ -143,14 +146,13 @@ function PatientList({
                   >
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {key + 1 + limit * (page - 1)}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
-                        ${item.isWarning && "text-sub1"}`}
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {item.number}
                     </td>
@@ -203,7 +205,7 @@ function PatientList({
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
                         item.oxygenSaturation < 95 && "text-sub1"
                       }
                       `}
@@ -213,10 +215,8 @@ function PatientList({
                     {pathname === "patients" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray
-                          ${
-                            onOff === true ? " text-sm py-4" : " text-xs py-2.5"
-                          }
-                        `}
+                        ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
+                          `}
                       >
                         {item.nokName}
                       </td>
@@ -241,6 +241,17 @@ function PatientList({
                       }
                     >
                       {item.doctor.name}
+                    </td>
+                    <td
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                              ${
+                                onOff === true
+                                  ? "text-sm py-4"
+                                  : "text-xs py-2.5"
+                              }
+                              ${item.isWarning ? "text-sub1" : "text-green"}`}
+                    >
+                      ●
                     </td>
                   </tr>
                 ))}
