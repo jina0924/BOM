@@ -14,7 +14,7 @@
 
 ---
 
-## 설치
+## 설치 💾
 
 > 자세한 내용은 [포팅 메뉴얼]() 참고
 
@@ -40,7 +40,7 @@ $ python manage.py runserver
 
 ---
 
-## 사용 방법
+## 사용 방법 🎁
 
 사이트 주소 : https://thundervolt.co.kr
 
@@ -62,7 +62,7 @@ PASSWORD : xptmxmdlqslek
 
 ---
 
-## Embeded
+## Embeded 🚇
 
 [boms 코드정보]()
 
@@ -74,7 +74,7 @@ PASSWORD : xptmxmdlqslek
 
 ---
 
-## WEB
+## WEB 💻
 
 BOM은 크게 두가지 웹 서비스를 제공합니다.
 
@@ -83,7 +83,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 
 <br>
 
-> 병동 웹서비스
+> 병동 웹서비스 🏣
 
 <details>
 <summary>로그인</summary>
@@ -151,7 +151,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 
 <br>
 
-> 가족 모바일 웹서비스
+> 가족 모바일 웹서비스 👪
 
 <details>
 <summary>환자 정보 조회</summary>
@@ -194,7 +194,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ---
 
-## Docs
+## Docs 🖨
 
 [문서 모음](./Docs)
 
@@ -202,7 +202,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ---
 
-## ERD
+## ERD 📚
 
 [ERD]()
 
@@ -210,7 +210,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ---
 
-## Convention
+## Convention 🤝
 
 [🔗 깃 컨벤션](./GitConvention.md)
 [🔗 지라 컨벤션](./JiraConvention.md)
@@ -219,7 +219,15 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ---
 
-## 팀원
+## Notion ⭐
+
+[여기로!](https://www.notion.so/b485f39de68846d98557cbad84b9ac44)
+
+<br>
+
+---
+
+## 팀원 👨‍👧‍👦
 
 권경민(팀장)
 
