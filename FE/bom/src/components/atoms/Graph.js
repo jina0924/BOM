@@ -173,7 +173,6 @@ function Graph({ part, isPC = true, data, filter }) {
                   stroke="#EA5455"
                   dot={{ r: 0 }}
                   activeDot={{ r: 4 }}
-                  isAnimationActive={false}
                 />
 
                 <Legend verticalAlign="top" width="100%" />
@@ -184,7 +183,6 @@ function Graph({ part, isPC = true, data, filter }) {
                   stroke="#5C78B1"
                   dot={{ r: 0 }}
                   activeDot={{ r: 4 }}
-                  isAnimationActive={false}
                 />
               </LineChart>
             </ResponsiveContainer>
