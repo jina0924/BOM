@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  UilBed,
   UilTemperatureHalf,
   UilBatteryBolt,
   UilBatteryEmpty,
@@ -10,6 +11,11 @@ import {
 function BMSIcon({ iconTag }) {
   return (
     <>
+      {iconTag === "UilBed" && (
+        <div className="aspect-square h-full flex justify-center items-center bg-main/20 rounded-full">
+          <UilBed className="text-main w-1/2 h-1/2" />
+        </div>
+      )}
       {iconTag === "UilTemperatureHalf" && (
         <div className="aspect-square h-full flex justify-center items-center bg-sub1/20 rounded-full">
           <UilTemperatureHalf className="text-sub1 w-1/2 h-1/2" />
@@ -26,8 +32,8 @@ function BMSIcon({ iconTag }) {
         </div>
       )}
       {iconTag === "UilCircuit" && (
-        <div className="aspect-square h-full flex justify-center items-center bg-[#1A3263]/20 rounded-full">
-          <UilCircuit className="text-[#1A3263] w-1/2 h-1/2" />
+        <div className="aspect-square h-full flex justify-center items-center bg-font1/20 rounded-full">
+          <UilCircuit className="text-font1 w-1/2 h-1/2" />
         </div>
       )}
     </>
