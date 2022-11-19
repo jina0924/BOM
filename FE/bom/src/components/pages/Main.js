@@ -88,7 +88,6 @@ function Main({ isPC }) {
   function patientListFail() {}
 
   function handlePageChange(page) {
-    console.log("페이지 바꾼다", page);
     setNow(page);
   }
 

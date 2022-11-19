@@ -47,7 +47,10 @@ function PatientDetailInfo({
             <PatientInfoKeyValue
               isPC={isPC}
               key1="보호자 연락처"
-              value={nokPhonenumber}
+              value={nokPhonenumber.replace(
+                /^(\d{2,3})(\d{3,4})(\d{4})$/,
+                `$1-$2-$3`
+              )}
             />
             <PatientInfoKeyValue isPC={isPC} key1="주치의" value={doctor} />
           </div>
