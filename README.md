@@ -89,7 +89,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>로그인</summary>
 <div markdown="1">
 
-![logo](README.assets\login_gif.gif)
+![logo](README.assets/login_gif.gif)
 
 <br>
 <br>
@@ -99,7 +99,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>메인페이지</summary>
 <div markdown="1">
 
-![logo](README.assets\main.jpg)
+![logo](README.assets/main.jpg)
 
 <p>이곳에서 병동에 대한 정보를 확인할 수 있습니다.</p>
 <span>- 상단부터 우측 하단까지 병동에 대한 데이터를 한눈에 파악하게 도와줍니다.</span><br>
@@ -112,8 +112,8 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>환자 목록 페이지</summary>
 <div markdown="1">
 
-![logo](README.assets\patients.jpg)
-![logo](README.assets\patients_gif.gif)
+![logo](README.assets/patients.jpg)
+![logo](README.assets/patients_gif.gif)
 
 <p>이곳에서 환자들에 대한 정보를 확인할 수 있습니다.</p>
 <span>- 환자들의 정보를 검색하여 파악할 수 있고, 위험한 환자의 경우 따로 표시해줍니다.</span><br>
@@ -126,7 +126,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>환자 상세 페이지</summary>
 <div markdown="1">
 
-![logo](README.assets\patient_detail_gif.gif)
+![logo](README.assets/patient_detail_gif.gif)
 
 <p>이곳에서 환자에 대한 상세 정보를 확인할 수 있습니다.</p>
 <span>- 환자의 입원 정보와 생체신호(체온/심박수/산소포화도) 및 BMS정보(전압/온도 등) 을 파악할 수 있습니다..</span><br>
@@ -139,8 +139,8 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>의사/간호사 목록 페이지</summary>
 <div markdown="1">
 
-![logo](README.assets\doctors.jpg)
-![logo](README.assets\nurses.jpg)
+![logo](README.assets/doctors.jpg)
+![logo](README.assets/nurses.jpg)
 
 <p>이곳에서 의사/간호사 목록을 확인할 수 있습니다.</p>
 <span>- 툴팁을 통해 버튼에 마우스 오버하면 비상연락망을 확인할 수 있습니다.</span>
@@ -157,7 +157,7 @@ BOM은 크게 두가지 웹 서비스를 제공합니다.
 <summary>환자 정보 조회</summary>
 <div markdown="1">
 
-![logo](README.assets\nok_mobile.gif)
+![logo](README.assets/nok_mobile.gif)
 
 <br>
 <br>
