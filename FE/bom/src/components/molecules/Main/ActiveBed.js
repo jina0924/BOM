@@ -11,7 +11,7 @@ function ActiveBed({ utilization }) {
           iconTag="UilBed"
           iconTagClassName="text-sub1 inline mr-3"
           content="병상 가동률"
-          contentClassName="text-main font-bold text-lg"
+          contentClassName="text-main font-bold text-base"
         />
       </div>
       <div className="active-bed-graph h-5/6 flex justify-center items-center">
