@@ -891,8 +891,8 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d'),
-                        '최대': health[i].temperature + 5,
-                        '최소': health[i].temperature - 5
+                        '최대': round(health[i].temperature + 5, 1),
+                        '최소': round(health[i].temperature - 5, 1)
                     }
                 result_temperature.append(temperature_data)
                 
@@ -986,8 +986,8 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d %H'),
-                        '최대': health[i].temperature + 5,
-                        '최소': health[i].temperature - 5
+                        '최대': round(health[i].temperature + 5, 1), 
+                        '최소': round(health[i].temperature - 5, 1)
                     }
                 result_temperature.append(temperature_data)
                 
@@ -1078,8 +1078,8 @@ def health(request, patient_number):
 
                 temperature_data = {
                         '시간': start.strftime('%Y-%m-%d %H'),
-                        '최대': health[i].temperature + 5,
-                        '최소': health[i].temperature - 5
+                        '최대': round(health[i].temperature + 5, 1),
+                        '최소': round(health[i].temperature - 5, 1)
                     }
                 result_temperature.append(temperature_data)
                 
