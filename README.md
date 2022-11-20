@@ -64,11 +64,13 @@ PASSWORD : xptmxmdlqslek
 
 ## Embeded 🚇
 
-[boms 코드정보]()
-
-[health 코드 정보]()
+[코드 정보](./Monitor)
 
 외관
+![디바이스 렌더링 이미지](README.assets/Device_img.png)
+
+
+
 
 <br>
 
