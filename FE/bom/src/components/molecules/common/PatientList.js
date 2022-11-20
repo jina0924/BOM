@@ -58,7 +58,7 @@ function PatientList({
             iconTag="UilMedicalDrip"
             iconTagClassName="text-sub1 inline mr-3"
             content="환자 목록"
-            contentClassName="text-main font-bold text-lg mr-3"
+            contentClassName="text-main font-bold text-base mr-3"
           />
           <span
             className="tooltip tooltip-right text-font2 flex justify-center items-center font-light"
