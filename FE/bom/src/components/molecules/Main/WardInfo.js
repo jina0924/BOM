@@ -12,7 +12,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail }) {
               iconTag="UilHospital"
               iconTagClassName="text-sub1 inline mr-3"
               content="병동 정보"
-              contentClassName="text-main font-bold text-lg"
+              contentClassName="text-main text-base"
             />
           )}
           {wardInfoTitle === "patientCount" && (
@@ -20,7 +20,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail }) {
               iconTag="UilMedicalDrip"
               iconTagClassName="text-sub1 inline mr-3"
               content="입원 환자 수"
-              contentClassName="text-main font-bold text-lg"
+              contentClassName="text-main text-base"
             />
           )}
           {wardInfoTitle === "doctorCount" && (
@@ -28,7 +28,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail }) {
               iconTag="UilUserMd"
               iconTagClassName="text-sub1 inline mr-3"
               content="의사 수"
-              contentClassName="text-main font-bold text-lg"
+              contentClassName="text-main text-base"
             />
           )}
           {wardInfoTitle === "nurseCount" && (
@@ -36,7 +36,7 @@ function WardInfo({ wardInfoTitle, wardInfoDetail }) {
               iconTag="UilUserNurse"
               iconTagClassName="text-sub1 inline mr-3"
               content="간호사 수"
-              contentClassName="text-main font-bold text-lg"
+              contentClassName="text-main text-base"
             />
           )}
         </div>
