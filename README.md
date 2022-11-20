@@ -206,7 +206,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ## ERD 📚
 
-[ERD]()
+![erd](README.assets/erd.svg)
 
 <br>
 
@@ -223,7 +223,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 ## Notion ⭐
 
-[여기로!](https://www.notion.so/b485f39de68846d98557cbad84b9ac44)
+[여기로!](https://scratch-mail-c09.notion.site/b485f39de68846d98557cbad84b9ac44)
 
 <br>
 
@@ -238,7 +238,7 @@ baseURL: "https://thundervolt.co.kr/api/",
 
 김유민
 
-- 담당 파트 : HW, BE
+- 담당 파트 : HW, DB
 - 기타 : 회로 설계
 
 문요성
