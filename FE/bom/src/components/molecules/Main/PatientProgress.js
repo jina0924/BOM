@@ -11,7 +11,7 @@ function PatientProgress({ patientTendency }) {
           iconTag="UilChartLine"
           iconTagClassName="text-sub1 inline mr-3"
           content="입원 환자 추이"
-          contentClassName="text-main font-bold text-lg"
+          contentClassName="text-main font-bold text-base"
         />
       </div>
       <div className="patient-progress-graph h-5/6 flex justify-center items-end">
