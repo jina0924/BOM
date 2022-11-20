@@ -1,0 +1,27 @@
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+==========================================
+
+
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'delimitMate.vim'
+
+call vundle#end()
+filetype plugin indent on
+
+set nu
+set ts=4
+set sw=4
+set ls=2
+set cindent
+set autoindent
+syntax on
+
+colorscheme jellybeans
+let delimitMate_expand_cr=1

@@ -1,0 +1,42 @@
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input {
+  width: 18vw;
+  padding: 10px 0;
+  font-size: 15px;
+  color: #878787;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1.5px solid #878787;
+  outline: none;
+}
+.login-box .user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #878787;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.user-box label:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  width: 0;
+  height: 100%;
+  border-bottom: 3px solid #5c78b1;
+  transition: all 0.2s ease;
+}
+
+.user-box input:focus + label,
+.user-box input:valid + label {
+  top: -20px;
+  color: #5c78b1;
+  font-size: 12px;
+  font-weight: 600;
+}
