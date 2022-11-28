@@ -72,7 +72,7 @@ function Main({ isPC }) {
       clearTimeout(timer);
     }
     patientListTimerID.current = [];
-    if (now === res.data.now && location.pathname === "/main") {
+    if (now === res.data.now) {
       const timerID = setTimeout(
         requestPatientList,
         10000,
@@ -88,7 +88,6 @@ function Main({ isPC }) {
   function patientListFail() {}
 
   function handlePageChange(page) {
-    console.log("페이지 바꾼다", page);
     setNow(page);
   }
 
@@ -110,7 +109,7 @@ function Main({ isPC }) {
       <SideBar />
       <div className="info-zone col-span-5">
         <HeadBar />
-        <div className="information-zone flex flex-col">
+        <div className="information-zone flex flex-col h-[84vh]">
           {/* 병동 정보 카드 */}
           <div className="ward-info-summary-list grid grid-cols-4 p-7 gap-8">
             {/* 병동 정보 */}
@@ -140,7 +139,7 @@ function Main({ isPC }) {
           {/* 병동 상세 데이터 카드 */}
           <div className="px-7 grid grid-cols-5 gap-8">
             {/* 환자 목록 */}
-            <div className="patient-list h-[62vh] col-span-3">
+            <div className="patient-list h-[65vh] col-span-3">
               <PatientList
                 nowPage="main"
                 patientList={patientList}
@@ -153,12 +152,12 @@ function Main({ isPC }) {
             {/* 병동 데이터 그래프 카드 */}
             <div className="ward-info-graph col-span-2 flex flex-col justify-between">
               {/* 입원 환자 추이 */}
-              <div className="patient-progres h-[24vh]">
+              <div className="patient-progres h-[26vh]">
                 <PatientProgress patientTendency={patientTendency} />
                 {/* <PatientProgress /> */}
               </div>
               {/* 병상 가동률 */}
-              <div className="active-bed h-[35vh]">
+              <div className="active-bed h-[36vh]">
                 <ActiveBed utilization={utilization} />
                 {/* <ActiveBed /> */}
               </div>

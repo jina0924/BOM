@@ -270,7 +270,7 @@ function PatientDetail({ isPC }) {
   return (
     <>
       {isPC && (
-        <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] m-[2.5vh] font-suit">
+        <div className="patient-detail grid grid-cols-6 bg-back rounded-[20px] shadow-bg w-[97vw] h-[95vh] my-[2.5vh] mx-[1.5vw] font-suit">
           <SideBar />
           <div className="right-box col-span-5 h-full">
             <HeadBar />
@@ -312,7 +312,6 @@ function PatientDetail({ isPC }) {
                 ) : null}
               </div>
               <div className="filter-download-btn flex justify-end">
-                <DownloadBtn onClickFunction={clickExcelDownload} />
                 <select
                   name="기간"
                   id="기간"
@@ -324,6 +323,7 @@ function PatientDetail({ isPC }) {
                   <option value="week">7 일</option>
                   <option value="month">30 일</option>
                 </select>
+                <DownloadBtn onClickFunction={clickExcelDownload} />
               </div>
             </div>
             {/* 전체 서머리 페이지 */}
@@ -387,6 +387,7 @@ function PatientDetail({ isPC }) {
               <div className="device-detail-full px-10 pb-5 h-[75vh] ">
                 <div className="live-device-status pb-5 h-[25vh]">
                   <LiveDeviceStatus
+                    patientName={name}
                     bmsTemperature={bmsTemperature}
                     voltage1={voltage1}
                     voltage2={voltage2}

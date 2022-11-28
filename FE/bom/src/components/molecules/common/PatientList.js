@@ -10,6 +10,7 @@ import "./patientListCarouselEffect.css";
 import {
   UilArrowResizeDiagonal,
   UilArrowDownLeft,
+  UilInfoCircle,
 } from "@iconscout/react-unicons";
 
 function PatientList({
@@ -28,12 +29,9 @@ function PatientList({
   const [fade, setFade] = useState("");
 
   useEffect(() => {
-    if (location.pathname === "/main") {
+    if (location.pathname === "/") {
       setPathname("main");
-    } else if (
-      (location.pathname === "/patients") |
-      (location.pathname === "/patients/autoplay")
-    ) {
+    } else {
       setPathname("patients");
     }
   }, [location]);
@@ -43,8 +41,8 @@ function PatientList({
       setFade("end");
     }, 10);
     return () => {
-      clearTimeout(to);
       setFade("");
+      clearTimeout(to);
     };
   }, [page]);
 
@@ -55,12 +53,20 @@ function PatientList({
   return (
     <div className="patient-list h-full shadow-box bg-white rounded-[20px]">
       <div className="h-[10%] pt-6 px-8 flex justify-between">
-        <Title
-          iconTag="UilMedicalDrip"
-          iconTagClassName="text-sub1 inline mr-3"
-          content="환자 목록"
-          contentClassName="text-main font-bold text-lg"
-        />
+        <div className="patient-list-title flex items-center">
+          <Title
+            iconTag="UilMedicalDrip"
+            iconTagClassName="text-sub1 inline mr-3"
+            content="환자 목록"
+            contentClassName="text-main font-bold text-base mr-3"
+          />
+          <span
+            className="tooltip tooltip-right text-font2 flex justify-center items-center font-light"
+            data-tip="체온, 심박수가 정상 수치를 초과하면 ▲, 미만이면 ▼가 나타납니다"
+          >
+            <UilInfoCircle className="h-5/6 w-5/6" />
+          </span>
+        </div>
         <div className="arrow-box">
           {nowPage === "main" && (
             <Link to="/patients">
@@ -122,6 +128,9 @@ function PatientList({
                 <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
                   주치의
                 </th>
+                <th className="text-sm text-center font-normal border-b-[1px] py-2 bg-white">
+                  상태
+                </th>
               </tr>
             </thead>
             {!!patientList && (
@@ -134,14 +143,13 @@ function PatientList({
                   >
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {key + 1 + limit * (page - 1)}
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray 
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}
-                        ${item.isWarning && "text-sub1"}`}
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"}`}
                     >
                       {item.number}
                     </td>
@@ -194,7 +202,7 @@ function PatientList({
                     </td>
                     <td
                       className={`text-center font-semibold border-b-[.5px] border-gray
-                        ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
+                      ${onOff === true ? "text-sm py-4" : "text-xs py-2.5"} ${
                         item.oxygenSaturation < 95 && "text-sub1"
                       }
                       `}
@@ -204,10 +212,8 @@ function PatientList({
                     {pathname === "patients" && (
                       <td
                         className={`text-center font-semibold border-b-[.5px] border-gray
-                          ${
-                            onOff === true ? " text-sm py-4" : " text-xs py-2.5"
-                          }
-                        `}
+                        ${onOff === true ? " text-sm py-4" : " text-xs py-2.5"}
+                          `}
                       >
                         {item.nokName}
                       </td>
@@ -232,6 +238,17 @@ function PatientList({
                       }
                     >
                       {item.doctor.name}
+                    </td>
+                    <td
+                      className={`text-center font-semibold border-b-[.5px] border-gray 
+                              ${
+                                onOff === true
+                                  ? "text-sm py-4"
+                                  : "text-xs py-2.5"
+                              }
+                              ${item.isWarning ? "text-sub1" : "text-green"}`}
+                    >
+                      ●
                     </td>
                   </tr>
                 ))}

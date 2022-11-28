@@ -36,7 +36,7 @@ function HeadBar() {
       <span className="text-main text-lg font-suit font-bold">
         {wardNum} 병동
       </span>
-      <div className="dropdown dropdown-end">
+      {/* <div className="dropdown dropdown-end">
         <label
           tabIndex={0}
           className="btn bg-white border-0 hover:bg-white focus:outline-none px-0"
@@ -50,7 +50,7 @@ function HeadBar() {
           <li>a</li>
           <li>b</li>
         </ul>
-      </div>
+      </div> */}
       <div className="dropdown dropdown-end">
         <label
           tabIndex={0}
