@@ -87,10 +87,10 @@ def ward(request):
             }
 
             tendency.append(data)
-            print(data)
+
 
             period_start = period_end
-        print(tendency)
+
         result = dict()
         result.update(serializer.data)
         result['tendency'] = tendency
@@ -754,7 +754,7 @@ class PatientListAPIView(APIView, PaginationHandlerMixin):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         next = serializer.data.get('next')
-        print(next)
+
         if next != None:  # 다음 페이지가 있을 때
             next = next.split('page=')[1]
             if '&' in next:
@@ -1111,7 +1111,7 @@ def health(request, patient_number):
                 end = (start + relativedelta(seconds=5)).strftime('%Y-%m-%d %H:%M:%S')
 
                 health = check.filter(now=end)
-                # print(health)
+
                 if health.exists():
                 
                     temperature_data = {
