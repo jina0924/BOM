@@ -96,6 +96,66 @@ export { requestWardInfo };
 
 ### interval 요청
 
+```js
+// src/pages/Main.js
+
+...
+  useEffect(() => {
+    requestPatientList(now, 8, patientListSuccess, patientListFail);
+    return () => {
+      for (let timer of patientListTimerID.current) {
+        clearTimeout(timer);
+      }
+      patientListTimerID.current = [];
+    };
+  }, [now]);
+
+  const patientListTimerID = useRef([]);
+
+  function patientListSuccess(res) {
+    setPatientList(res.data.results);
+    setCount(res.data.count);
+    for (let timer of patientListTimerID.current) {
+      clearTimeout(timer);
+    }
+    patientListTimerID.current = [];
+    if (now === res.data.now) {
+      const timerID = setTimeout(
+        requestPatientList,
+        10000,
+        now,
+        8,
+        patientListSuccess,
+        patientListFail
+      );
+      patientListTimerID.current = [...patientListTimerID.current, timerID];
+    }
+  }
+...
+```
+
+- 방법
+  1. `useEffect`에 `API`요청 함수를 호출함
+  2. 응답을 성공적으로 받아오면 `setTimeout`을 걸어 요청 주기를 생성함
+     - `setInterval`을 사용하지 않은 이유 : 요청의 응답이 오기 전에 요청을 보내는 중복을 막기 위해
+  3. 재요청을 보내기 전 중복요청을 막기 위해 이전에 있던 타이머 초기화
+  4. 페이지를 벗어나면 요청을 보내지 않기 위해 `useEffect`의 `return`값으로 `clearTimeout`함수를 걸어둠
+
+#### useRef
+
+- 정의
+  - 동적으로 상태관리를 할 수 있게 함
+  - `.current` 프로퍼티에 변경 가능한 값을 담고 있는 "상자"
+- `useState`와의 차이
+  - `useState` : 값이 변경되면 리렌더링
+  - `useRef` : 상태가 변해도 리렌더링x -> 렌더링이 필요하지 않은 상태값의 경우 `useRef`쓰는 것이 나을수도
+
+#### unmount 효과
+
+- 방법
+  - `useEffect`에서 함수를 반환(`cleanup`함수)
+  - 의존성 배열에 걸린 값이 변경되면 `useEffect`는 다시 콜백을 실행하는데, 실행하기 전 콜백의 리턴값을 실행함
+
 
 
 ### React 컴포넌트 마운트 효과
