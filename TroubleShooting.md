@@ -158,5 +158,49 @@ export { requestWardInfo };
 
 
 
-### React 컴포넌트 마운트 효과
+### Cookie, Web Storage
+
+#### Cookie
+
+- 클라이언트가 서버에 방문한 정보를 클라이언트에 저장하는 작은 파일
+- 클라이언트의 브라우저 메모리 혹은 하드디스크에 저장
+- 매번 서버에 전송되므로 크기가 클 경우 서버에 부담이 갈 수 있음
+- 대략 4KB까지의 데이터를 저장할 수 있음
+- 유효 기간이 존재
+
+
+
+장점
+
+- 대부분의 브라우저가 지원
+- 데이터 유효기간 지정 가능
+- XSS (사이트 간 악성 Js 코드를 심는 행위)로부터 안전
+  - 서버에서 쿠키의 httpOnly 옵션을 설정하면, Js에서 쿠키에 접근 자체 불가능
+
+
+
+#### Web Storage
+
+- 클라이언트에 데이터를 저장할 수 있도록 HTML5부터 새롭게 지원하는 저장소
+- 키(Key)와 값(Value)의 쌍 형태로 데이터를 저장
+- 서버에 전송되지 않으므로 서버에 부담x
+- 대략 5MB까지의 데이터를 저장할 수 있음
+- 유효 기간이 존재하지 않음
+
+
+
+장점
+
+- 서버에 불필요하게 데이터 저장x
+- 넉넉한 데이터 저장 용량
+- 문자열 외에도 자바스크립트의 모든 원시형 데이터와 객체 저장 가능
+- 도메인 단위로 접근이 제한되는 CORS 특성 덕분에 CSRF로부터 안전
+
+https://velog.io/@hs0217/%EC%BF%A0%ED%82%A4-%EB%A1%9C%EC%BB%AC-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-%EC%84%B8%EC%85%98-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80
+
+https://it-eldorado.tistory.com/90
+
+https://velog.io/@yaytomato/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%90%EC%84%9C-%EC%95%88%EC%A0%84%ED%95%98%EA%B2%8C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0#-%EB%A1%9C%EC%BB%AC%EC%97%90%EC%84%9C-%ED%85%8C%EC%8A%A4%ED%8C%85%ED%95%98%EB%A0%A4%EB%A9%B4
+
+https://velog.io/@0307kwon/JWT%EB%8A%94-%EC%96%B4%EB%94%94%EC%97%90-%EC%A0%80%EC%9E%A5%ED%95%B4%EC%95%BC%ED%95%A0%EA%B9%8C-localStorage-vs-cookie
 
