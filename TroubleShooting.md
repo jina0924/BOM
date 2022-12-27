@@ -158,7 +158,42 @@ export { requestWardInfo };
 
 
 
-### Cookie, Web Storage
+### JWT
+
+#### JWT
+
+- `JSON Web Token`
+- 모바일이나 웹의 사용자 인증을 위해 사용하는 암호화된 토큰
+- 인증 과정
+  1. 유저가 로그인함
+  2. 서버가 인증 정보를 보내줌
+     - 암호화나 시그니처 추가가 가능한 데이터 패키지(=JWT) 안에 인증 정보를 담아 보냄
+  3. 담기는 정보 중 `accessToken`과 `refreshToken`이 이후 유저 인증에 사용됨
+     - `accessToken` : 일정 시간이 지나면 만료됨
+     - `refreshToken` : 새로운 `accessToken`을 서버에 요청하는 토큰값. `refreshToken`사용은 옵션
+  4. 이 정보를 클라이언트에 저장해둠
+  5. `accessToken`을 유저에게만 보여줄 수 있는 정보에 접근할 때 서버에 보냄
+  6. 서버는 해당 토큰이 유효한지 확인
+
+
+
+#### XSS(Cross Site Scripting)
+
+- `code injection attack`
+- 공격자가 의도하는 악의적인 js 코드를 피해자 웹 브라우저에서 실행시키는 것
+- 대부분의 웹 해킹 공격 기법과는 다르게 클라이언트를 대상으로 한 공격
+
+
+
+#### CSRF(Cross Site Request Forgery)
+
+- 정상적인 request를 가로채 피해자인척 하고 백엔드 서버에 변조된 request를 보내 악의적인 동작을 수행하는 공격
+- 공격 과정
+  1. 공격자는 유저가 `img`를 열람하도록 하거나 `link`를 클릭하도록 유도
+  2. 이 action은 사용자 의도와는 관계없이 http request를 보냄
+  3. 유저가 로그인 되어있는 상태라면 이 request는 정상적으로 서버에 동작을 수행
+
+
 
 #### Cookie
 
@@ -170,7 +205,7 @@ export { requestWardInfo };
 
 
 
-장점
+**장점**
 
 - 대부분의 브라우저가 지원
 - 데이터 유효기간 지정 가능
@@ -189,7 +224,7 @@ export { requestWardInfo };
 
 
 
-장점
+**장점**
 
 - 서버에 불필요하게 데이터 저장x
 - 넉넉한 데이터 저장 용량
